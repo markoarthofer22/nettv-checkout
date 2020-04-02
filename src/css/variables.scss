@@ -1,0 +1,57 @@
+// All variables for project (colors, fonts, font-sizes ect.)
+
+//font setup
+$h-font: "Nunito";
+$title-font: "Caveat";
+$font: "Nunito";
+$font-size-main: 10px;
+$mainColor: #000;
+
+//predefined colors
+$font-blue: #365c97;
+$font-red: #d01d29;
+$background: #fff;
+$black: #000;
+$green: #19a796;
+$blue: #2194cf;
+$pink: #e1004f;
+$purple: #cc6dff;
+$red: #df3231;
+$warning-red: #d71920;
+$yellow: #ffcd03;
+$white: #fff;
+$light-grey: #f5f0f0;
+$dark-grey: #828282;
+$brown: #42210b;
+$orange: #fd8e35;
+$neo-blue: #00d0ff;
+$dark-blue: #0072aa;
+$darker-blue: #2e6ab7;
+$nightgray: #333;
+
+//mixins vars
+$break-small: 768px;
+$break-medium: 996px;
+$break-large: 1200px;
+
+// mixins for media-screen
+@mixin respond-to($media) {
+  @if $media == sm {
+    @media only screen and (min-width: $break-small) {
+      @content;
+    }
+  }
+  @if $media == max-sm {
+    @media only screen and (max-width: $break-small) {
+      @content;
+    }
+  } @else if $media == md {
+    @media only screen and (min-width: $break-medium) {
+      @content;
+    }
+  } @else if $media == lg {
+    @media only screen and (min-width: $break-large) {
+      @content;
+    }
+  }
+}

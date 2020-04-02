@@ -1,0 +1,36 @@
+@import "../../css/variables.scss";
+
+.index-page {
+  .container.fluid {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+
+    & > .form-holder {
+      flex-basis: 60%;
+      padding: 0 3rem;
+      display: flex;
+      justify-content: flex-end;
+
+      .form-holder--steps {
+        max-width: 1000px;
+        width: 100%;
+      }
+
+      &.homepage {
+        flex-basis: 100%;
+        padding: initial;
+        width: 100%;
+
+        .form-holder--steps {
+          max-width: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    & > .side-panel-holder {
+      flex-basis: 40%;
+    }
+  }
+}

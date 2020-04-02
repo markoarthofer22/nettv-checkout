@@ -1,0 +1,69 @@
+@import "../../css/variables.scss";
+.popup {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background-color: rgba(0, 0, 0, 0.877);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  &-window {
+    min-width: 90%;
+    height: 90%;
+    padding: 3.5rem;
+    background-color: grey;
+    border-radius: 10px;
+    position: relative;
+
+    .popup-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      &::before,
+      &::after {
+        position: absolute;
+        content: "";
+        width: 70%;
+        height: 1.6px;
+        background-color: $blue;
+        transition: all 0.5s;
+      }
+
+      &::before {
+        transform: rotate(-45deg);
+      }
+
+      &::after {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}
+
+.popup-enter {
+  opacity: 0;
+}
+.popup-enter-active {
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+.popup-exit {
+  opacity: 1;
+}
+.popup-exit-active {
+  opacity: 0;
+  transition: opacity 1s;
+}
