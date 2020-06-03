@@ -9,61 +9,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
-const Header = props => {
-  const history = useHistory();
-  const currentStep = useSelector(selectCurrentStep);
-  const dispatch = useDispatch();
+const Header = (props) => {
+    const history = useHistory();
+    const currentStep = useSelector(selectCurrentStep);
+    const dispatch = useDispatch();
 
-  console.log(currentStep);
-
-  return (
-    <>
-      <header className="header">
-        <Link to="https://nettvplus.com/">
-          <img src="/assets/logo.png" alt="Logo" className="logo" />
-        </Link>
-      </header>
-      <div className="navigation-bar">
-        <ul className="navigation-bar--list">
-          <li
-            className={`navigation-bar--list-item ${
-              currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""
-            }`}
-          >
-            <span className="name">Paketi</span>
-          </li>
-          <li
-            className={`navigation-bar--list-item ${
-              currentStep === 2 ? "active" : currentStep > 2 ? "completed" : ""
-            }`}
-          >
-            <span className="name">Uređaji</span>
-          </li>
-          <li
-            className={`navigation-bar--list-item ${
-              currentStep === 3 ? "active" : currentStep > 3 ? "completed" : ""
-            }`}
-          >
-            <span className="name">Pretplata</span>
-          </li>
-          <li
-            className={`navigation-bar--list-item ${
-              currentStep === 4 ? "active" : currentStep > 4 ? "completed" : ""
-            }`}
-          >
-            <span className="name">Podaci</span>
-          </li>
-          <li
-            className={`navigation-bar--list-item ${
-              currentStep === 5 ? "active" : currentStep > 5 ? "completed" : ""
-            }`}
-          >
-            <span className="name">Plaćanje</span>
-          </li>
-        </ul>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <header className="header">
+                <Link to="https://nettvplus.com/">
+                    <img src="/assets/logo.png" alt="Logo" className="logo" />
+                </Link>
+            </header>
+            <div className="navigation-bar">
+                <ul className="navigation-bar--list">
+                    <li className={`navigation-bar--list-item ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}>
+                        <span className="name">Paketi</span>
+                    </li>
+                    <li className={`navigation-bar--list-item ${currentStep === 2 ? "active" : currentStep > 2 ? "completed" : ""}`}>
+                        <span className="name">Uređaji</span>
+                    </li>
+                    <li className={`navigation-bar--list-item ${currentStep === 3 ? "active" : currentStep > 3 ? "completed" : ""}`}>
+                        <span className="name">Pretplata</span>
+                    </li>
+                    <li className={`navigation-bar--list-item ${currentStep === 4 ? "active" : currentStep > 4 ? "completed" : ""}`}>
+                        <span className="name">Podaci</span>
+                    </li>
+                    <li className={`navigation-bar--list-item ${currentStep === 5 ? "active" : currentStep > 5 ? "completed" : ""}`}>
+                        <span className="name">Plaćanje</span>
+                    </li>
+                </ul>
+            </div>
+        </>
+    );
 };
 
 export default Header;

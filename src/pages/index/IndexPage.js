@@ -3,12 +3,10 @@ import Helmet from "react-helmet";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter, useParams } from "react-router-dom";
-import {
-  getDataForURL,
-  setIsLoading
-} from "../../redux/globals/globals.actions";
+import { getDataForURL, setIsLoading } from "../../redux/globals/globals.actions";
 import { selectPageData } from "../../redux/globals/globals.selectors";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
+import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
 //styles
 import "./indexpage.scss";
@@ -22,69 +20,74 @@ import SidePanel from "./SidePanel/sidePanel.component";
 import PaymentInfo from "./FormSteps/PaymentInfo/paymentInfo.form";
 import SubscriptionPlans from "./FormSteps/OptionPlans/subscriptionPlans.form";
 
-const IndexPage = props => {
-  const { history } = props;
-  const data = useSelector(selectPageData);
-  const currentStep = useSelector(selectCurrentStep);
-  const dispatch = useDispatch();
+const IndexPage = (props) => {
+    const { history } = props;
+    const data = useSelector(selectPageData);
+    const { id } = useParams();
+    const langCode = "de";
+    const currentStep = useSelector(selectCurrentStep);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setIsLoading(false));
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(setIsLoading(false));
+    }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getDataForURL(history.location.pathname));
-  }, []);
+    useEffect(() => {
+        if (id) {
+            dispatch(setCurrentNavigationStep("add"));
+            dispatch(getDataForURL(history.location.pathname));
+        } else {
+            dispatch(getDataForURL(`products/?lang_code=${langCode}`));
+        }
+    }, [id, langCode]);
 
-  const selectActiveStep = _step => {
-    let step = _step;
+    const selectActiveStep = (_step, _response) => {
+        let step = _step;
 
-    switch (step) {
-      case 1:
-        return <SubscriptionPlans />;
-        break;
+        switch (step) {
+            case 1:
+                return <SubscriptionPlans data={_response} />;
+                break;
 
-      case 2:
-        return <PackagesForm />;
-        break;
+            case 2:
+                return <PackagesForm data={_response} />;
+                break;
 
-      case 3:
-        return <PackagesForm />;
+            case 3:
+                return <PackagesForm data={_response} />;
 
-        break;
-      case 4:
-        return <PaymentInfo />;
+                break;
+            case 4:
+                return <PaymentInfo data={_response} />;
 
-        break;
+                break;
 
-      default:
-        return null;
-        break;
-    }
-  };
+            default:
+                return null;
+                break;
+        }
+    };
 
-  return !data.isError ? (
-    <section className="index-page">
-      <Helmet>
-        <title>NetTVPlus</title>
-      </Helmet>
-      <ContainerFull>
-        <div className={`form-holder ${currentStep === 1 ? "homepage" : ""}`}>
-          <div className={`form-holder--steps`}>
-            {selectActiveStep(currentStep)}
-          </div>
-        </div>
+    return !data.isError ? (
+        <section className="index-page">
+            <Helmet>
+                <title>NetTVPlus</title>
+            </Helmet>
+            <ContainerFull>
+                <div className={`form-holder ${currentStep === 1 ? "homepage" : ""}`}>
+                    <div className={`form-holder--steps`}>{selectActiveStep(currentStep, data.response)}</div>
+                </div>
 
-        {currentStep > 1 && (
-          <div className="side-panel-holder">
-            <SidePanel />
-          </div>
-        )}
-      </ContainerFull>
-    </section>
-  ) : (
-    <NoPage />
-  );
+                {currentStep > 1 && (
+                    <div className="side-panel-holder">
+                        <SidePanel />
+                    </div>
+                )}
+            </ContainerFull>
+        </section>
+    ) : (
+        <NoPage />
+    );
 };
 
 export default withRouter(IndexPage);
