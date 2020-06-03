@@ -17,9 +17,9 @@ const Header = (props) => {
     return (
         <>
             <header className="header">
-                <Link to="https://nettvplus.com/">
+                <a href="https://nettvplus.com/">
                     <img src="/assets/logo.png" alt="Logo" className="logo" />
-                </Link>
+                </a>
             </header>
             <div className="navigation-bar">
                 <ul className="navigation-bar--list">

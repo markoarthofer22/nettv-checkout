@@ -1,23 +1,18 @@
 import { createSelector } from "reselect";
 
-const selectGlobals = state => state.globals;
+const selectGlobals = (state) => state.globals;
 
 export const selectIsLoading = createSelector(
   [selectGlobals],
-  globals => globals.isLoading
-);
-
-export const selectNavigation = createSelector(
-  [selectGlobals],
-  globals => globals.settings.navigation.primaryNavigation
+  (globals) => globals.isLoading
 );
 
 export const globalError = createSelector(
   [selectGlobals],
-  globals => globals.globalError
+  (globals) => globals.globalError
 );
 
-export const selectPageData = createSelector(
+export const selectAllCountryIDs = createSelector(
   [selectGlobals],
-  globals => globals.pageData
+  (globals) => globals.lang_codes
 );

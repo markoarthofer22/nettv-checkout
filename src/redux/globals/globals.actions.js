@@ -24,26 +24,19 @@ export const setDataForURL = (data) => {
 };
 
 export const getDataForURL = (url) => {
-    return async (dispatch, getState) => {
-        let _url = url.split("?")[0].slice(-1) === "/" ? url.split("?")[0].slice(0, -1) : url.split("?")[0];
+    return (dispatch) => {
         dispatch(setIsLoading(true));
 
-        await mainApi
-            .get(url)
-            .then((responseData) => {
-                dispatch(setIsLoading(false));
-                dispatch(
-                    setDataForURL({
-                        response: responseData.data,
-                        isLoading: false,
-                        key: Math.random(),
-                        url: url,
-                    })
-                );
-            })
-            .catch((error) => {
-                dispatch(setIsLoading(false));
-                dispatch(setDataForURL({ response: null, isLoading: false, url: _url }));
-            });
+        return new Promise((resolve) => {
+            mainApi
+                .get(url)
+                .then((responseData) => {
+                    dispatch(setIsLoading(false));
+                    resolve(responseData);
+                })
+                .catch((error) => {
+                    dispatch(setIsLoading(false));
+                });
+        });
     };
 };
