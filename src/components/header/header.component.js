@@ -9,19 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
-const Header = props => {
+const Header = (props) => {
   const history = useHistory();
   const currentStep = useSelector(selectCurrentStep);
   const dispatch = useDispatch();
 
-  console.log(currentStep);
-
   return (
     <>
       <header className="header">
-        <Link to="https://nettvplus.com/">
+        <a href="https://nettvplus.com/">
           <img src="/assets/logo.png" alt="Logo" className="logo" />
-        </Link>
+        </a>
       </header>
       <div className="navigation-bar">
         <ul className="navigation-bar--list">

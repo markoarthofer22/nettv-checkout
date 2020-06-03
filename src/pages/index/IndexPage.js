@@ -1,42 +1,66 @@
 import React, { useEffect } from "react";
 import Helmet from "react-helmet";
+
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter, useParams } from "react-router-dom";
-import {
-  getDataForURL,
-  setIsLoading
-} from "../../redux/globals/globals.actions";
-import { selectPageData } from "../../redux/globals/globals.selectors";
+import { withRouter, useHistory } from "react-router-dom";
+import { setIsLoading } from "../../redux/globals/globals.actions";
+import { selectAllCountryIDs } from "../../redux/globals/globals.selectors";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
+import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
 //styles
 import "./indexpage.scss";
 
 //components
 import NoPage from "../404/no-page.component";
-import Container from "../../components/layout/container.component";
 import ContainerFull from "../../components/layout/container-full.component";
 import PackagesForm from "./FormSteps/Packages/Packages.form";
 import SidePanel from "./SidePanel/sidePanel.component";
 import PaymentInfo from "./FormSteps/PaymentInfo/paymentInfo.form";
 import SubscriptionPlans from "./FormSteps/OptionPlans/subscriptionPlans.form";
 
-const IndexPage = props => {
-  const { history } = props;
-  const data = useSelector(selectPageData);
+const IndexPage = (props) => {
+  const history = useHistory();
   const currentStep = useSelector(selectCurrentStep);
   const dispatch = useDispatch();
+  const queryString = require("query-string");
 
   useEffect(() => {
     dispatch(setIsLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getDataForURL(history.location.pathname));
+    let queryParams = queryString.parse(history.location.search);
+
+    if (!queryParams.lang_code || queryParams.lang_code === "") {
+      console.log("nema lang code");
+      queryParams = {
+        ...queryParams,
+        lang_code: "other",
+      };
+
+      let url = `${history.location.pathname}?${queryString.stringify(
+        queryParams
+      )}`;
+      history.push(url);
+    }
   }, []);
 
-  const selectActiveStep = _step => {
+  useEffect(() => {
+    let queryParams = queryString.parse(history.location.search);
+
+    if (
+      queryParams.product_code !== undefined &&
+      queryParams.product_code !== ""
+    ) {
+      dispatch(setCurrentNavigationStep(2));
+    } else {
+      dispatch(setCurrentNavigationStep(1));
+    }
+  }, []);
+
+  const selectActiveStep = (_step) => {
     let step = _step;
 
     switch (step) {
@@ -63,7 +87,7 @@ const IndexPage = props => {
     }
   };
 
-  return !data.isError ? (
+  return (
     <section className="index-page">
       <Helmet>
         <title>NetTVPlus</title>
@@ -82,8 +106,6 @@ const IndexPage = props => {
         )}
       </ContainerFull>
     </section>
-  ) : (
-    <NoPage />
   );
 };
 

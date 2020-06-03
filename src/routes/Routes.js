@@ -8,10 +8,15 @@ export default [
     component: App,
     routes: [
       {
-        path: "/checkout/:id",
+        path: "/products/",
         exact: true,
-        component: IndexPage
-      }
-    ]
-  }
+        component: IndexPage,
+      },
+      {
+        path: "/products/code/",
+        exact: true,
+        component: IndexPage,
+      },
+    ],
+  },
 ];
