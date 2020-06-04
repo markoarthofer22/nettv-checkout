@@ -8,53 +8,55 @@
 @import "swiper";
 
 html {
-  // font-family: $font, sans-serif;
-  font-family: Gotham SSm A, Gotham SSm B, sans-serif;
-  font-size: $font-size-main;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  -ms-overflow-style: scrollbar;
+    // font-family: $font, sans-serif;
+    font-size: $font-size-main;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
 }
 
 body {
-  // font-family: $font, sans-serif;
-  line-height: 1.231;
-  height: 100%;
-  color: $black;
-  background-color: $white;
-  display: flex;
-  flex-direction: column;
+    // font-family: $font, sans-serif;
+    font-family: Gotham SSm A, Gotham SSm B, sans-serif;
+    line-height: 1.231;
+    height: 100%;
+    color: $black;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
 
-  &::before {
-    content: "x-small";
-    display: none;
+    &::before {
+        content: "x-small";
+        display: none;
 
-    @include respond-to(sm) {
-      content: "small";
+        @include respond-to(sm) {
+            content: "small";
+        }
+        @include respond-to(md) {
+            content: "medium";
+        }
+        @include respond-to(lg) {
+            content: "large";
+        }
     }
-    @include respond-to(md) {
-      content: "medium";
-    }
-    @include respond-to(lg) {
-      content: "large";
-    }
-  }
 }
 
 //Containers
 
 .container {
-  max-width: 1920px;
-  padding: 0 40px;
+    max-width: 1920px;
+    padding: 0 40px;
 }
 
 //standard elements
 p {
-  font-size: 1rem;
-  color: $nightgray;
-  font-weight: 300;
-  line-height: 1.8rem;
+    font-size: 1rem;
+    color: $nightgray;
+    font-weight: 300;
+    line-height: 1.8rem;
 }
 
 h1,
@@ -63,287 +65,287 @@ h3,
 h4,
 h5,
 h6 {
-  // font-family: $h-font, sans-serif;
-  margin: 0.47em 0;
-  font-weight: 300;
-  color: $black;
+    // font-family: $h-font, sans-serif;
+    margin: 0.47em 0;
+    font-weight: 300;
+    color: $black;
 }
 
 h1 {
-  font-size: 4rem;
+    font-size: 4rem;
 }
 h2 {
-  font-size: 3.4rem;
+    font-size: 3.4rem;
 }
 h3 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 h4 {
-  font-size: 1.6rem;
+    font-size: 1.6rem;
 }
 h5 {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 h6 {
-  font-size: 1.1rem;
+    font-size: 1.1rem;
 }
 
 b,
 strong {
-  color: $black;
-  font-weight: 700;
+    color: $black;
+    font-weight: 700;
 }
 
 .title {
-  font-size: 3rem;
-  line-height: 1.2;
-  font-weight: 700;
-
-  span {
-    display: block;
-
-    font-size: 0.5em;
-    font-weight: 300;
-  }
-
-  &.underline {
-    text-decoration: underline;
-  }
-
-  &.bold {
+    font-size: 3rem;
+    line-height: 1.2;
     font-weight: 700;
-  }
+
+    span {
+        display: block;
+
+        font-size: 0.5em;
+        font-weight: 300;
+    }
+
+    &.underline {
+        text-decoration: underline;
+    }
+
+    &.bold {
+        font-weight: 700;
+    }
 }
 
 //title colors
 
 .title {
-  &.red {
-    color: $red;
-  }
+    &.red {
+        color: $red;
+    }
 
-  .blue {
-    color: $blue;
-  }
+    .blue {
+        color: $blue;
+    }
 }
 
 // form elements
 label {
-  font-weight: 300;
-  margin-bottom: 6px;
-  display: block;
-  font-size: 1rem;
-  color: $black;
-  text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 6px;
+    display: block;
+    font-size: 1rem;
+    color: $black;
+    text-transform: uppercase;
 }
 
 input[type="text"],
 input[type="password"] {
-  width: 100%;
-  padding-left: 10px;
-  border: none;
-  height: 40px;
-  border: 1px solid #f5f5f5;
-  background-color: $white;
-  font-weight: 300;
-  transition: all 0.3s;
+    width: 100%;
+    padding-left: 10px;
+    border: none;
+    height: 40px;
+    border: 1px solid #f5f5f5;
+    background-color: $white;
+    font-weight: 300;
+    transition: all 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-  border: 1px solid #000;
+    border: 1px solid #000;
 }
 
 input[type="text"]:hover,
 input[type="password"]:hover {
-  border: 1px solid #000;
+    border: 1px solid #000;
 }
 
 input[type="text"].invalid,
 input[type="password"].invalid {
-  border: 1px solid $warning-red;
+    border: 1px solid $warning-red;
 }
 
 input[type="text"].invalid + span:before {
-  content: attr(data-error);
-  color: $warning-red;
-  display: block;
+    content: attr(data-error);
+    color: $warning-red;
+    display: block;
 }
 
 textarea {
-  &.default {
-    border: 1px solid #f5f5f5;
-    background-color: #fbfbfb;
-    font-weight: 300;
-    transition: all 0.3s;
+    &.default {
+        border: 1px solid #f5f5f5;
+        background-color: #fbfbfb;
+        font-weight: 300;
+        transition: all 0.3s;
 
-    &:hover,
-    &:focus {
-      border: 1px solid $dark-blue;
+        &:hover,
+        &:focus {
+            border: 1px solid $dark-blue;
+        }
     }
-  }
 
-  &.no-resize {
-    resize: none;
-  }
+    &.no-resize {
+        resize: none;
+    }
 }
 
 /************************************** SECONDARY NAVIGATION - vertical navigation **************************************/
 
 /***** DEFAULT TABLE *********/
 .table .row {
-  padding: 10px 0;
-  border-bottom: 1px solid $light-grey;
-  transition: all 0.3s;
+    padding: 10px 0;
+    border-bottom: 1px solid $light-grey;
+    transition: all 0.3s;
 }
 
 .table .row:hover {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .table .thead {
-  font-weight: 700;
-  text-align: center;
-  color: $white;
+    font-weight: 700;
+    text-align: center;
+    color: $white;
 }
 
 /***** LISTS *******/
 
 .list {
-  //.list is ul element!
-  margin: 0;
-  list-style-type: none;
+    //.list is ul element!
+    margin: 0;
+    list-style-type: none;
 
-  li {
-    position: relative;
-  }
-
-  li a {
-    color: $nightgray;
-    display: block;
-    padding: 10px;
-    border-bottom: 1px solid $light-grey;
-    transition: all 0.3s;
-
-    &:hover {
-      background-color: $dark-blue;
-      color: $white;
+    li {
+        position: relative;
     }
-  }
-  li:last-child a {
-    border-bottom: none;
-  }
+
+    li a {
+        color: $nightgray;
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid $light-grey;
+        transition: all 0.3s;
+
+        &:hover {
+            background-color: $dark-blue;
+            color: $white;
+        }
+    }
+    li:last-child a {
+        border-bottom: none;
+    }
 }
 
 /* CONTEXT MENU */
 
 .open-context {
-  position: relative;
-  display: block;
-  cursor: pointer;
-  transition: all 0.3s;
+    position: relative;
+    display: block;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
 .open-context:hover .context-menu {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
 .context-menu {
-  position: absolute;
-  top: 0;
-  visibility: hidden;
-  right: 50px;
-  opacity: 0;
-  min-width: 170px;
-  z-index: 3;
-  transition: all 0.4s;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    right: 50px;
+    opacity: 0;
+    min-width: 170px;
+    z-index: 3;
+    transition: all 0.4s;
 
-  & > ul {
-    margin: 0;
-    list-style: none;
-    background-color: $dark-blue;
-    border-radius: 4px;
-    max-height: 500px;
-    opacity: 1;
+    & > ul {
+        margin: 0;
+        list-style: none;
+        background-color: $dark-blue;
+        border-radius: 4px;
+        max-height: 500px;
+        opacity: 1;
 
-    li [class*="icon-"] {
-      width: 18px;
-      margin-right: 7px;
+        li [class*="icon-"] {
+            width: 18px;
+            margin-right: 7px;
+        }
+
+        a {
+            display: block;
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+            font-size: 0.6rem;
+            text-align: left;
+            color: $white;
+            transition: all 0.3s;
+
+            &:hover {
+                background-color: $white;
+                color: $dark-blue;
+            }
+        }
     }
-
-    a {
-      display: block;
-      cursor: pointer;
-      padding: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      font-weight: 300;
-      font-size: 0.6rem;
-      text-align: left;
-      color: $white;
-      transition: all 0.3s;
-
-      &:hover {
-        background-color: $white;
-        color: $dark-blue;
-      }
-    }
-  }
 }
 
 /*LAYOUT*/
 .App,
 #root {
-  height: 100%;
+    height: 100%;
 }
 
 .outer-wrapper {
-  position: relative;
-  height: 100%;
+    position: relative;
+    height: 100%;
 }
 
 .wrapper {
-  position: relative;
-  min-height: 100%;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
+    position: relative;
+    min-height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
 
-  .side-content {
-    width: auto;
-    transition: all 0.6s;
-    min-height: 100%; // width: 100%;
-    padding-top: 80px;
-    overflow: hidden;
-    flex: 1 0 0;
-    margin-left: 0px;
+    .side-content {
+        width: auto;
+        transition: all 0.6s;
+        min-height: 100%; // width: 100%;
+        padding-top: 80px;
+        overflow: hidden;
+        flex: 1 0 0;
+        margin-left: 0px;
 
-    @include respond-to(lg) {
-      margin-left: 0;
-    }
-  }
-
-  .side-panel.open ~ .side-content {
-    margin-left: 0px;
-
-    @include respond-to(sm) {
-      margin-left: 50px;
+        @include respond-to(lg) {
+            margin-left: 0;
+        }
     }
 
-    @include respond-to(lg) {
-      margin-left: 300px;
+    .side-panel.open ~ .side-content {
+        margin-left: 0px;
+
+        @include respond-to(sm) {
+            margin-left: 50px;
+        }
+
+        @include respond-to(lg) {
+            margin-left: 300px;
+        }
     }
-  }
 }
 
 .middle-wrap {
-  position: relative;
+    position: relative;
 }
 
 main.bottom-wrap {
-  position: relative;
-  flex: 1 0 auto;
-  min-height: 100vh;
+    position: relative;
+    flex: 1 0 auto;
+    min-height: 100vh;
 }
 
 //END LAYOUR
@@ -352,120 +354,114 @@ main.bottom-wrap {
 
 //hero page
 .hero .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 
-  h1 {
-    font-weight: bold;
-    font-size: 5rem;
-    letter-spacing: -1px;
-  }
+    h1 {
+        font-weight: bold;
+        font-size: 5rem;
+        letter-spacing: -1px;
+    }
 }
 
 .sticky {
-  position: sticky;
-  top: 0px;
-  box-shadow: none;
-  transition: all 0.4s;
+    position: sticky;
+    top: 0px;
+    box-shadow: none;
+    transition: all 0.4s;
 }
 
 .sticky[data-visible="true"] {
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-  //animation: fadein 1s ease-in;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    //animation: fadein 1s ease-in;
 }
 
 @keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes scaleIn {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(0.2);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(0.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 //Animated text
 .animated-text {
-  background: linear-gradient(
-    to right,
-    #df3231 0%,
-    #12afde 30%,
-    #df3231 60%,
-    #12afde 100%
-  );
-  background-size: 200% auto;
+    background: linear-gradient(to right, #df3231 0%, #12afde 30%, #df3231 60%, #12afde 100%);
+    background-size: 200% auto;
 
-  color: #000;
-  background-clip: text;
-  text-fill-color: transparent;
-  -webkit-text-fill-color: transparent;
-  transition: all 0.4s ease-out;
-  animation: shine 6s linear infinite;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.4s ease-out;
+    animation: shine 6s linear infinite;
 
-  @keyframes shine {
-    0% {
-      background-position: 0% 50%;
+    @keyframes shine {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
     }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
 }
 
 .content {
-  .container-yt {
-    width: 100%;
+    .container-yt {
+        width: 100%;
 
-    iframe {
-      width: 100%;
-      min-height: 400px;
+        iframe {
+            width: 100%;
+            min-height: 400px;
+        }
     }
-  }
 }
 
 .container-yt {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
 }
 
 .video-yt {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .respondTo {
-  --size: xs;
+    --size: xs;
 
-  @include respond-to(md) {
-    --size: md;
-  }
+    @include respond-to(md) {
+        --size: md;
+    }
 
-  @include respond-to(sm) {
-    --size: sm;
-  }
+    @include respond-to(sm) {
+        --size: sm;
+    }
 
-  @include respond-to(lg) {
-    --size: lg;
-  }
+    @include respond-to(lg) {
+        --size: lg;
+    }
 }

@@ -30,7 +30,9 @@ const SubscriptionPlans = (props) => {
     const selectNewPackage = (e) => {
         e.preventDefault();
         let packageID = e.currentTarget.getAttribute("packageid");
-        let url = `/products/code/${history.location.search}&product_code=${packageID}`;
+        let packageLangCode = e.currentTarget.getAttribute("langCode");
+
+        let url = `/products/code/${packageLangCode ? `?lang_code=${packageLangCode}` : history.location.search}&product_code=${packageID}`;
         history.push(url);
         dispatch(setCurrentNavigationStep("add"));
     };
@@ -44,7 +46,7 @@ const SubscriptionPlans = (props) => {
                         {data &&
                             data.map((item, index) => {
                                 const { title, meta } = item;
-                                const { attributes, base_price, currency, market, product_code } = meta;
+                                const { attributes, base_price, currency, market, product_code, language_code } = meta;
 
                                 return (
                                     <div className={`subscription-card gradient${index}`} key={index}>
@@ -72,6 +74,7 @@ const SubscriptionPlans = (props) => {
                                                 clicked={(e) => selectNewPackage(e)}
                                                 attributes={{
                                                     packageid: product_code,
+                                                    langCode: language_code,
                                                 }}
                                             />
                                         </div>

@@ -60,19 +60,19 @@ const IndexPage = (props) => {
 
         switch (step) {
             case 1:
-                return <SubscriptionPlans data={_response} />;
+                return <SubscriptionPlans />;
                 break;
 
             case 2:
-                return <PackagesForm data={_response} />;
+                return <PackagesForm />;
                 break;
 
             case 3:
-                return <PackagesForm data={_response} />;
+                return <PackagesForm />;
 
                 break;
             case 4:
-                return <PaymentInfo data={_response} />;
+                return <PaymentInfo />;
 
                 break;
 
@@ -88,7 +88,7 @@ const IndexPage = (props) => {
                 <title>NetTVPlus</title>
             </Helmet>
             <ContainerFull>
-                <div className={`form-holder ${currentStep === 1 ? "homepage" : ""}`}>
+                <div className={`form-holder ${currentStep === 1 ? "homepage" : ""} ${currentStep === 3 ? "full-width" : ""}`}>
                     <div className={`form-holder--steps`}>{selectActiveStep(currentStep)}</div>
                 </div>
 

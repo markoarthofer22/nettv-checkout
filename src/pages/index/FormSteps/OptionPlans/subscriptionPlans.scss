@@ -1,221 +1,223 @@
 @import "../../../../css/variables.scss";
 
 .subscription-plans {
-  padding-top: 4rem;
+    padding: 4rem 22rem;
 
-  .main-content {
-    .page-title-long {
-      margin-left: 8px;
-      margin-bottom: 2.5rem;
-      margin-top: -0.4rem;
-      font-size: 2.2rem;
-      font-weight: 200;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: left;
-      color: #666;
-    }
-  }
-
-  .subscription-cards {
-    display: grid;
-    grid-template-rows: auto;
-    row-gap: 2rem;
-    column-gap: 2rem;
-    grid-template-columns: repeat(1, 1fr);
-
-    @include respond-to(sm) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    &.four-columns {
-      @include respond-to(md) {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    &.three-columns {
-      @include respond-to(md) {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .subscription-card {
-      margin-bottom: 3rem;
-      position: relative;
-      overflow-y: auto;
-      -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.23);
-      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.23);
-      background-color: #f6f6f6;
-
-      &.gradient0::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background-image: linear-gradient(270deg, #3fc6ac, #7adfbd);
-      }
-
-      &.gradient1::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background-image: linear-gradient(90deg, #2a68ba, #174a8d);
-      }
-
-      &.gradient2::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background-image: linear-gradient(270deg, #1493d1, #42c5f0);
-      }
-
-      &.gradient3::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background-image: linear-gradient(270deg, #ec5575, #f14d4d);
-      }
-
-      &--header {
-        .title {
-          font-size: 2.8rem;
-          text-align: center;
-          font-weight: 200;
-          margin: 1.8rem 0 0 0;
-          display: block;
-          text-transform: uppercase;
-
-          &.color0 {
-            color: #5dd3b5;
-          }
-          &.color1 {
-            color: #2159a4;
-          }
-          &.color2 {
-            color: #2dace1;
-          }
-          &.color3 {
-            color: #ec5575;
-          }
-        }
-
-        .price {
-          font-size: 2.8rem;
-          font-weight: 700;
-          letter-spacing: 0.6px;
-          text-align: center;
-          color: #333;
-          display: block;
-          margin: 6px 0 25px 0;
-        }
-      }
-
-      &--content {
-        padding-bottom: 120px;
-
-        .option {
-          border-bottom: 1px solid #ccc;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          padding: 15px 20px;
-
-          &:first-of-type {
-            border-top: 1px solid #ccc;
-          }
-
-          svg {
-            width: 40px;
-            height: 40px;
-            margin-right: 20px;
-            flex-basis: 10%;
-            fill: #454545;
-          }
-
-          .value {
-            font-size: 1.4rem;
-            font-weight: 300;
-            line-height: 1.29;
+    .main-content {
+        .page-title-long {
+            margin-left: 8px;
+            margin-bottom: 2.5rem;
+            margin-top: -0.4rem;
+            font-size: 2.2rem;
+            font-weight: 200;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: normal;
             text-align: left;
-            color: #454545;
-            flex-basis: 90%;
-          }
+            color: #666;
         }
-      }
-
-      &--actions {
-        position: absolute;
-        bottom: 25px;
-        left: 0;
-        right: 0;
-        .button-blue {
-          position: relative;
-          display: block;
-          margin: 0 auto;
-          border: none;
-          color: #fff;
-          font-size: 1.4rem;
-          font-weight: 500;
-          background-color: #2194cf;
-          padding: 1.3rem 4.5rem;
-          border-radius: 0.3rem;
-
-          &:hover::before {
-            opacity: 1;
-          }
-
-          &::before {
-            content: "";
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.23);
-            opacity: 0;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            transition: all 0.4s;
-          }
-        }
-      }
-    }
-  }
-
-  .notification-box {
-    &--list {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
     }
 
-    &--list-item {
-      font-size: 1.2rem;
-      line-height: 1.5;
-      text-align: left;
-      color: #666;
+    .subscription-cards {
+        display: grid;
+        grid-template-rows: auto;
+        row-gap: 1.5rem;
+        column-gap: 1.5rem;
+        grid-template-columns: repeat(1, 1fr);
+        max-width: 1100px;
+        margin: 0 auto;
 
-      a {
-        color: #3cb2ee;
-        font-weight: 700;
-        transition: all 0.4s;
-
-        &:hover {
-          color: #2159a4;
+        @include respond-to(sm) {
+            grid-template-columns: repeat(2, 1fr);
         }
-      }
+
+        &.four-columns {
+            @include respond-to(md) {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        &.three-columns {
+            @include respond-to(md) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .subscription-card {
+            margin-bottom: 3rem;
+            position: relative;
+            overflow-y: auto;
+            -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.23);
+            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.23);
+            background-color: #f6f6f6;
+
+            &.gradient0::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background-image: linear-gradient(270deg, #3fc6ac, #7adfbd);
+            }
+
+            &.gradient1::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background-image: linear-gradient(90deg, #2a68ba, #174a8d);
+            }
+
+            &.gradient2::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background-image: linear-gradient(270deg, #1493d1, #42c5f0);
+            }
+
+            &.gradient3::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background-image: linear-gradient(270deg, #ec5575, #f14d4d);
+            }
+
+            &--header {
+                .title {
+                    font-size: 2.8rem;
+                    text-align: center;
+                    font-weight: 200;
+                    margin: 1.8rem 0 0 0;
+                    display: block;
+                    text-transform: uppercase;
+
+                    &.color0 {
+                        color: #5dd3b5;
+                    }
+                    &.color1 {
+                        color: #2159a4;
+                    }
+                    &.color2 {
+                        color: #2dace1;
+                    }
+                    &.color3 {
+                        color: #ec5575;
+                    }
+                }
+
+                .price {
+                    font-size: 2.8rem;
+                    font-weight: 700;
+                    letter-spacing: 0.6px;
+                    text-align: center;
+                    color: #333;
+                    display: block;
+                    margin: 6px 0 25px 0;
+                }
+            }
+
+            &--content {
+                padding-bottom: 120px;
+
+                .option {
+                    border-bottom: 1px solid #ccc;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding: 15px 20px;
+
+                    &:first-of-type {
+                        border-top: 1px solid #ccc;
+                    }
+
+                    svg {
+                        width: 40px;
+                        height: 40px;
+                        margin-right: 20px;
+                        flex-basis: 10%;
+                        fill: #454545;
+                    }
+
+                    .value {
+                        font-size: 1.4rem;
+                        font-weight: 300;
+                        line-height: 1.29;
+                        text-align: left;
+                        color: #454545;
+                        flex-basis: 90%;
+                    }
+                }
+            }
+
+            &--actions {
+                position: absolute;
+                bottom: 25px;
+                left: 0;
+                right: 0;
+                .button-blue {
+                    position: relative;
+                    display: block;
+                    margin: 0 auto;
+                    border: none;
+                    color: #fff;
+                    font-size: 1.4rem;
+                    font-weight: 500;
+                    background-color: #2194cf;
+                    padding: 1.3rem 4.5rem;
+                    border-radius: 0.3rem;
+
+                    &:hover::before {
+                        opacity: 1;
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        background-color: rgba(0, 0, 0, 0.23);
+                        opacity: 0;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        transition: all 0.4s;
+                    }
+                }
+            }
+        }
     }
-  }
+
+    .notification-box {
+        &--list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        &--list-item {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            text-align: left;
+            color: #666;
+
+            a {
+                color: #3cb2ee;
+                font-weight: 700;
+                transition: all 0.4s;
+
+                &:hover {
+                    color: #2159a4;
+                }
+            }
+        }
+    }
 }
