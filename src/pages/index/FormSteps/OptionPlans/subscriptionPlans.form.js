@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
-import { getDataForURL } from "../../../../redux/globals/globals.actions";
+import { getDataForURL, setIsLoading } from "../../../../redux/globals/globals.actions";
 
 //styles
 import "./subscriptionPlans.scss";
@@ -17,7 +17,6 @@ import Container from "../../../../components/layout/container.component";
 const SubscriptionPlans = (props) => {
     const history = useHistory();
     const [data, setData] = useState(null);
-
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,10 +26,14 @@ const SubscriptionPlans = (props) => {
         });
     }, []);
 
+    useEffect(() => {
+        data ? dispatch(setIsLoading(false)) : dispatch(setIsLoading(true));
+    }, [data]);
+
     const selectNewPackage = (e) => {
         e.preventDefault();
         let packageID = e.currentTarget.getAttribute("packageid");
-        let packageLangCode = e.currentTarget.getAttribute("langCode");
+        let packageLangCode = e.currentTarget.getAttribute("langcode");
 
         let url = `/products/code/${packageLangCode ? `?lang_code=${packageLangCode}` : history.location.search}&product_code=${packageID}`;
         history.push(url);
@@ -68,15 +71,29 @@ const SubscriptionPlans = (props) => {
                                         </div>
 
                                         <div className="subscription-card--actions">
+                                            {meta.promotions_data.promotion_image && <img src={meta.promotions_data.promotion_image} alt="" className="subscription-card--promotion" />}
                                             <Button
                                                 title="Naruči"
                                                 customClass="button-blue"
                                                 clicked={(e) => selectNewPackage(e)}
                                                 attributes={{
                                                     packageid: product_code,
-                                                    langCode: language_code,
+                                                    langcode: language_code
                                                 }}
                                             />
+
+                                            {meta.promotions_data && (
+                                                <div className="subscription-card--footer">
+                                                    <div>
+                                                        <span className="header-text">{meta.promotions_data.promotion_headline}</span>
+                                                        <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
+                                                        <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                                    </div>
+                                                    <div>
+                                                        <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -87,7 +104,8 @@ const SubscriptionPlans = (props) => {
                     <ul className="notification-box--list">
                         <li className="notification-box--list-item">Usluga NetTV Plusa nije dostupna na teritoriji EX-Yu.</li>
                         <li className="notification-box--list-item">
-                            Tehničke podatke u vezi sa pristupom NetTV Plus usluzi i njenim korišćenjem možeš pronaći <Link to="https://nettvplus.com/Pomoc/Sistemski-Zahtevi/a30565-Sistemski-zahtevi.html">ovde</Link>.
+                            Tehničke podatke u vezi sa pristupom NetTV Plus usluzi i njenim korišćenjem možeš pronaći{" "}
+                            <Link to="https://nettvplus.com/Pomoc/Sistemski-Zahtevi/a30565-Sistemski-zahtevi.html">ovde</Link>.
                         </li>
                         <li className="notification-box--list-item">Sve cene iskazane su sa uračunatim porezom.</li>
                     </ul>

@@ -66,6 +66,21 @@
             box-shadow: 1.4px 1.4px 5px 0 rgba(0, 0, 0, 0.2);
             z-index: 10;
 
+            &.disabled {
+                background: none;
+                pointer-events: none;
+
+                &::after {
+                    content: "";
+                    background-color: rgba(0, 0, 0, 0.15);
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                }
+            }
+
             &::before {
                 content: "";
                 position: absolute;
@@ -286,6 +301,7 @@
         box-shadow: 1.4px 1.4px 5px 0 rgba(0, 0, 0, 0.2);
         border-radius: 0.3rem;
         margin-bottom: 2rem;
+        align-self: stretch;
         text-align: center;
         transition: all 0.4s ease-in;
 
@@ -433,6 +449,7 @@
         border-radius: 0.3rem;
         margin-bottom: 2rem;
         text-align: center;
+        align-self: stretch;
         transition: all 0.4s ease-in;
 
         &::before {

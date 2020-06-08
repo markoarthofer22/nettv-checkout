@@ -15,8 +15,6 @@ const SidePanel = (props) => {
     const dispatch = useDispatch();
     const currentPrices = useSelector(currentPricing);
 
-    // console.log(currentPrices);
-
     return (
         <section className="sidePanel">
             <div className="side-panel-box">
@@ -139,7 +137,9 @@ const SidePanel = (props) => {
                             ))}
                     </div>
                     <div className={`cart-row ${currentPrices.paymentValues.additionalExpenses ? "two-row" : ""}`}>
-                        <p className="light-cart-text">Dodatni troškovi</p>
+                        <p className="light-cart-text" style={{ marginBottom: 10 + "px" }}>
+                            Dodatni troškovi
+                        </p>
                         {!currentPrices.paymentValues.additionalExpenses && <p className="item-value">-</p>}
                         {currentPrices.paymentValues.additionalExpenses &&
                             currentPrices.paymentValues.additionalExpenses.activation_price &&

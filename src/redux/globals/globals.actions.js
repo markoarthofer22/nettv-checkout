@@ -5,21 +5,21 @@ import mainApi from "../apis/main-api";
 export const setIsLoading = (isLoading) => {
     return {
         type: SET_IS_LOADING,
-        payload: isLoading,
+        payload: isLoading
     };
 };
 
 export const setGlobalError = (error) => {
     return {
         type: SET_GLOBAL_ERROR,
-        payload: error,
+        payload: error
     };
 };
 
 export const setDataForURL = (data) => {
     return {
         type: SET_PAGE_DATA,
-        payload: data,
+        payload: data
     };
 };
 

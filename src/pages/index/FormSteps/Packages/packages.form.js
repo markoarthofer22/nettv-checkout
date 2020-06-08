@@ -6,6 +6,7 @@ import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/ste
 import { getDataForURL } from "../../../../redux/globals/globals.actions";
 import { setInitialValues, resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.selectors";
+import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 
 //styles
 import "./packages.scss";
@@ -27,7 +28,10 @@ const PackagesForm = (props) => {
     const [data, setData] = useState(null);
     const [variation, setVariation] = useState(null);
     const currentStep = useSelector(selectCurrentStep);
+    const currentPriceValues = useSelector(currentPricing);
     const dispatch = useDispatch();
+
+    console.log(currentPriceValues);
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
@@ -108,20 +112,25 @@ const PackagesForm = (props) => {
                         <h3 className="main-content--title">Da li želiš da gledaš televiziju i preko BOX-a?</h3>
 
                         <div className="main-content--choices">
-                            <div className="main-content--choices-item">
+                            <div className={`main-content--choices-item ${data && data.box_variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Želim da gledam preko BOX-a</span>
                                     <Tooltip title={DummyText} styles="custom-tooltip" />
                                 </div>
-                                <Button title="Odaberi" clicked={(e) => openProductsBoxList(e)} customClass="button-blue" />
+                                <Button isLoading={data && data.box_variations.length < 1} title="Odaberi" clicked={(e) => openProductsBoxList(e)} customClass="button-blue" />
                             </div>
 
-                            <div className="main-content--choices-item">
+                            <div className={`main-content--choices-item ${data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Ne želim da gledam preko BOX-a</span>
                                     <Tooltip title={DummyTextSecond} styles="custom-tooltip" />
                                 </div>
-                                <Button title="Odaberi" clicked={(e) => openProductsNormalList(e)} customClass="button-blue" />
+                                <Button
+                                    isLoading={data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1}
+                                    title="Odaberi"
+                                    clicked={(e) => openProductsNormalList(e)}
+                                    customClass="button-blue"
+                                />
                             </div>
                         </div>
                     </>
@@ -156,7 +165,7 @@ const PackagesForm = (props) => {
                         <span className="button-name">Nazad</span>
                     </button>
 
-                    <button onClick={(e) => console.log(e)} className="button-next">
+                    <button disabled={!currentPriceValues.mainProductId && !currentPriceValues.variationProductId} onClick={(e) => console.log(e)} className="button-next">
                         <span className="button-name">Nastavi</span>
                     </button>
                 </div>

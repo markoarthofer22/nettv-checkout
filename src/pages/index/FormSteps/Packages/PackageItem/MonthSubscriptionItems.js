@@ -10,8 +10,6 @@ const MonthSubscriptionItem = (props) => {
     const dispatch = useDispatch();
     const [isActive, setIsActive] = useState(null);
 
-    console.log(metaData);
-
     const setProductAsActive = (e) => {
         e.preventDefault();
         e.stopPropagation();

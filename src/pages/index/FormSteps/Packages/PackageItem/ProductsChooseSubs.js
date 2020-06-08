@@ -23,7 +23,6 @@ const ProductsChooseSubs = (props) => {
         const promiseFunction = new Promise((resolve, reject) => {
             setIsActive(null);
             document.querySelector(".month-variations-holder").classList.remove("active");
-
             document.querySelectorAll(".box-variations--item > .checkbox").forEach((item, index) => {
                 item.classList.remove("active");
             });

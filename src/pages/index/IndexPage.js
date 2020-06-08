@@ -19,6 +19,7 @@ import PackagesForm from "./FormSteps/Packages/Packages.form";
 import SidePanel from "./SidePanel/sidePanel.component";
 import PaymentInfo from "./FormSteps/PaymentInfo/paymentInfo.form";
 import SubscriptionPlans from "./FormSteps/OptionPlans/subscriptionPlans.form";
+import GlobalLoader from "../../components/loaders/global.loader.component";
 
 const IndexPage = (props) => {
     const history = useHistory();
@@ -34,10 +35,9 @@ const IndexPage = (props) => {
         let queryParams = queryString.parse(history.location.search);
 
         if (!queryParams.lang_code || queryParams.lang_code === "") {
-            console.log("nema lang code");
             queryParams = {
                 ...queryParams,
-                lang_code: "other",
+                lang_code: "other"
             };
 
             let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
@@ -83,22 +83,25 @@ const IndexPage = (props) => {
     };
 
     return (
-        <section className="index-page">
-            <Helmet>
-                <title>NetTVPlus</title>
-            </Helmet>
-            <ContainerFull>
-                <div className={`form-holder ${currentStep === 1 ? "homepage" : ""} ${currentStep === 3 ? "full-width" : ""}`}>
-                    <div className={`form-holder--steps`}>{selectActiveStep(currentStep)}</div>
-                </div>
-
-                {currentStep > 1 && (
-                    <div className="side-panel-holder">
-                        <SidePanel />
+        <>
+            <GlobalLoader />
+            <section className="index-page">
+                <Helmet>
+                    <title>NetTVPlus</title>
+                </Helmet>
+                <ContainerFull>
+                    <div className={`form-holder ${currentStep === 1 ? "homepage" : ""} ${currentStep === 3 ? "full-width" : ""}`}>
+                        <div className={`form-holder--steps`}>{selectActiveStep(currentStep)}</div>
                     </div>
-                )}
-            </ContainerFull>
-        </section>
+
+                    {currentStep > 1 && (
+                        <div className="side-panel-holder">
+                            <SidePanel />
+                        </div>
+                    )}
+                </ContainerFull>
+            </section>
+        </>
     );
 };
 
