@@ -130,65 +130,6 @@ strong {
 }
 
 // form elements
-label {
-    font-weight: 300;
-    margin-bottom: 6px;
-    display: block;
-    font-size: 1rem;
-    color: $black;
-    text-transform: uppercase;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding-left: 10px;
-    border: none;
-    height: 40px;
-    border: 1px solid #f5f5f5;
-    background-color: $white;
-    font-weight: 300;
-    transition: all 0.3s;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border: 1px solid #000;
-}
-
-input[type="text"]:hover,
-input[type="password"]:hover {
-    border: 1px solid #000;
-}
-
-input[type="text"].invalid,
-input[type="password"].invalid {
-    border: 1px solid $warning-red;
-}
-
-input[type="text"].invalid + span:before {
-    content: attr(data-error);
-    color: $warning-red;
-    display: block;
-}
-
-textarea {
-    &.default {
-        border: 1px solid #f5f5f5;
-        background-color: #fbfbfb;
-        font-weight: 300;
-        transition: all 0.3s;
-
-        &:hover,
-        &:focus {
-            border: 1px solid $dark-blue;
-        }
-    }
-
-    &.no-resize {
-        resize: none;
-    }
-}
 
 /************************************** SECONDARY NAVIGATION - vertical navigation **************************************/
 

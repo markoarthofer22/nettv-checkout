@@ -31,8 +31,6 @@ const PackagesForm = (props) => {
     const currentPriceValues = useSelector(currentPricing);
     const dispatch = useDispatch();
 
-    console.log(currentPriceValues);
-
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
         let url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
@@ -78,6 +76,10 @@ const PackagesForm = (props) => {
             };
             dispatch(resetToInitialValues(initialPricing));
         }
+    };
+
+    const goToCheckout = (e) => {
+        dispatch(setCurrentNavigationStep(4));
     };
 
     const openProductsBoxList = (e) => {
@@ -165,7 +167,11 @@ const PackagesForm = (props) => {
                         <span className="button-name">Nazad</span>
                     </button>
 
-                    <button disabled={!currentPriceValues.mainProductId && !currentPriceValues.variationProductId} onClick={(e) => console.log(e)} className="button-next">
+                    <button
+                        disabled={!currentPriceValues.mainProductId && !currentPriceValues.variationProductId}
+                        onClick={(e) => goToCheckout(e)}
+                        className={`button-next ${!currentPriceValues.mainProductId && !currentPriceValues.variationProductId ? "disabled" : ""}`}
+                    >
                         <span className="button-name">Nastavi</span>
                     </button>
                 </div>
