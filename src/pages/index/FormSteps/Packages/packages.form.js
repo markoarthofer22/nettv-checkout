@@ -35,19 +35,23 @@ const PackagesForm = (props) => {
         let queryParams = queryString.parse(history.location.search);
         let url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
 
-        dispatch(getDataForURL(url)).then((response) => {
-            setData(response.data);
+        dispatch(getDataForURL(url))
+            .then((response) => {
+                setData(response.data);
 
-            const initialPricing = {
-                currency: response.data.meta.currency,
-                headerValues: {
-                    name: response.data.title,
-                    price: response.data.meta.base_price
-                }
-            };
+                const initialPricing = {
+                    currency: response.data.meta.currency,
+                    headerValues: {
+                        name: response.data.title,
+                        price: response.data.meta.base_price
+                    }
+                };
 
-            dispatch(setInitialValues(initialPricing));
-        });
+                dispatch(setInitialValues(initialPricing));
+            })
+            .catch((error) => {
+                if (error) dispatch(setCurrentNavigationStep(1));
+            });
     }, []);
 
     const DummyText =
@@ -162,18 +166,14 @@ const PackagesForm = (props) => {
                 )}
 
                 <div className="main-content--actions-box">
-                    <button onClick={(e) => goToPreviousStep()} className="button-back">
+                    <Button clicked={(e) => goToPreviousStep()} customClass="button-back">
                         <SvgIcon icon="icon-arrow-left-1" />
                         <span className="button-name">Nazad</span>
-                    </button>
+                    </Button>
 
-                    <button
-                        disabled={!currentPriceValues.mainProductId && !currentPriceValues.variationProductId}
-                        onClick={(e) => goToCheckout(e)}
-                        className={`button-next ${!currentPriceValues.mainProductId && !currentPriceValues.variationProductId ? "disabled" : ""}`}
-                    >
+                    <Button isLoading={!currentPriceValues.mainProductId && !currentPriceValues.variationProductId} customClass="button-next" clicked={(e) => goToCheckout(e)}>
                         <span className="button-name">Nastavi</span>
-                    </button>
+                    </Button>
                 </div>
 
                 <div className="main-content--notice-box">

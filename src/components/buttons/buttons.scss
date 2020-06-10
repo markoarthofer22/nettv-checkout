@@ -121,3 +121,56 @@ button {
         }
     }
 }
+
+.button-blue {
+    padding: 15px 100px;
+    background-color: $blue;
+    color: $white;
+    height: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border-radius: 3px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        background-color: transparent;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: all 0.4s;
+    }
+
+    &:hover::before {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+}
+
+.button-next {
+    position: relative;
+    padding: 10px 30px;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 500;
+    background-color: #2194cf;
+    border-radius: 3px;
+
+    &:hover::before {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.11);
+        transition: all 0.4s;
+        opacity: 0;
+        visibility: hidden;
+    }
+}

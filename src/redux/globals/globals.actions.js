@@ -27,7 +27,7 @@ export const getDataForURL = (url) => {
     return (dispatch) => {
         dispatch(setIsLoading(true));
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             mainApi
                 .get(url)
                 .then((responseData) => {
@@ -36,6 +36,7 @@ export const getDataForURL = (url) => {
                 })
                 .catch((error) => {
                     dispatch(setIsLoading(false));
+                    reject(error);
                 });
         });
     };

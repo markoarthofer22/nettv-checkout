@@ -85,7 +85,9 @@
             </g>
         </g>
     </symbol>
-
+    <symbol viewBox="0 0 13.89 21.341" id="icon-swiper-arrow">
+        <path d="M2.828 18.513l8.235-7.843M2.828 2.828l8.235 7.843" stroke-linecap="round" stroke-width="4"></path>
+    </symbol>
 
     <symbol id="error" viewBox="0 0 25.55 29.43">
         <title>Error</title>

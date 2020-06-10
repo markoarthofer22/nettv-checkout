@@ -33,7 +33,6 @@ const IndexPage = (props) => {
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
-
         if (!queryParams.lang_code || queryParams.lang_code === "") {
             queryParams = {
                 ...queryParams,
@@ -43,6 +42,8 @@ const IndexPage = (props) => {
             let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
             history.push(url);
         }
+
+        localStorage.setItem("lang_code", queryParams.lang_code ? queryParams.lang_code : "other");
     }, []);
 
     useEffect(() => {

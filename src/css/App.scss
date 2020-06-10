@@ -27,6 +27,13 @@ body {
     flex-direction: column;
     overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
+    position: static;
+    overflow-y: auto;
+
+    &.no-scroll {
+        position: fixed;
+        overflow-y: scroll;
+    }
 
     &::before {
         content: "x-small";

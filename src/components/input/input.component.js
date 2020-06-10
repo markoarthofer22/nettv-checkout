@@ -1,16 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import Tooltip from "../tooltip/tooltip.component";
 
 import "./input.scss";
 
-const InputComponent = ({ type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue }) => {
+const InputComponent = ({ type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue, tooltip, disabled }) => {
     return (
         <>
-            <label htmlFor={name ? name : null} className="floating-label">
-                {labelText}
+            <label htmlFor={name ? name : null} className={`floating-label ${tooltip ? "flexed" : ""}`}>
+                {labelText} {tooltip && <Tooltip title={tooltip} styles="custom-tooltip" />}
             </label>
             <input
                 type={type ? type : "text"}
+                disabled={disabled}
                 required
                 name={name ? name : null}
                 autoComplete="0"
