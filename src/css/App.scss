@@ -57,11 +57,6 @@ body {
 
 //Containers
 
-.container {
-    max-width: 1920px;
-    padding: 0 40px;
-}
-
 //standard elements
 p {
     font-size: 1rem;
@@ -298,57 +293,6 @@ main.bottom-wrap {
     position: relative;
     flex: 1 0 auto;
     min-height: 100vh;
-}
-
-//END LAYOUR
-
-//INDEX
-
-//hero page
-.hero .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-
-    h1 {
-        font-weight: bold;
-        font-size: 5rem;
-        letter-spacing: -1px;
-    }
-}
-
-.sticky {
-    position: sticky;
-    top: 0px;
-    box-shadow: none;
-    transition: all 0.4s;
-}
-
-.sticky[data-visible="true"] {
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-    //animation: fadein 1s ease-in;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes scaleIn {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(0.2);
-    }
-    100% {
-        transform: scale(1);
-    }
 }
 
 //Animated text
