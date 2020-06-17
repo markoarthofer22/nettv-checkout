@@ -18,7 +18,7 @@ const InputComponent = ({ type, name, inputClass, required, errorMessage, regist
                 autoComplete="0"
                 className={`${inputClass ? inputClass : "input-default"} ${errorMessage && "invalid"}`}
                 error={errorMessage ? errorMessage.message : null}
-                value={inputValue ? inputValue.toString() : undefined}
+                value={inputValue ? inputValue.toString() : ""}
                 ref={register ? register({ ...required }) : null}
                 onChange={(e) => (onEveryChange ? onEveryChange(e) : null)}
             />

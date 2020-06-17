@@ -23,13 +23,14 @@ import useForm from "react-hook-form";
 const PaymentInfo = (props) => {
     const dispatch = useDispatch();
     const currentPriceValues = useSelector(currentPricing);
-    const allCountries = useSelector(selectAllCountryIDs);
+    const allowedMarket = useSelector(selectAllCountryIDs);
     const [countriesList, setCountriesList] = useState(null);
     const [countryName, setCountryName] = useState();
     const [buyersCountry, setBuyersCountry] = useState("");
     const [countryID, setCountryID] = useState();
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
+    const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
 
     const { register, handleSubmit, errors, watch } = useForm({
         mode: "onChange"
@@ -43,7 +44,7 @@ const PaymentInfo = (props) => {
         });
 
         if (localStorage.getItem("lang_code") && localStorage.getItem("lang_code") !== "other") {
-            let state = allCountries.find((item) => {
+            let state = allowedMarket.find((item) => {
                 return item.countryCode === localStorage.getItem("lang_code");
             });
             setBuyersCountry(state.countryName);
@@ -101,6 +102,12 @@ const PaymentInfo = (props) => {
             }
         };
         dispatch(resetToInitialValues(initialPricing));
+    };
+
+    const onInputChange = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setBuyersCountryCustomInputValue(e.currentTarget.value);
     };
 
     return (
@@ -230,7 +237,8 @@ const PaymentInfo = (props) => {
 
                             <div className={`form-item-floating ${errors.buyerCountry && "invalid"}`}>
                                 <InputComponent
-                                    inputValue={buyersCountry}
+                                    inputValue={buyersCountry || buyersCountryCustomInputValue}
+                                    onEveryChange={onInputChange}
                                     disabled={buyersCountry && true}
                                     name="buyerCountry"
                                     labelText="Država"

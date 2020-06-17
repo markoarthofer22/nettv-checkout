@@ -1,100 +1,94 @@
-import {
-  SET_IS_LOADING,
-  SET_GLOBALS,
-  SET_GLOBAL_ERROR,
-  SET_PAGE_DATA,
-  SET_LANGUAGE_DATA,
-} from "./globals.types";
+import { SET_IS_LOADING, SET_GLOBAL_ERROR } from "./globals.types";
 
 const lang_codes = [
-  {
-    countryCode: "de",
-    countryName: "Germany",
-  },
-  {
-    countryCode: "nz",
-    countryName: "New Zealand",
-  },
-  {
-    countryCode: "at",
-    countryName: "Austria",
-  },
-  {
-    countryCode: "no",
-    countryName: "Norway",
-  },
-  {
-    countryCode: "lu",
-    countryName: "Luxembourg",
-  },
-  {
-    countryCode: "se",
-    countryName: "Sweden",
-  },
-  {
-    countryCode: "gb",
-    countryName: "United Kingdom",
-  },
-  {
-    countryCode: "us",
-    countryName: "USA",
-  },
-  {
-    countryCode: "ch",
-    countryName: "Switzerland",
-  },
-  {
-    countryCode: "ca",
-    countryName: "Canada",
-  },
-  {
-    countryCode: "be",
-    countryName: "Belgium",
-  },
-  {
-    countryCode: "dk",
-    countryName: "Denmark",
-  },
-  {
-    countryCode: "fi",
-    countryName: "Finland",
-  },
-  {
-    countryCode: "fr",
-    countryName: "France",
-  },
-  {
-    countryCode: "ie",
-    countryName: "Ireland",
-  },
-  {
-    countryCode: "nl",
-    countryName: "Netherlands",
-  },
+    {
+        countryCode: "de",
+        countryName: "Nemačka"
+    },
+    {
+        countryCode: "nz",
+        countryName: "Novi Zeland"
+    },
+    {
+        countryCode: "at",
+        countryName: "Austrija"
+    },
+    {
+        countryCode: "no",
+        countryName: "Norveška"
+    },
+    {
+        countryCode: "lu",
+        countryName: "Luksemburg"
+    },
+    {
+        countryCode: "se",
+        countryName: "Švedska"
+    },
+    {
+        countryCode: "gb",
+        countryName: "Velika Britanija"
+    },
+    {
+        countryCode: "us",
+        countryName: "SAD"
+    },
+    {
+        countryCode: "ch",
+        countryName: "Švajcarska"
+    },
+    {
+        countryCode: "ca",
+        countryName: "Kanada"
+    },
+    {
+        countryCode: "be",
+        countryName: "Belgija"
+    },
+    {
+        countryCode: "dk",
+        countryName: "Danska"
+    },
+    {
+        countryCode: "fi",
+        countryName: "Finska"
+    },
+    {
+        countryCode: "fr",
+        countryName: "Francuska"
+    },
+    {
+        countryCode: "ie",
+        countryName: "Irska"
+    },
+    {
+        countryCode: "nl",
+        countryName: "Holandija"
+    }
 ];
 
 const INITIAL_STATE = {
-  isLoading: false,
-  lang_codes: lang_codes,
+    isLoading: false,
+    lang_codes: lang_codes
 };
 
 const globalsReducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case SET_IS_LOADING:
-      return {
-        ...state,
-        isLoading: action.payload,
-      };
+    switch (action.type) {
+        case SET_IS_LOADING:
+            return {
+                ...state,
+                isLoading: action.payload
+            };
 
-    case SET_GLOBAL_ERROR:
-      return {
-        ...state,
-        globalError: action.payload.response,
-      };
+        case SET_GLOBAL_ERROR:
+            return {
+                ...state,
+                globalError: action.payload.response
+            };
 
-    default:
-      return state;
-  }
+        default:
+            return state;
+    }
 };
 
 export default globalsReducer;

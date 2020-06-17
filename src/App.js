@@ -1,19 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import { selectIsLoading, selectAllCountryIDs } from "./redux/globals/globals.selectors";
+import _ from "underscore";
+
 //Global scss
 import "./css/App.scss";
 //Google analytics
 import GoogleAnalytics from "./components/google-analytics/google-analytics.component";
 //Components
 import Header from "./components/header/header.component";
-import { selectIsLoading } from "./redux/globals/globals.selectors";
-
 import GlobalLoader from "./components/loaders/global.loader.component";
 //helmet
 import Helmet from "react-helmet";
 import ReactGA from "react-ga";
 import Routes from "./routes/Routes";
+
+//geoIp
+const geoip2 = window.geoip2;
 
 // if (typeof window !== "undefined") {
 //   ReactGA.initialize("UA-55087715-1");
@@ -23,6 +27,19 @@ import Routes from "./routes/Routes";
 export default function App(props) {
     const dispatch = useDispatch();
     const isError = useSelector(selectIsLoading);
+    const allowedMarket = useSelector(selectAllCountryIDs);
+    const [userIpID, setUserIpID] = useState();
+
+    useEffect(() => {
+        geoip2.country((response) => {
+            const customersCountryID = response.country.iso_code.toLowerCase();
+            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "de");
+        });
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("lang_code", userIpID && userIpID.countryCode ? userIpID.countryCode : userIpID);
+    }, [userIpID]);
 
     useEffect(() => {
         if (isError) {

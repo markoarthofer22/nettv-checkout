@@ -41,9 +41,15 @@ const IndexPage = (props) => {
 
             let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
             history.push(url);
-        }
+        } else {
+            queryParams = {
+                ...queryParams,
+                lang_code: localStorage.getItem("lang_code")
+            };
 
-        localStorage.setItem("lang_code", queryParams.lang_code ? queryParams.lang_code : "other");
+            let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
+            history.push(url);
+        }
     }, []);
 
     useEffect(() => {
