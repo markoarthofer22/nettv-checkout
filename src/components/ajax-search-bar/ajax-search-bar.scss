@@ -1,11 +1,11 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 /****** AJAX SEARCH BAR *************/
 
 .search-container {
     margin-top: 30px;
     width: 100%;
 
-    @include respond-to(sm) {
+    @include sm {
         padding: 30px;
     }
 
@@ -19,7 +19,7 @@
         transform: translateX(-50%);
         background: linear-gradient(to right, #eb752c 50%, #d0205d 100%) !important;
 
-        @include respond-to(sm) {
+        @include sm {
             top: 40px;
         }
     }
@@ -124,7 +124,7 @@
     }
 }
 
-.ajax-search .results li [class^='icon-'] {
+.ajax-search .results li [class^="icon-"] {
     fill: $white;
     transition: all 0.3s;
 }

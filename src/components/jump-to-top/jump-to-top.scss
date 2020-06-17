@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 .jump-to-top {
     position: fixed;
@@ -20,7 +20,7 @@
         &.jump-button-mobile {
             bottom: 100px;
 
-            @include respond-to(sm) {
+            @include sm {
                 bottom: 21px;
             }
         }

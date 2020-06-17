@@ -39,14 +39,18 @@ body {
         content: "x-small";
         display: none;
 
-        @include respond-to(sm) {
+        @include sm {
             content: "small";
         }
-        @include respond-to(md) {
+        @include md {
             content: "medium";
         }
-        @include respond-to(lg) {
+        @include lg {
             content: "large";
+        }
+
+        @include xl {
+            content: "x-large";
         }
     }
 }
@@ -268,7 +272,7 @@ strong {
         flex: 1 0 0;
         margin-left: 0px;
 
-        @include respond-to(lg) {
+        @include xl {
             margin-left: 0;
         }
     }
@@ -276,11 +280,11 @@ strong {
     .side-panel.open ~ .side-content {
         margin-left: 0px;
 
-        @include respond-to(sm) {
+        @include sm {
             margin-left: 50px;
         }
 
-        @include respond-to(lg) {
+        @include xl {
             margin-left: 300px;
         }
     }
@@ -401,15 +405,15 @@ main.bottom-wrap {
 .respondTo {
     --size: xs;
 
-    @include respond-to(md) {
+    @include md {
         --size: md;
     }
 
-    @include respond-to(sm) {
+    @include sm {
         --size: sm;
     }
 
-    @include respond-to(lg) {
+    @include xl {
         --size: lg;
     }
 }

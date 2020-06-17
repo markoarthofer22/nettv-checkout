@@ -7,8 +7,12 @@
     border-radius: 3px;
 
     .select-countries {
-        flex-basis: 20%;
+        flex-basis: 35%;
         height: 40px;
+
+        @include lg {
+            flex-basis: 20%;
+        }
 
         .select-header {
             padding: 0;

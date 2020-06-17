@@ -3,14 +3,23 @@
 .index-page {
     .container.fluid {
         display: flex;
-        flex-direction: row;
+        padding: 0 15px !important;
+        flex-direction: column;
         padding: 0;
+
+        @include md {
+            padding: 0 !important;
+            flex-direction: row;
+        }
 
         & > .form-holder {
             flex-basis: 80%;
-            padding: 0 10rem 0 22rem;
             display: flex;
             justify-content: flex-end;
+
+            @include lg {
+                padding: 0 10rem 0 22rem;
+            }
 
             .form-holder--steps {
                 // max-width: 1000px;

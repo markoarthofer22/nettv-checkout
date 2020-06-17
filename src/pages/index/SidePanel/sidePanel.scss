@@ -2,10 +2,33 @@
 
 .sidePanel {
     min-height: 100%;
-    height: calc(100vh - 120px);
+    height: 100%;
     border-left: 1px solid #ccc;
     background-color: #f1f1f1;
-    padding: 2rem 4rem 0;
+    padding: 3rem;
+    margin-bottom: 3rem;
+
+    &.mobile {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 100;
+        width: 100%;
+        transition: all 0.5s ease-in;
+        transform: translateX(100%);
+
+        &.open {
+            transform: translateX(0);
+        }
+    }
+
+    @include lg {
+        margin-bottom: 0;
+        padding: 2rem 4rem 0;
+        height: calc(100vh - 120px);
+    }
 }
 
 .sidePanel .side-panel-box {

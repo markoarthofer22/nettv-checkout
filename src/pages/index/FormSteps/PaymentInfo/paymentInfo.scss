@@ -22,7 +22,10 @@
                 line-height: 1.5;
                 color: #999;
                 display: block;
-                margin-top: 2rem;
+
+                @include lg {
+                    margin-top: 2rem;
+                }
             }
 
             button.promo-code-button {
@@ -93,14 +96,19 @@
                     z-index: 2;
                     border: 1px solid $blue;
                     border-radius: 100%;
-                    width: 25px;
-                    height: 25px;
+                    width: 15px;
+                    height: 15px;
                     overflow: hidden;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     transition: all 0.4s ease-in;
                     margin-right: 10px;
+
+                    @include lg {
+                        width: 15px;
+                        height: 15px;
+                    }
 
                     &.active {
                         .filled {
@@ -125,7 +133,11 @@
                 .name {
                     font-weight: 700;
                     color: #666;
-                    font-size: 1.6rem;
+                    font-size: 1.2rem;
+
+                    @include lg {
+                        font-size: 1.6rem;
+                    }
                 }
 
                 .cards-holder {

@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 .side-panel {
     z-index: 100;
@@ -31,7 +31,7 @@
         margin-right: 15px;
     }
 
-    @include respond-to(lg) {
+    @include xl {
         transform: translateX(-250px);
 
         .nav-secondary li {
@@ -48,11 +48,11 @@
             transform: translateX(233px);
         }
 
-        @include respond-to(sm) {
+        @include sm {
             transform: translateX(-250px);
         }
 
-        @include respond-to(lg) {
+        @include xl {
             visibility: visible;
             opacity: 1;
             transform: translateX(0);

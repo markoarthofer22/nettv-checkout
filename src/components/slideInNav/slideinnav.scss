@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 .slide-in-nav {
     position: fixed;
     z-index: 1000;
@@ -18,7 +18,7 @@
         justify-content: flex-start;
         flex-direction: column;
         padding-top: 60px;
-        @include respond-to(sm) {
+        @include sm {
             padding-top: 0;
             width: 50%;
         }
@@ -31,13 +31,7 @@
             border-radius: 100px;
 
             background-color: #ce3c3f;
-            background-image: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 15px,
-                rgba(255, 255, 255, 0.2) 15px,
-                rgba(255, 255, 255, 0.2) 30px
-            );
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255, 255, 255, 0.2) 15px, rgba(255, 255, 255, 0.2) 30px);
         }
 
         .menu {
@@ -48,12 +42,12 @@
             flex-direction: column;
             width: 100%;
 
-            @include respond-to(sm) {
+            @include sm {
                 margin-top: 40%;
                 width: fit-content;
             }
 
-            @include respond-to(lg) {
+            @include xl {
                 margin-top: 30%;
                 width: fit-content;
             }
@@ -75,19 +69,13 @@
                     overflow: visible;
 
                     &:hover {
-                        @include respond-to(sm) {
+                        @include sm {
                             background-color: #ce3c3f;
-                            background-image: repeating-linear-gradient(
-                                45deg,
-                                transparent,
-                                transparent 15px,
-                                rgba(255, 255, 255, 0.2) 15px,
-                                rgba(255, 255, 255, 0.2) 30px
-                            );
+                            background-image: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255, 255, 255, 0.2) 15px, rgba(255, 255, 255, 0.2) 30px);
                         }
                     }
 
-                    @include respond-to(sm) {
+                    @include sm {
                         font-size: 2rem;
                     }
 
@@ -108,7 +96,7 @@
             display: block;
             margin: 0;
 
-            @include respond-to(sm) {
+            @include sm {
                 display: none;
             }
 

@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 .maps {
     position: relative;
@@ -9,7 +9,7 @@
         margin: 20px;
         text-transform: unset;
         text-align: center;
-        @include respond-to(sm) {
+        @include sm {
             text-align: left;
         }
     }
@@ -54,7 +54,7 @@
     top: 100%;
     left: 50%;
     border: solid transparent;
-    content: ' ';
+    content: " ";
     height: 0;
     width: 0;
     position: absolute;

@@ -29,29 +29,49 @@ $dark-blue: #0072aa;
 $darker-blue: #2e6ab7;
 $nightgray: #333;
 
-//mixins vars
-$break-small: 768px;
-$break-medium: 996px;
-$break-large: 1200px;
+//MEDIA QUERIES
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
 
-// mixins for media-screen
-@mixin respond-to($media) {
-  @if $media == sm {
-    @media only screen and (min-width: $break-small) {
-      @content;
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
     }
-  }
-  @if $media == max-sm {
-    @media only screen and (max-width: $break-small) {
-      @content;
+}
+
+// Medium devices
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
     }
-  } @else if $media == md {
-    @media only screen and (min-width: $break-medium) {
-      @content;
+}
+
+// Large devices
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
     }
-  } @else if $media == lg {
-    @media only screen and (min-width: $break-large) {
-      @content;
+}
+
+// Extra large devices
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
     }
-  }
+}
+
+// Custom devices
+@mixin rwd($screen) {
+    @media (min-width: $screen+"px") {
+        @content;
+    }
 }

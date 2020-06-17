@@ -13,10 +13,13 @@ import Button from "../../../../components/buttons/button.component";
 import SvgIcon from "../../../../components/svg-icon/svg-icon.component";
 import { Link, useParams, useHistory } from "react-router-dom";
 import Container from "../../../../components/layout/container.component";
+import CustomSwiper from "../../../../components/swiper/swiper.component";
+import useIsBreakpoint from "../../../../hooks/useIsBreakpoint.hook";
 
 const SubscriptionPlans = (props) => {
     const history = useHistory();
     const [data, setData] = useState(null);
+    const isMobile = useIsBreakpoint();
     const dispatch = useDispatch();
 
     useEffect(() => {

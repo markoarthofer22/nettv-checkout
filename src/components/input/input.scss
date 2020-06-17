@@ -111,7 +111,7 @@ textarea {
     align-items: center;
     flex-direction: column;
 
-    @include respond-to(sm) {
+    @include sm {
         flex-direction: row;
         .form-item-floating {
             width: calc(100% - 20px);
@@ -130,11 +130,16 @@ textarea {
     }
 
     &.promo {
-        .form-item-floating {
-            width: calc(50% - 20px);
+        flex-direction: row;
 
+        .form-item-floating {
+            width: calc(100% - 20px);
             &:first-of-type {
                 margin-right: 20px;
+            }
+
+            @include lg {
+                width: calc(50% - 20px);
             }
         }
     }

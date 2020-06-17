@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 .share-socials-button {
     position: relative;
@@ -22,7 +22,7 @@
         border-radius: 4px;
         color: #686a6d;
 
-        @include respond-to(sm) {
+        @include sm {
             padding: 8px 14px;
         }
     }
@@ -34,7 +34,7 @@
         color: #fff;
         padding: 5px;
 
-        @include respond-to(sm) {
+        @include sm {
             padding: 8px 14px;
         }
     }
@@ -60,7 +60,7 @@
         box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
 
         &:before {
-            content: '';
+            content: "";
             border: solid;
             border-color: $white transparent;
             border-width: 0px 6px 6px 6px;

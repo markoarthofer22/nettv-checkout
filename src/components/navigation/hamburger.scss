@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 //Default navigation styles
 .openMenu {
@@ -41,7 +41,7 @@
         & > div {
             background-color: $white;
 
-            @include respond-to(lg) {
+            @include xl {
                 background-color: $white;
             }
         }

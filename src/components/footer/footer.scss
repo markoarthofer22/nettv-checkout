@@ -1,4 +1,4 @@
-@import '../../css/variables.scss';
+@import "../../css/variables.scss";
 
 .footer {
     width: 100%;
@@ -27,7 +27,7 @@
             font-weight: 400;
             text-align: center;
 
-            @include respond-to(lg) {
+            @include xl {
                 text-align: left;
             }
         }
@@ -37,7 +37,7 @@
             list-style: none;
             text-align: center;
 
-            @include respond-to(lg) {
+            @include xl {
                 text-align: left;
             }
         }
@@ -68,7 +68,7 @@
             color: #5a4941;
             text-align: center;
 
-            @include respond-to(lg) {
+            @include xl {
                 text-align: left;
             }
         }
@@ -80,7 +80,7 @@
             color: #5a4941;
             text-align: center;
 
-            @include respond-to(lg) {
+            @include xl {
                 text-align: left;
             }
 
@@ -98,7 +98,7 @@
 
             text-align: center;
 
-            @include respond-to(lg) {
+            @include xl {
                 text-align: left;
             }
         }
@@ -113,7 +113,7 @@
             margin: 0;
             padding: 0;
 
-            @include respond-to(lg) {
+            @include xl {
                 justify-content: flex-start;
                 flex-direction: row;
             }
@@ -134,7 +134,7 @@
             justify-content: center;
             margin-top: 20px;
 
-            @include respond-to(lg) {
+            @include xl {
                 justify-content: flex-start;
             }
 
