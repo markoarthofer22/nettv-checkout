@@ -21,6 +21,7 @@ const SubscriptionPlans = (props) => {
     const [data, setData] = useState(null);
     const isMobile = useIsBreakpoint();
     const dispatch = useDispatch();
+    const [params, setParams] = useState({});
 
     useEffect(() => {
         let url = `/products/${history.location.search}`;
@@ -32,6 +33,28 @@ const SubscriptionPlans = (props) => {
     useEffect(() => {
         data ? dispatch(setIsLoading(false)) : dispatch(setIsLoading(true));
     }, [data]);
+
+    useEffect(() => {
+        if (isMobile !== "x-large" || isMobile !== "large") {
+            setParams({
+                slidesPerView: "auto",
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev"
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                    dynamicBullets: true,
+                    speed: 600
+                },
+                rebuildOnUpdate: true,
+                loop: true
+            });
+        } else {
+            setParams({});
+        }
+    }, [isMobile]);
 
     const selectNewPackage = (e) => {
         e.preventDefault();
@@ -48,60 +71,117 @@ const SubscriptionPlans = (props) => {
             <Container>
                 <div className="main-content">
                     <h3 className="page-title-long">Izaberi paket</h3>
-                    <div className={`subscription-cards ${data && data.length === 4 ? "four-columns" : "three-columns"}`}>
-                        {data &&
-                            data.map((item, index) => {
-                                const { title, meta } = item;
-                                const { attributes, base_price, currency, market, product_code, language_code } = meta;
+                    {data ? (
+                        isMobile === "large" || isMobile === "x-large" ? (
+                            <div className={`subscription-cards ${data && data.length === 4 ? "four-columns" : "three-columns"}`}>
+                                {data.map((item, index) => {
+                                    const { title, meta } = item;
+                                    const { attributes, base_price, currency, market, product_code, language_code } = meta;
 
-                                return (
-                                    <div className={`subscription-card gradient${index}`} key={index}>
-                                        <div className="subscription-card--header">
-                                            <span className={`title color${index}`}>{title}</span>
+                                    return (
+                                        <div className={`subscription-card gradient${index}`} key={index}>
+                                            <div className="subscription-card--header">
+                                                <span className={`title color${index}`}>{title}</span>
 
-                                            <span className="price">
-                                                {base_price} {currency}
-                                            </span>
-                                        </div>
+                                                <span className="price">
+                                                    {base_price} {currency}
+                                                </span>
+                                            </div>
 
-                                        <div className="subscription-card--content">
-                                            {attributes.map((item, index) => (
-                                                <div className="option" key={index}>
-                                                    <SvgIcon icon="icon-gear-b" />
-                                                    <span className="value">{item}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div className="subscription-card--actions">
-                                            {meta.promotions_data.promotion_image && <img src={meta.promotions_data.promotion_image} alt="" className="subscription-card--promotion" />}
-                                            <Button
-                                                title="Naruči"
-                                                customClass="button-blue"
-                                                clicked={(e) => selectNewPackage(e)}
-                                                attributes={{
-                                                    packageid: product_code,
-                                                    langcode: language_code
-                                                }}
-                                            />
-
-                                            {meta.promotions_data && (
-                                                <div className="subscription-card--footer">
-                                                    <div>
-                                                        <span className="header-text">{meta.promotions_data.promotion_headline}</span>
-                                                        <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
-                                                        <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                            <div className="subscription-card--content">
+                                                {attributes.map((item, index) => (
+                                                    <div className="option" key={index}>
+                                                        <SvgIcon icon="icon-gear-b" />
+                                                        <span className="value">{item}</span>
                                                     </div>
-                                                    <div>
-                                                        <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                ))}
+                                            </div>
+
+                                            <div className="subscription-card--actions">
+                                                {meta.promotions_data.promotion_image && <img src={meta.promotions_data.promotion_image} alt="" className="subscription-card--promotion" />}
+                                                <Button
+                                                    title="Naruči"
+                                                    customClass="button-blue"
+                                                    clicked={(e) => selectNewPackage(e)}
+                                                    attributes={{
+                                                        packageid: product_code,
+                                                        langcode: language_code
+                                                    }}
+                                                />
+
+                                                {meta.promotions_data && (
+                                                    <div className="subscription-card--footer">
+                                                        <div>
+                                                            <span className="header-text">{meta.promotions_data.promotion_headline}</span>
+                                                            <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
+                                                            <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                                        </div>
+                                                        <div>
+                                                            <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                    </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <CustomSwiper containerClass="subscription-cards--mobile">
+                                {data.map((item, index) => {
+                                    const { title, meta } = item;
+                                    const { attributes, base_price, currency, market, product_code, language_code } = meta;
+
+                                    return (
+                                        <div className={`subscription-card gradient${index}`} key={index}>
+                                            <div className="subscription-card--header">
+                                                <span className={`title color${index}`}>{title}</span>
+
+                                                <span className="price">
+                                                    {base_price} {currency}
+                                                </span>
+                                            </div>
+
+                                            <div className="subscription-card--content">
+                                                {attributes.map((item, index) => (
+                                                    <div className="option" key={index}>
+                                                        <SvgIcon icon="icon-gear-b" />
+                                                        <span className="value">{item}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="subscription-card--actions">
+                                                {meta.promotions_data.promotion_image && <img src={meta.promotions_data.promotion_image} alt="" className="subscription-card--promotion" />}
+                                                <Button
+                                                    title="Naruči"
+                                                    customClass="button-blue"
+                                                    clicked={(e) => selectNewPackage(e)}
+                                                    attributes={{
+                                                        packageid: product_code,
+                                                        langcode: language_code
+                                                    }}
+                                                />
+
+                                                {meta.promotions_data && (
+                                                    <div className="subscription-card--footer">
+                                                        <div>
+                                                            <span className="header-text">{meta.promotions_data.promotion_headline}</span>
+                                                            <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
+                                                            <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                                        </div>
+                                                        <div>
+                                                            <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </CustomSwiper>
+                        )
+                    ) : null}
                 </div>
                 <div className="notification-box">
                     <ul className="notification-box--list">
