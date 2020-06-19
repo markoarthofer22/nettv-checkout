@@ -150,6 +150,7 @@ const PaymentInfo = (props) => {
                             <div className={`form-item-floating ${errors.Password && "invalid"}`}>
                                 <InputComponent
                                     name="Password"
+                                    showPasswordIcon={true}
                                     type="password"
                                     tooltip="Lozinka mora da sadrži najmanje 7 karaktera, minimum jedan broj i jedno veliko slovo."
                                     labelText="Lozinka"
@@ -172,6 +173,7 @@ const PaymentInfo = (props) => {
                                 <InputComponent
                                     name="passwordrepeat"
                                     type="password"
+                                    showPasswordIcon={true}
                                     labelText="Ponovi lozinku:"
                                     errorMessage={errors.passwordrepeat}
                                     register={register}
@@ -237,7 +239,7 @@ const PaymentInfo = (props) => {
 
                             <div className={`form-item-floating ${errors.buyerCountry && "invalid"}`}>
                                 <InputComponent
-                                    inputValue={buyersCountry || buyersCountryCustomInputValue}
+                                    inputValue={buyersCountry ? buyersCountry : buyersCountryCustomInputValue}
                                     onEveryChange={onInputChange}
                                     disabled={buyersCountry && true}
                                     name="buyerCountry"

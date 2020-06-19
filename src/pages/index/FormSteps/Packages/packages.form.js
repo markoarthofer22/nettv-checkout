@@ -33,7 +33,12 @@ const PackagesForm = (props) => {
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
-        let url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
+        let url;
+        if (queryParams["product_code"] && queryParams["lang_code"]) {
+            url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
+        } else {
+            url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
+        }
 
         dispatch(getDataForURL(url))
             .then((response) => {
@@ -50,9 +55,13 @@ const PackagesForm = (props) => {
                 dispatch(setInitialValues(initialPricing));
             })
             .catch((error) => {
-                if (error) dispatch(setCurrentNavigationStep(1));
+                console.log(error);
+                if (error) {
+                    let url = `/?lang_code=${localStorage.getItem("lang_code")}`;
+                    history.push(url);
+                }
             });
-    }, []);
+    }, [history.location]);
 
     const DummyText =
         "EON Smart Box svaki TV pretvara u Smart TV. Pomoću EON Smart Boxa možete uživati u najboljem sadržaju iz NetTV Plus paketa i preuzimati aplikacije iz Google Play Store-a. Sve što vam je potrebno je HDMI priključak i internet konekcija.";

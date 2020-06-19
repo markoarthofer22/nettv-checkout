@@ -57,10 +57,14 @@ textarea.invalid ~ span:before {
     content: attr(error);
     color: #cc2f40;
     display: block;
-    font-size: 1.2rem;
+    font-size: 1rem;
     animation-name: ErrorShow;
     animation-duration: 1s;
     z-index: 1;
+
+    @include md {
+        font-size: 1.2rem;
+    }
 }
 
 label.invalid + input,
@@ -149,6 +153,60 @@ textarea {
     border-width: 0;
     margin-bottom: 20px;
     width: 100%;
+
+    svg.password {
+        fill: $dark-blue;
+        position: absolute;
+        right: 10px;
+        top: calc(50% + 16px);
+        transform: translateY(calc(-50% - 5px));
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+
+        &:hover {
+            #lid,
+            #eye {
+                animation-play-state: running;
+            }
+        }
+
+        #lid {
+            animation: blink 0.8s infinite;
+            animation-play-state: paused;
+        }
+
+        #eye {
+            animation: squeeze 0.8s infinite;
+            animation-play-state: paused;
+        }
+
+        @keyframes blink {
+            90% {
+                transform: none;
+                animation-timing-function: ease-in;
+            }
+            93% {
+                transform: translateY(15px) scaleY(0);
+            }
+            100% {
+                animation-timing-function: ease-out;
+            }
+        }
+
+        @keyframes squeeze {
+            90% {
+                transform: none;
+                animation-timing-function: ease-in;
+            }
+            93% {
+                transform: translateY(8px) scaleY(0.4);
+            }
+            100% {
+                animation-timing-function: ease-out;
+            }
+        }
+    }
 
     &:focus {
     }

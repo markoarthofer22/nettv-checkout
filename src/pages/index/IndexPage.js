@@ -33,24 +33,26 @@ const IndexPage = (props) => {
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
-        if (!queryParams.lang_code || queryParams.lang_code === "") {
+        if ((!queryParams.lang_code || queryParams.lang_code === "") && !localStorage.getItem("lang_code")) {
             queryParams = {
                 ...queryParams,
                 lang_code: "other"
             };
 
-            let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
+            let url = `/products/?${queryString.stringify(queryParams)}`;
             history.push(url);
         } else {
-            queryParams = {
-                ...queryParams,
-                lang_code: localStorage.getItem("lang_code")
-            };
+            if (localStorage.getItem("lang_code") !== "undefined") {
+                queryParams = {
+                    ...queryParams,
+                    lang_code: localStorage.getItem("lang_code")
+                };
 
-            let url = `${history.location.pathname}?${queryString.stringify(queryParams)}`;
-            history.push(url);
+                let url = `/products/?${queryString.stringify(queryParams)}`;
+                history.push(url);
+            }
         }
-    }, []);
+    }, [localStorage.getItem("lang_code")]);
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);

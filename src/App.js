@@ -33,11 +33,12 @@ export default function App(props) {
     useEffect(() => {
         geoip2.country((response) => {
             const customersCountryID = response.country.iso_code.toLowerCase();
-            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "de");
+            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
         });
     }, []);
 
     useEffect(() => {
+        if (localStorage.getItem("lang_code") === undefined) return;
         localStorage.setItem("lang_code", userIpID && userIpID.countryCode ? userIpID.countryCode : userIpID);
     }, [userIpID]);
 
@@ -51,10 +52,10 @@ export default function App(props) {
     return (
         <>
             <Helmet>
-                <meta name="geo.region" content="HR-01" />
+                <meta name="geo.region" content="RS-01" />
                 <meta name="geo.placename" content="" />
-                <meta name="geo.position" content="45.813177;15.977048" />
-                <meta name="ICBM" content="45.813177, 15.977048" />
+                <meta name="geo.position" content="45.60000;19.20000" />
+                <meta name="ICBM" content="45.60000;19.20000" />
                 {/*BASIC SEO PAGE NEEDS */}
                 <script type="application/ld+json">
                     {`

@@ -28,7 +28,7 @@ const SubscriptionPlans = (props) => {
         dispatch(getDataForURL(url)).then((response) => {
             setData(response.data);
         });
-    }, []);
+    }, [history.location]);
 
     useEffect(() => {
         data ? dispatch(setIsLoading(false)) : dispatch(setIsLoading(true));
@@ -37,7 +37,7 @@ const SubscriptionPlans = (props) => {
     useEffect(() => {
         if (isMobile !== "x-large" || isMobile !== "large") {
             setParams({
-                slidesPerView: "auto",
+                slidesPerView: 1,
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev"
@@ -127,7 +127,7 @@ const SubscriptionPlans = (props) => {
                                 })}
                             </div>
                         ) : (
-                            <CustomSwiper containerClass="subscription-cards--mobile">
+                            <CustomSwiper containerClass="subscription-cards--mobile" params={params}>
                                 {data.map((item, index) => {
                                     const { title, meta } = item;
                                     const { attributes, base_price, currency, market, product_code, language_code } = meta;

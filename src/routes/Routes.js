@@ -8,15 +8,19 @@ export default [
         component: App,
         routes: [
             {
+                path: "/",
+                component: IndexPage
+            },
+            {
                 path: "/products/",
                 exact: true,
-                component: IndexPage,
+                component: IndexPage
             },
             {
                 path: "/products/code/",
                 exact: true,
-                component: IndexPage,
-            },
-        ],
-    },
+                component: IndexPage
+            }
+        ]
+    }
 ];
