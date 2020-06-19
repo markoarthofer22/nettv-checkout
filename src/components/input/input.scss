@@ -392,11 +392,14 @@ fieldset {
             color: #212121;
             border: 1px solid #ccc;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1) !important;
-            width: 26rem;
             padding: 20px;
             border-radius: 2px;
             margin-bottom: 5px;
             padding: 15px;
+
+            @include md {
+                width: 26rem;
+            }
         }
 
         &:hover:before {
