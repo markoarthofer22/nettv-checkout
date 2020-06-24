@@ -10,6 +10,10 @@ const INITIAL_STATE = {
         subscriptionDuration: null,
         contractLength: null
     },
+    available: {
+        availableDevices: null,
+        features: null
+    },
     paymentValues: {
         subscriptionFullPrice: null,
         subscriptionDiscountPrice: null,
@@ -30,6 +34,10 @@ const pricingTabReducer = (state = INITIAL_STATE, action) => {
                 headerValues: {
                     ...state.headerValues,
                     ...action.payload.headerValues
+                },
+                available: {
+                    ...state.available,
+                    ...action.payload.available
                 },
                 paymentValues: {
                     ...state.paymentValues,

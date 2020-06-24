@@ -20,17 +20,30 @@
             justify-content: flex-start;
             max-width: 400px;
 
+            &--available-icon {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                margin-right: 20px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                span.available-name {
+                    font-size: 1rem;
+                    text-transform: uppercase;
+                    text-align: center;
+                    padding: 10px 0 0;
+                }
+            }
+
             &--item {
                 width: 60px;
                 height: 60px;
                 border-radius: 100%;
                 background-color: #2e6ab7;
                 display: block;
-                margin-right: 20px;
-
-                &:last-of-type {
-                    margin-right: 0;
-                }
             }
         }
     }

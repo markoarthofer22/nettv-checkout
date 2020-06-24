@@ -167,11 +167,19 @@ const SubscriptionPlans = (props) => {
                                                     <div className="subscription-card--footer">
                                                         <div>
                                                             <span className="header-text">{meta.promotions_data.promotion_headline}</span>
-                                                            <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
+                                                            <img
+                                                                src={meta.promotions_data.promotion_additional_image_left ? meta.promotions_data.promotion_additional_image_left : null}
+                                                                alt=""
+                                                                className="promotion-img"
+                                                            />
                                                             <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
                                                         </div>
                                                         <div>
-                                                            <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                            <img
+                                                                src={meta.promotions_data.promotion_additional_image_right ? meta.promotions_data.promotion_additional_image_right : null}
+                                                                alt=""
+                                                                className="box-price-img"
+                                                            />
                                                         </div>
                                                     </div>
                                                 )}

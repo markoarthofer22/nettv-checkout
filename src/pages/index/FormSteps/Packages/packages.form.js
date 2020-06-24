@@ -44,18 +44,23 @@ const PackagesForm = (props) => {
             .then((response) => {
                 setData(response.data);
 
+                console.log(response.data);
+
                 const initialPricing = {
                     currency: response.data.meta.currency,
                     headerValues: {
                         name: response.data.title,
                         price: response.data.meta.base_price
+                    },
+                    available: {
+                        availableDevices: response.data.meta.additional.devices,
+                        features: response.data.meta.additional.features
                     }
                 };
 
                 dispatch(setInitialValues(initialPricing));
             })
             .catch((error) => {
-                console.log(error);
                 if (error) {
                     let url = `/?lang_code=${localStorage.getItem("lang_code")}`;
                     history.push(url);
@@ -85,6 +90,10 @@ const PackagesForm = (props) => {
                 headerValues: {
                     name: data.title,
                     price: data.meta.base_price
+                },
+                available: {
+                    availableDevices: data.meta.additional.devices,
+                    features: data.meta.additional.features
                 }
             };
             dispatch(resetToInitialValues(initialPricing));
@@ -111,12 +120,16 @@ const PackagesForm = (props) => {
 
     return (
         <section className="packages">
-            {variation === null && (
+            {variation === null && data && data.meta.additional && data.meta.additional.devices && (
                 <div className="top-content">
                     <h3 className="top-content--title">Uvek dostupno na:</h3>
                     <div className="top-content--icons">
-                        <span className="top-content--icons--item"></span>
-                        <span className="top-content--icons--item"></span>
+                        {data.meta.additional.devices.map((item, index) => (
+                            <div className="top-content--icons--available-icon" key={index}>
+                                <span className="top-content--icons--item"></span>
+                                <span className="available-name">{item}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}

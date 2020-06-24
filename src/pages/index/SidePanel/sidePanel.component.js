@@ -18,6 +18,9 @@ const SidePanel = (props) => {
     const isMobile = useIsBreakpoint();
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
+
+    console.log(currentPrices);
+
     return (
         <>
             {isMobile !== "large" && isMobile !== "x-large" && (
@@ -68,27 +71,27 @@ const SidePanel = (props) => {
 
                     <div className="package-section devices">
                         <p className="cart-title">Dostupno na uređajima</p>
-                        <div className="devices-icons">
-                            <ul className="devices-icons--list">
-                                <li className="devices-icons--list-item">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
-                                    <span className="title">SMART TV</span>
-                                </li>
-                                <li className="devices-icons--list-item">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
-                                    <span className="title">RAČUNAR</span>
-                                </li>
-                            </ul>
-                        </div>
+                        {currentPrices.available && currentPrices.available.availableDevices && (
+                            <div className="devices-icons">
+                                <ul className="devices-icons--list">
+                                    {currentPrices.available.availableDevices.map((item, index) => (
+                                        <li className="devices-icons--list-item" key={index}>
+                                            <SvgIcon icon="icon-instagram" iconclass="" />
+                                            <span className="title">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
 
-                        <div className="cart-row">
-                            <p className="light-cart-text">Gledaj istovremeno na</p>
-                            <p className="item-value">2 UREĐAJA</p>
-                        </div>
-                        <div className="cart-row">
-                            <p className="light-cart-text">Instaliraj EON aplikaciju na</p>
-                            <p className="item-value">6 UREĐAJA</p>
-                        </div>
+                        {currentPrices.available &&
+                            currentPrices.available.features &&
+                            currentPrices.available.features.map((item, index) => (
+                                <div className="cart-row" key={index}>
+                                    <p className="light-cart-text">{item.feature_name}</p>
+                                    <p className="item-value">{item.feature_description}</p>
+                                </div>
+                            ))}
                     </div>
 
                     <div className="package-section payments">
