@@ -19,7 +19,7 @@ const SidePanel = (props) => {
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
 
-    console.log(currentPrices);
+    // console.log(currentPrices);
 
     return (
         <>
@@ -29,6 +29,22 @@ const SidePanel = (props) => {
                 </Button>
             )}
             <section className={`sidePanel ${isMobile !== "large" && isMobile !== "x-large" ? "mobile" : ""} ${openMobile ? "open" : ""}`}>
+                {currentPrices.headerValues.isPromotion && (
+                    <div className="side-panel-promo">
+                        <div>
+                            <div className="promo-icon">
+                                <span>%</span>
+                                <p className="promo-icon-text">Akcija</p>
+                            </div>
+                            {currentPrices.variationProductName && (
+                                <div className="promotion-name">
+                                    <p>{currentPrices.variationProductName}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 <div className="side-panel-box">
                     <div className="package-section">
                         <p className="cart-title">Izabrani paket</p>

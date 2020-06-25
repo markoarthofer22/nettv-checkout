@@ -4,11 +4,13 @@ const INITIAL_STATE = {
     currency: "EUR",
     mainProductId: null,
     variationProductId: null,
+    variationProductName: null,
     headerValues: {
         name: "",
         price: "0.00",
         subscriptionDuration: null,
-        contractLength: null
+        contractLength: null,
+        isPromotion: false
     },
     available: {
         availableDevices: null,

@@ -44,8 +44,6 @@ const PackagesForm = (props) => {
             .then((response) => {
                 setData(response.data);
 
-                console.log(response.data);
-
                 const initialPricing = {
                     currency: response.data.meta.currency,
                     headerValues: {

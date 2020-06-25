@@ -5,7 +5,7 @@
     height: 100%;
     border-left: 1px solid #ccc;
     background-color: #f1f1f1;
-    padding: 3rem;
+    // padding: 3rem;
     margin-bottom: 3rem;
 
     &.mobile {
@@ -26,7 +26,7 @@
 
     @include lg {
         margin-bottom: 0;
-        padding: 2rem 4rem 0;
+        // padding: 2rem 4rem 0;
         height: calc(100vh - 120px);
     }
 }
@@ -34,6 +34,11 @@
 .sidePanel .side-panel-box {
     max-width: 400px;
     width: 100%;
+    padding: 3rem;
+
+    @include lg {
+        padding: 2rem 0 0 4rem;
+    }
 }
 
 .sidePanel .side-panel-box .package-section .cart-row {
@@ -255,4 +260,57 @@
 .cart-row .notice {
     font-size: 1.2rem;
     color: #999;
+}
+
+.sidePanel .side-panel-promo {
+    width: 100%;
+    padding: 10px 0;
+    background-color: $yellow;
+
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 400px;
+        width: 100%;
+        padding-left: 4rem;
+    }
+
+    .promo-icon {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+
+        span {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: #fff;
+            border-radius: 50%;
+            height: 32px;
+            width: 32px;
+            padding: 6px 0 0 9px;
+            color: #333;
+        }
+
+        p.promo-icon-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding-left: 2rem;
+            text-transform: uppercase;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+        }
+    }
+
+    .promotion-name p {
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-align: right;
+        line-height: 1.4;
+        color: #333;
+        margin: 0;
+        max-width: 160px;
+    }
 }

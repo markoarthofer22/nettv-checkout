@@ -123,6 +123,11 @@ textarea {
             &:first-of-type {
                 margin-right: 20px;
             }
+
+            &.phone-type {
+                width: calc(50% - 10px);
+                margin-right: 0;
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
-import { setIsLoading } from "../../../../redux/globals/globals.actions";
+import { setIsLoading, getDataForURL } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
@@ -107,7 +107,24 @@ const PaymentInfo = (props) => {
     const onInputChange = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setBuyersCountryCustomInputValue(e.currentTarget.value);
+        setBuyersCountryCustomInputValue(e.target.value);
+    };
+
+    const checkPromoCode = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // debugger;
+
+        let id = document.querySelector("input[name='promoCode']").value;
+
+        let url = `netapi/referral?referral_code=${id}`;
+        dispatch(getDataForURL(url))
+            .then((response) => {})
+            .catch((error) => {
+                if (error) {
+                }
+            });
     };
 
     return (
@@ -193,7 +210,7 @@ const PaymentInfo = (props) => {
 
                         {countriesList && (
                             <div className="form-item-container">
-                                <div className={`form-item-floating ${errors.phoneNumber && "invalid"}`}>
+                                <div className={`form-item-floating ${errors.phoneNumber && "invalid"} phone-type`}>
                                     <InputTypePhone
                                         countriesList={countriesList}
                                         returnInputValue={returnInputValue}
@@ -266,7 +283,7 @@ const PaymentInfo = (props) => {
                             <div className={`form-item-floating ${errors.promoCode && "invalid"}`}>
                                 <InputComponent name="promoCode" labelText="Unesi kod" register={register} required={{ required: false }} />
                             </div>
-                            <Button customClass="promo-code-button" title="Potvrdi" clicked={(e) => console.log("click")} />
+                            <Button customClass="promo-code-button" title="Potvrdi" clicked={(e) => checkPromoCode(e)} />
                         </div>
 
                         <div className="group-title-holder">
