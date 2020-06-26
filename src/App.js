@@ -42,13 +42,14 @@ export default function App(props) {
         localStorage.setItem("lang_code", userIpID && userIpID.countryCode ? userIpID.countryCode : userIpID);
     }, [userIpID]);
 
-    useEffect(() => {
-        if (isError) {
-            document.body.classList.add("no-scroll");
-        } else {
-            document.body.classList.remove("no-scroll");
-        }
-    }, [isError]);
+    // disabled for now,
+    // useEffect(() => {
+    //     if (isError) {
+    //         document.body.classList.add("no-scroll");
+    //     } else {
+    //         document.body.classList.remove("no-scroll");
+    //     }
+    // }, [isError]);
     return (
         <>
             <Helmet>

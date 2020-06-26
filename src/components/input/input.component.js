@@ -5,9 +5,8 @@ import SvgIcon from "../svg-icon/svg-icon.component";
 
 import "./input.scss";
 
-const InputComponent = ({ type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue, tooltip, disabled, showPasswordIcon, showIcon }) => {
+const InputComponent = ({ type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue, tooltip, disabled, showPasswordIcon, showIcon, ref }) => {
     const [showPassword, setShowPassword] = useState(false);
-
     return (
         <>
             <label htmlFor={name ? name : null} className={`floating-label ${tooltip ? "flexed" : ""}`}>

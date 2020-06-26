@@ -109,22 +109,25 @@ const SubscriptionPlans = (props) => {
                                                     }}
                                                 />
 
-                                                {meta.promotions_data && (
-                                                    <div className="subscription-card--footer">
-                                                        <div>
-                                                            <span className="header-text">{meta.promotions_data.promotion_headline}</span>
-                                                            {meta.promotions_data.promotion_additional_image_left && (
-                                                                <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
-                                                            )}
-                                                            <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                                {meta.promotions_data &&
+                                                    (meta.promotions_data.promotion_additional_image_left ||
+                                                        meta.promotions_data.promotion_additional_image_right ||
+                                                        meta.promotions_data.promotion_image) && (
+                                                        <div className="subscription-card--footer">
+                                                            <div>
+                                                                <span className="header-text">{meta.promotions_data.promotion_headline}</span>
+                                                                {meta.promotions_data.promotion_additional_image_left && (
+                                                                    <img src={meta.promotions_data.promotion_additional_image_left} alt="" className="promotion-img" />
+                                                                )}
+                                                                <span className="footer-text">{meta.promotions_data.promotion_subtitle}</span>
+                                                            </div>
+                                                            <div>
+                                                                {meta.promotions_data.promotion_additional_image_right && (
+                                                                    <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            {meta.promotions_data.promotion_additional_image_right && (
-                                                                <img src={meta.promotions_data.promotion_additional_image_right} alt="" className="box-price-img" />
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                )}
+                                                    )}
                                             </div>
                                         </div>
                                     );

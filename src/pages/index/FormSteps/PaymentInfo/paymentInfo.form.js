@@ -18,7 +18,7 @@ import InputComponent from "../../../../components/input/input.component";
 import InputTypePhone from "../../../../components/input/input-type-phone.component";
 
 //hooks
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const PaymentInfo = (props) => {
     const dispatch = useDispatch();
@@ -31,9 +31,15 @@ const PaymentInfo = (props) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
     const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
+    const [referralCodeResponse, setReferralCodeResponse] = useState({
+        status: false,
+        message: "",
+        value: ""
+    });
 
-    const { register, handleSubmit, errors, watch } = useForm({
-        mode: "onChange"
+    const { register, handleSubmit, errors, watch, setError } = useForm({
+        mode: "onChange",
+        reValidateMode: "onSubmit"
     });
 
     useEffect(() => {
@@ -59,7 +65,8 @@ const PaymentInfo = (props) => {
             ..._data,
             countryName: countryName,
             countryID: countryID,
-            paymentMethod: paymentMethod
+            paymentMethod: paymentMethod,
+            promoCode: referralCodeResponse.status ? referralCodeResponse.value : null
         };
         console.log(payload);
     };
@@ -107,24 +114,27 @@ const PaymentInfo = (props) => {
     const onInputChange = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
         setBuyersCountryCustomInputValue(e.target.value);
     };
 
     const checkPromoCode = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        let url = `netapi/referral?referral_code=${document.querySelector("input[name='promoCode']").value}`;
 
-        // debugger;
+        dispatch(setIsLoading(true));
+        axios.get(url).then((response) => {
+            if (!response.data.response.status) setError("promoCode", "notMatch", response.data.response.message);
 
-        let id = document.querySelector("input[name='promoCode']").value;
-
-        let url = `netapi/referral?referral_code=${id}`;
-        dispatch(getDataForURL(url))
-            .then((response) => {})
-            .catch((error) => {
-                if (error) {
-                }
+            setReferralCodeResponse({
+                status: response.data.response.status,
+                message: response.data.response.message,
+                value: document.querySelector("input[name='promoCode']").value
             });
+
+            dispatch(setIsLoading(false));
+        });
     };
 
     return (
@@ -281,10 +291,20 @@ const PaymentInfo = (props) => {
 
                         <div className="form-item-container promo">
                             <div className={`form-item-floating ${errors.promoCode && "invalid"}`}>
-                                <InputComponent name="promoCode" labelText="Unesi kod" register={register} required={{ required: false }} />
+                                <InputComponent
+                                    name="promoCode"
+                                    labelText="Unesi kod"
+                                    errorMessage={errors.promoCode}
+                                    // register={register}
+                                    required={{
+                                        required: false
+                                    }}
+                                />
                             </div>
                             <Button customClass="promo-code-button" title="Potvrdi" clicked={(e) => checkPromoCode(e)} />
                         </div>
+
+                        {/* {referralCodeResponse.status && <span className="promo-response">{referralCodeResponse.message}</span>} */}
 
                         <div className="group-title-holder">
                             <h2 className="title">Podaci o plaćanju</h2>

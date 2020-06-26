@@ -100,14 +100,25 @@ const SidePanel = (props) => {
                             </div>
                         )}
 
-                        {currentPrices.available &&
-                            currentPrices.available.features &&
+                        {currentPrices.available && currentPrices.available.features ? (
                             currentPrices.available.features.map((item, index) => (
                                 <div className="cart-row" key={index}>
                                     <p className="light-cart-text">{item.feature_name}</p>
                                     <p className="item-value">{item.feature_description}</p>
                                 </div>
-                            ))}
+                            ))
+                        ) : (
+                            <>
+                                <div className="cart-row">
+                                    <p className="light-cart-text">Gledaj istovremeno na</p>
+                                    <p className="item-value">-</p>
+                                </div>
+                                <div className="cart-row">
+                                    <p className="light-cart-text">Instaliraj EON aplikaciju na</p>
+                                    <p className="item-value">-</p>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     <div className="package-section payments">
