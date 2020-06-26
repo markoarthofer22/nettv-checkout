@@ -121,6 +121,12 @@ const PaymentInfo = (props) => {
     const checkPromoCode = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        if (document.querySelector("input[name='promoCode']").value.length < 1) {
+            setError("promoCode", "empty", "Molimo unesite promo kod!");
+            return;
+        }
+
         let url = `netapi/referral?referral_code=${document.querySelector("input[name='promoCode']").value}`;
 
         dispatch(setIsLoading(true));
@@ -303,8 +309,6 @@ const PaymentInfo = (props) => {
                             </div>
                             <Button customClass="promo-code-button" title="Potvrdi" clicked={(e) => checkPromoCode(e)} />
                         </div>
-
-                        {/* {referralCodeResponse.status && <span className="promo-response">{referralCodeResponse.message}</span>} */}
 
                         <div className="group-title-holder">
                             <h2 className="title">Podaci o plaćanju</h2>

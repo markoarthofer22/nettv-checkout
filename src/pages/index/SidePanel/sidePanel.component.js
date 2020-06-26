@@ -19,7 +19,13 @@ const SidePanel = (props) => {
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
 
-    // console.log(currentPrices);
+    useEffect(() => {
+        currentPrices.available &&
+            currentPrices.available.availableDevices &&
+            currentPrices.available.availableDevices.forEach((item) => {
+                document.querySelector(`.devices-icons--list-item[data-type="${item}"]`).classList.add("active");
+            });
+    }, [currentPrices.available.availableDevices]);
 
     return (
         <>
@@ -87,18 +93,31 @@ const SidePanel = (props) => {
 
                     <div className="package-section devices">
                         <p className="cart-title">Dostupno na uređajima</p>
-                        {currentPrices.available && currentPrices.available.availableDevices && (
-                            <div className="devices-icons">
-                                <ul className="devices-icons--list">
-                                    {currentPrices.available.availableDevices.map((item, index) => (
-                                        <li className="devices-icons--list-item" key={index}>
-                                            <SvgIcon icon="icon-instagram" iconclass="" />
-                                            <span className="title">{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+
+                        <div className="devices-icons">
+                            <ul className="devices-icons--list">
+                                <li className="devices-icons--list-item" data-type="smart-tv">
+                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="title">Smart TV</span>
+                                </li>
+                                <li className="devices-icons--list-item" data-type="racunar">
+                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="title">Računar</span>
+                                </li>
+                                <li className="devices-icons--list-item" data-type="tablet">
+                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="title">Tablet</span>
+                                </li>
+                                <li className="devices-icons--list-item" data-type="mobilni">
+                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="title">Mobilni</span>
+                                </li>
+                                <li className="devices-icons--list-item" data-type="box">
+                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="title">Box</span>
+                                </li>
+                            </ul>
+                        </div>
 
                         {currentPrices.available && currentPrices.available.features ? (
                             currentPrices.available.features.map((item, index) => (
