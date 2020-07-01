@@ -15,6 +15,7 @@ import GlobalLoader from "./components/loaders/global.loader.component";
 import Helmet from "react-helmet";
 import ReactGA from "react-ga";
 import Routes from "./routes/Routes";
+import { config } from "react-transition-group";
 
 //geoIp
 const geoip2 = window.geoip2;
@@ -28,13 +29,15 @@ export default function App(props) {
     const dispatch = useDispatch();
     const isError = useSelector(selectIsLoading);
     const allowedMarket = useSelector(selectAllCountryIDs);
-    const [userIpID, setUserIpID] = useState();
+    const [userIpID, setUserIpID] = useState("other");
 
     useEffect(() => {
-        geoip2.country((response) => {
-            const customersCountryID = response.country.iso_code.toLowerCase();
-            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
-        });
+        if (geoip2) {
+            geoip2.country((response) => {
+                const customersCountryID = response.country.iso_code.toLowerCase();
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
+            });
+        }
     }, []);
 
     useEffect(() => {
@@ -50,6 +53,7 @@ export default function App(props) {
     //         document.body.classList.remove("no-scroll");
     //     }
     // }, [isError]);
+
     return (
         <>
             <Helmet>

@@ -8,6 +8,7 @@ import "./header.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
+import Logo from "../../../public/assets/logo.png";
 
 const Header = (props) => {
     const history = useHistory();
@@ -18,7 +19,7 @@ const Header = (props) => {
         <>
             <header className="header">
                 <a href="https://nettvplus.com/">
-                    <img src="/assets/logo.png" alt="Logo" className="logo" />
+                    <img src={Logo} alt="Logo" className="logo" />
                 </a>
             </header>
             <div className="navigation-bar">

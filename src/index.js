@@ -12,14 +12,14 @@ import store from "./redux/store";
 import { loadableReady } from "@loadable/component";
 
 loadableReady(() => {
-  ReactDOM.hydrate(
-    <Provider store={store}>
-      <BrowserRouter>{renderRoutes(Routes)}</BrowserRouter>
-    </Provider>,
-    document.getElementById("root")
-  );
+    ReactDOM.hydrate(
+        <Provider store={store}>
+            <BrowserRouter basename="/shop">{renderRoutes(Routes)}</BrowserRouter>{" "}
+        </Provider>,
+        document.getElementById("root")
+    );
 });
 
 if (module.hot) {
-  module.hot.accept();
+    module.hot.accept();
 }

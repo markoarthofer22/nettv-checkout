@@ -24,11 +24,16 @@ const SubscriptionPlans = (props) => {
     const [params, setParams] = useState({});
 
     useEffect(() => {
-        let url = `/products/${history.location.search}`;
+        let url;
+        if (localStorage.getItem("lang_code")) {
+            url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
+        } else {
+            url = `/products/${history.location.search}`;
+        }
         dispatch(getDataForURL(url)).then((response) => {
             setData(response.data);
         });
-    }, [history.location]);
+    }, [history.location, localStorage.getItem("lang_code")]);
 
     useEffect(() => {
         data ? dispatch(setIsLoading(false)) : dispatch(setIsLoading(true));
