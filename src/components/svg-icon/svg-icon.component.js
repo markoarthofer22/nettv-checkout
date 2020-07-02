@@ -7,8 +7,8 @@ const SvgIcon = ({ icon, iconclass, pureSvg }) => {
         return (
             <svg className={`icon ${iconclass ? iconclass : icon}`}>
                 {/* Production */}
-                <use xlinkHref={`/shop/assets/icons-v7.svg#${icon}`} />
-                {/* <use xlinkHref={`/assets/icons-v7.svg#${icon}`} /> */}
+                {/* <use xlinkHref={`/shop/assets/icons-v7.svg#${icon}`} /> */}
+                <use xlinkHref={`/assets/icons-v7.svg#${icon}`} />
             </svg>
         );
     }

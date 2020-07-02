@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Helmet from "react-helmet";
+import { CSSTransition } from "react-transition-group";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import { setIsLoading } from "../../redux/globals/globals.actions";
-import { selectAllCountryIDs } from "../../redux/globals/globals.selectors";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
@@ -13,7 +13,6 @@ import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.act
 import "./indexpage.scss";
 
 //components
-import NoPage from "../404/no-page.component";
 import ContainerFull from "../../components/layout/container-full.component";
 import PackagesForm from "./FormSteps/Packages/Packages.form";
 import SidePanel from "./SidePanel/sidePanel.component";
@@ -26,10 +25,22 @@ const IndexPage = (props) => {
     const currentStep = useSelector(selectCurrentStep);
     const dispatch = useDispatch();
     const queryString = require("query-string");
+    const [test, setTest] = useState(false);
 
     useEffect(() => {
         dispatch(setIsLoading(false));
     }, [dispatch]);
+
+    useEffect(() => {
+        const promiseFunction = new Promise((resolve) => {
+            setTest(false);
+            resolve();
+        });
+
+        promiseFunction.then(() => {
+            setTest(true);
+        });
+    }, [currentStep]);
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
@@ -100,7 +111,17 @@ const IndexPage = (props) => {
                 </Helmet>
                 <ContainerFull>
                     <div className={`form-holder ${currentStep === 1 ? "homepage" : ""} ${currentStep === 3 ? "full-width" : ""}`}>
-                        <div className={`form-holder--steps`}>{selectActiveStep(currentStep)}</div>
+                        <CSSTransition
+                            in={test}
+                            timeout={500}
+                            classNames={{
+                                enterActive: "animate__fadeIn",
+                                exitActive: "animate__fadeOut"
+                            }}
+                            unmountOnExit
+                        >
+                            <div className={`form-holder--steps  animate__animated`}>{selectActiveStep(currentStep)}</div>
+                        </CSSTransition>
                     </div>
 
                     {currentStep > 1 && (
