@@ -1,8 +1,9 @@
 //import order is very important!
-@import url("https://fonts.googleapis.com/css?family=Nunito|Caveat:300,400,600,700|Raleway:300,400,700&display=swap");
+// @import url("https://fonts.googleapis.com/css?family=Nunito|Caveat:300,400,600,700|Raleway:300,400,700&display=swap");
 @import "bootstrap-reboot";
 @import "variables";
 @import "bootstrap-grid";
+@import "net-tv";
 @import "../components/buttons/buttons";
 //libs
 @import "./libs/swiper";

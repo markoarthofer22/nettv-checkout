@@ -96,8 +96,11 @@ const SubscriptionPlans = (props) => {
                                             <div className="subscription-card--content">
                                                 {attributes.map((item, index) => (
                                                     <div className="option" key={index}>
-                                                        <SvgIcon icon="icon-gear-b" />
-                                                        <span className="value">{item}</span>
+                                                        {/* prod */}
+                                                        {/* <img src={`/shop/assets/product-icons/${index}.svg`} alt="Icon" /> */}
+                                                        <img src={`/assets/product-icons/${index}.svg`} alt="Icon" />
+
+                                                        <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -157,8 +160,10 @@ const SubscriptionPlans = (props) => {
                                             <div className="subscription-card--content">
                                                 {attributes.map((item, index) => (
                                                     <div className="option" key={index}>
-                                                        <SvgIcon icon="icon-gear-b" />
-                                                        <span className="value">{item}</span>
+                                                        {/* prod */}
+                                                        {/* <img src={`/shop/assets/product-icons/${index}.svg`} alt="Icon" /> */}
+                                                        <img src={`/assets/product-icons/${index}.svg`} alt="Icon" />
+                                                        <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
                                                     </div>
                                                 ))}
                                             </div>

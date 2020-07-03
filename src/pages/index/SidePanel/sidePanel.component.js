@@ -97,23 +97,23 @@ const SidePanel = (props) => {
                         <div className="devices-icons">
                             <ul className="devices-icons--list">
                                 <li className="devices-icons--list-item" data-type="smart-tv">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="device-icon net-smart-tv"></span>
                                     <span className="title">Smart TV</span>
                                 </li>
                                 <li className="devices-icons--list-item" data-type="racunar">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="device-icon net-racunar"></span>
                                     <span className="title">Računar</span>
                                 </li>
                                 <li className="devices-icons--list-item" data-type="tablet">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="device-icon net-tablet"></span>
                                     <span className="title">Tablet</span>
                                 </li>
                                 <li className="devices-icons--list-item" data-type="mobilni">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="device-icon net-mobilni"></span>
                                     <span className="title">Mobilni</span>
                                 </li>
                                 <li className="devices-icons--list-item" data-type="box">
-                                    <SvgIcon icon="icon-instagram" iconclass="" />
+                                    <span className="device-icon net-box"></span>
                                     <span className="title">Box</span>
                                 </li>
                             </ul>

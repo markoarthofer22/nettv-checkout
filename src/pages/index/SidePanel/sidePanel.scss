@@ -178,17 +178,19 @@
                 margin-right: 0;
             }
 
-            svg {
-                width: 30px;
-                height: 30px;
-                fill: #ccc;
-                margin-bottom: 5px;
-                transition: all 0.6s;
+            .device-icon {
+                position: relative;
+                font-size: 3.6rem;
+                transition: all 0.4s;
+                &::before {
+                    transition: all 0.4s;
+                    color: #ccc;
+                }
             }
 
             .title {
                 font-size: 1rem;
-                font-weight: 400;
+                font-weight: 400 !important;
                 text-transform: uppercase;
                 text-align: center;
                 color: rgba(#333, 0.5);
@@ -196,8 +198,8 @@
             }
 
             &.active {
-                svg {
-                    fill: $dark-blue;
+                .device-icon::before {
+                    color: $dark-blue;
                 }
 
                 .title {
@@ -226,9 +228,8 @@
 
 .sidePanel .custom-tooltip {
     cursor: pointer;
-    height: 12px;
-    width: 12px;
-    border: 1px solid #2e6ab7;
+    height: 15px;
+    width: 15px;
     color: #2e6ab7 !important;
     border-radius: 100%;
 
@@ -258,9 +259,8 @@
         bottom: 17px;
     }
 
-    .icon {
-        font-size: 1rem;
-        font-weight: 700;
+    .net-tooltip {
+        font-size: 1.4rem;
         position: absolute;
         top: 50%;
         left: 50%;

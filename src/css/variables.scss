@@ -42,6 +42,14 @@ $screen-lg-min: 992px;
 // Large tablets and desktops
 $screen-xl-min: 1200px;
 
+//main titles
+@font-face {
+    font-family: nettv-icons;
+    // prod
+    // src: url(/shop/fonts/nettv-icons.ttf) format("truetype");
+    src: url(/fonts/nettv-icons.ttf) format("truetype");
+}
+
 @mixin sm {
     @media (min-width: #{$screen-sm-min}) {
         @content;

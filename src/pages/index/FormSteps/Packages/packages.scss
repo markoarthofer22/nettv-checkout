@@ -39,11 +39,22 @@
             }
 
             &--item {
-                width: 60px;
+                background: linear-gradient(#2e6ab7, #1b4c8b);
+                box-sizing: border-box;
+                border-radius: 50%;
                 height: 60px;
-                border-radius: 100%;
-                background-color: #2e6ab7;
-                display: block;
+                width: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                & > span {
+                    position: relative;
+                    font-size: 3.1rem;
+                    &::before {
+                        color: $white;
+                    }
+                }
             }
         }
     }
@@ -127,7 +138,7 @@
                     color: #333;
 
                     @include lg {
-                        margin-right: 15px;
+                        margin-right: 10px;
                     }
                 }
 
@@ -135,7 +146,7 @@
                     cursor: pointer;
                     height: 15px;
                     width: 15px;
-                    border: 1px solid #2e6ab7;
+                    // border: 1px solid #2e6ab7;
                     color: #2e6ab7 !important;
                     border-radius: 100%;
                     margin-left: 10px;
@@ -171,9 +182,8 @@
                         bottom: 17px;
                     }
 
-                    .icon {
-                        font-size: 1.2rem;
-                        font-weight: 700;
+                    .net-tooltip {
+                        font-size: 1.4rem;
                         position: absolute;
                         top: 50%;
                         left: 50%;

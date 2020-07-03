@@ -124,7 +124,9 @@ const PackagesForm = (props) => {
                     <div className="top-content--icons">
                         {data.meta.additional.devices.map((item, index) => (
                             <div className="top-content--icons--available-icon" key={index}>
-                                <span className="top-content--icons--item"></span>
+                                <div className="top-content--icons--item">
+                                    <span className={`net-${item}`}></span>
+                                </div>
                                 <span className="available-name">{item}</span>
                             </div>
                         ))}
@@ -141,7 +143,7 @@ const PackagesForm = (props) => {
                             <div className={`main-content--choices-item ${data && data.box_variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Želim da gledam preko BOX-a</span>
-                                    <Tooltip title={DummyText} styles="custom-tooltip" />
+                                    <Tooltip title={DummyText} styles="custom-tooltip" icon="icon-info" />
                                 </div>
                                 <Button isLoading={data && data.box_variations.length < 1} title="Odaberi" clicked={(e) => openProductsBoxList(e)} customClass="button-blue" />
                             </div>
@@ -149,7 +151,7 @@ const PackagesForm = (props) => {
                             <div className={`main-content--choices-item ${data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Ne želim da gledam preko BOX-a</span>
-                                    <Tooltip title={DummyTextSecond} styles="custom-tooltip" />
+                                    <Tooltip title={DummyTextSecond} styles="custom-tooltip" icon="icon-info" />
                                 </div>
                                 <Button
                                     isLoading={data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1}

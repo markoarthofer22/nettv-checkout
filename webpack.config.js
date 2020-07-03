@@ -61,6 +61,16 @@ module.exports = function (_env, argv) {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.woff$|\.woff2?$|\.ttf$|\.eot$|\.otf$/,
+                    loader: "file-loader",
+                    options: {
+                        name: "fonts/[name].[ext]",
+                        publicPath: function (url) {
+                            return url.replace(/public/, "..");
+                        }
+                    }
                 }
             ]
         },
@@ -77,6 +87,12 @@ module.exports = function (_env, argv) {
                 {
                     from: path.resolve(__dirname, "public/assets"),
                     to: path.resolve(__dirname, "build/assets")
+                }
+            ]),
+            new CopyPlugin([
+                {
+                    from: path.resolve(__dirname, "public/fonts"),
+                    to: path.resolve(__dirname, "build/fonts")
                 }
             ]),
             isProduction && new CleanWebpackPlugin(),
