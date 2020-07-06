@@ -35,13 +35,28 @@ const ProductsWithBox = (props) => {
         });
 
         const setCurrentPrices = (data) => {
-            const { variation_name, contract_duration, expenses, pricing, subscription_duration, total_saving, total_sum_discount, total_sum_no_discount, variation_id, is_promotion } = item;
+            const {
+                variation_name,
+                contract_duration,
+                duration_id,
+                expenses,
+                pricing,
+                subscription_duration,
+                total_saving,
+                total_sum_discount,
+                total_sum_no_discount,
+                variation_id,
+                is_promotion
+            } = item;
 
             const currentPricing = {
                 currency: metaData.meta.currency,
                 mainProductId: metaData.meta.product_code,
                 variationProductId: variation_id,
                 variationProductName: variation_name,
+                variantDurationID: duration_id,
+                productCountryCode: metaData.meta.language_code,
+                paymentType: "plan_box",
                 headerValues: {
                     name: metaData.title,
                     price: metaData.meta.base_price,
@@ -55,7 +70,7 @@ const ProductsWithBox = (props) => {
                     boxPrice: pricing.box_price,
                     boxPriceDiscount: pricing.box_discount_price,
                     additionalExpenses: expenses,
-                    totalPrice: total_sum_discount,
+                    totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
                     totalDiscount: total_saving
                 }
             };

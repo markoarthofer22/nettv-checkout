@@ -14,10 +14,12 @@ import Tooltip from "../../../components/tooltip/tooltip.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
 
 const SidePanel = (props) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const isMobile = useIsBreakpoint();
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
+
+    console.log(currentPrices);
 
     useEffect(() => {
         currentPrices.available &&

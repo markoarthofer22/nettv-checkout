@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
-import { setIsLoading, getDataForURL } from "../../../../redux/globals/globals.actions";
+import { setIsLoading } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
-import { selectAllCountryIDs } from "../../../../redux/globals/globals.selectors";
+import { selectAllCountryIDs, globalUserIP } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
 //styles
 import "./paymentinfo.scss";
@@ -23,13 +24,16 @@ import { useForm } from "react-hook-form";
 const PaymentInfo = (props) => {
     const dispatch = useDispatch();
     const currentPriceValues = useSelector(currentPricing);
+    const userIP = useSelector(globalUserIP);
     const allowedMarket = useSelector(selectAllCountryIDs);
     const [countriesList, setCountriesList] = useState(null);
-    const [countryName, setCountryName] = useState();
+    // const [countryName, setCountryName] = useState();
+    // const [countryID, setCountryID] = useState();
+    const [countryDial, setCountryDial] = useState();
     const [buyersCountry, setBuyersCountry] = useState("");
-    const [countryID, setCountryID] = useState();
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
+    const [paymentMethodHTML, setPaymentMethodHTML] = useState("");
     const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
     const [referralCodeResponse, setReferralCodeResponse] = useState({
         status: false,
@@ -63,17 +67,41 @@ const PaymentInfo = (props) => {
 
         const payload = {
             ..._data,
-            countryName: countryName,
-            countryID: countryID,
-            paymentMethod: paymentMethod,
-            promoCode: referralCodeResponse.status ? referralCodeResponse.value : null
+            phone: returnPhoneWithoutDial(_data.phone, countryDial),
+            dialing_code: countryDial,
+            country_code: currentPriceValues.productCountryCode.toUpperCase(),
+            friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
+            ip_address: userIP,
+            account_status: "checkout",
+            subscription_type: "paid",
+            utm_source: "email",
+            utm_medium: "abc",
+            utm_campaign: "fb",
+            plan_id: currentPriceValues.mainProductId,
+            duration_id: currentPriceValues.variantDurationID,
+            subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
+                ? currentPriceValues.paymentValues.subscriptionDiscountPrice
+                : currentPriceValues.paymentValues.subscriptionFullPrice,
+            total_price: currentPriceValues.paymentValues.totalPrice,
+            currency: currentPriceValues.currency,
+            box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
+            activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
+            transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
+            discount_value: "1.00",
+            promotion_id: currentPriceValues.variationProductId,
+            paymentType: currentPriceValues.paymentType
         };
         console.log(payload);
     };
 
-    const returnInputValue = (countryID, inputValue, countryName) => {
+    const returnInputValue = (countryID, countryDial, countryName) => {
         setCountryName(countryName);
         setCountryID(countryID);
+        setCountryDial(countryDial);
+    };
+
+    const returnPhoneWithoutDial = (phoneNumber, dialCode) => {
+        return phoneNumber.replace(`+${dialCode}`, "");
     };
 
     const changeActivePayMethod = (e) => {
@@ -83,6 +111,8 @@ const PaymentInfo = (props) => {
         let current = e.currentTarget;
 
         const promiseFunction = new Promise((resolve, reject) => {
+            setPaymentMethodHTML("");
+
             document.querySelectorAll(".main-content--payment-options .checkbox").forEach((item, index) => {
                 item.classList.remove("active");
             });
@@ -96,6 +126,14 @@ const PaymentInfo = (props) => {
             current.classList.add("active");
             current.children[0].children[0].classList.add("active");
             setPaymentMethod(current.dataset.payment);
+            if (current.dataset.payment === "bank") {
+                if (document.querySelector("input[name='email']").value.length < 1) {
+                    setError("email", "empty", "Molimo unesite email adresu!");
+                    document.querySelector("input[name='email']").focus();
+                    return;
+                }
+                fetchBankHTMLCode();
+            }
         });
     };
 
@@ -122,25 +160,54 @@ const PaymentInfo = (props) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (document.querySelector("input[name='promoCode']").value.length < 1) {
-            setError("promoCode", "empty", "Molimo unesite promo kod!");
+        if (document.querySelector("input[name='friend_referral_code']").value.length < 1) {
+            setError("friend_referral_code", "empty", "Molimo unesite promo kod!");
             return;
         }
 
-        let url = `netapi/referral?referral_code=${document.querySelector("input[name='promoCode']").value}`;
+        let url = `netapi/referral?referral_code=${document.querySelector("input[name='friend_referral_code']").value}`;
 
         dispatch(setIsLoading(true));
         axios.get(url).then((response) => {
-            if (!response.data.response.status) setError("promoCode", "notMatch", response.data.response.message);
+            if (!response.data.response.status) setError("friend_referral_code", "notMatch", response.data.response.message);
 
             setReferralCodeResponse({
                 status: response.data.response.status,
                 message: response.data.response.message,
-                value: document.querySelector("input[name='promoCode']").value
+                value: document.querySelector("input[name='friend_referral_code']").value
             });
 
             dispatch(setIsLoading(false));
         });
+    };
+
+    const fetchBankHTMLCode = () => {
+        dispatch(setIsLoading(true));
+
+        const data = {
+            username: document.querySelector("input[name='email']").value,
+            country_name: currentPriceValues.productCountryCode.toUpperCase(),
+            total_price: currentPriceValues.paymentValues.totalPrice,
+            box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
+            transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
+            subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
+                ? currentPriceValues.paymentValues.subscriptionDiscountPrice
+                : currentPriceValues.paymentValues.subscriptionFullPrice,
+            activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
+            addon_price: 0,
+            currency: currentPriceValues.currency,
+            ip_address: userIP
+        };
+
+        axios
+            .post("shoppayment/bank", { ...data })
+            .then((response) => {
+                dispatch(setIsLoading(false));
+                setPaymentMethodHTML(response.data);
+            })
+            .catch((error) => {
+                dispatch(setIsLoading(false));
+            });
     };
 
     return (
@@ -149,12 +216,12 @@ const PaymentInfo = (props) => {
                 <div className="main-content--form">
                     <form noValidate={true} onSubmit={handleSubmit(handleData)} className="form-group" autoComplete="1">
                         <div className="form-item-container">
-                            <div className={`form-item-floating ${errors.firstname && "invalid"}`}>
-                                <InputComponent name="firstname" labelText="Ime" errorMessage={errors.firstname} register={register} required={{ required: "Ovo polje je obavezno" }} />
+                            <div className={`form-item-floating ${errors.name && "invalid"}`}>
+                                <InputComponent name="name" labelText="Ime" errorMessage={errors.name} register={register} required={{ required: "Ovo polje je obavezno" }} />
                             </div>
 
-                            <div className={`form-item-floating ${errors.lastname && "invalid"}`}>
-                                <InputComponent name="lastname" labelText="Prezime" errorMessage={errors.lastname} register={register} required={{ required: "Ovo polje je obavezno" }} />
+                            <div className={`form-item-floating ${errors.surname && "invalid"}`}>
+                                <InputComponent name="surname" labelText="Prezime" errorMessage={errors.surname} register={register} required={{ required: "Ovo polje je obavezno" }} />
                             </div>
                         </div>
 
@@ -180,14 +247,14 @@ const PaymentInfo = (props) => {
                         </div>
 
                         <div className="form-item-container">
-                            <div className={`form-item-floating ${errors.Password && "invalid"}`}>
+                            <div className={`form-item-floating ${errors.password && "invalid"}`}>
                                 <InputComponent
-                                    name="Password"
+                                    name="password"
                                     showPasswordIcon={true}
                                     type="password"
                                     tooltip="Lozinka mora da sadrži najmanje 7 karaktera, minimum jedan broj i jedno veliko slovo."
                                     labelText="Lozinka"
-                                    errorMessage={errors.Password}
+                                    errorMessage={errors.password}
                                     register={register}
                                     required={{
                                         required: "Ovo polje je obavezno",
@@ -202,13 +269,13 @@ const PaymentInfo = (props) => {
                                     }}
                                 />
                             </div>
-                            <div className={`form-item-floating ${errors.passwordrepeat && "invalid"}`}>
+                            <div className={`form-item-floating ${errors.confirm_password && "invalid"}`}>
                                 <InputComponent
-                                    name="passwordrepeat"
+                                    name="confirm_password"
                                     type="password"
                                     showPasswordIcon={true}
                                     labelText="Ponovi lozinku:"
-                                    errorMessage={errors.passwordrepeat}
+                                    errorMessage={errors.confirm_password}
                                     register={register}
                                     required={{
                                         required: "Ovo polje je obavezno",
@@ -217,7 +284,7 @@ const PaymentInfo = (props) => {
                                             message: "Lozinka mora sadržavati najmanje 7 znakova"
                                         },
                                         validate: (value) => {
-                                            return value === watch("Password") || "Lozinke se ne podudaraju";
+                                            return value === watch("password") || "Lozinke se ne podudaraju";
                                         }
                                     }}
                                 />
@@ -226,12 +293,12 @@ const PaymentInfo = (props) => {
 
                         {countriesList && (
                             <div className="form-item-container">
-                                <div className={`form-item-floating ${errors.phoneNumber && "invalid"} phone-type`}>
+                                <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                     <InputTypePhone
                                         countriesList={countriesList}
                                         returnInputValue={returnInputValue}
-                                        name="phoneNumber"
-                                        errorMessage={errors.phoneNumber}
+                                        name="phone"
+                                        errorMessage={errors.phone}
                                         register={register}
                                         required={{ required: "Molimo unesite broj telefona" }}
                                     />
@@ -254,11 +321,11 @@ const PaymentInfo = (props) => {
                         </div>
 
                         <div className="form-item-container">
-                            <div className={`form-item-floating ${errors.postal && "invalid"}`}>
+                            <div className={`form-item-floating ${errors.zip && "invalid"}`}>
                                 <InputComponent
-                                    name="postal"
+                                    name="zip"
                                     labelText="Poštanski broj"
-                                    errorMessage={errors.postal}
+                                    errorMessage={errors.zip}
                                     register={register}
                                     required={{
                                         required: "Ovo polje je obavezno",
@@ -270,14 +337,14 @@ const PaymentInfo = (props) => {
                                 />
                             </div>
 
-                            <div className={`form-item-floating ${errors.buyerCountry && "invalid"}`}>
+                            <div className={`form-item-floating ${errors.state && "invalid"}`}>
                                 <InputComponent
                                     inputValue={buyersCountry ? buyersCountry : buyersCountryCustomInputValue}
                                     onEveryChange={onInputChange}
                                     disabled={buyersCountry && true}
-                                    name="buyerCountry"
+                                    name="state"
                                     labelText="Država"
-                                    errorMessage={errors.buyerCountry}
+                                    errorMessage={errors.state}
                                     register={register}
                                     required={{ required: "Ovo polje je obavezno" }}
                                 />
@@ -286,8 +353,8 @@ const PaymentInfo = (props) => {
 
                         <div className="form-item-container single">
                             <div className={`form-item-floating`}>
-                                <label htmlFor="web_message">Napomena (opciono)</label>
-                                <textarea className={`no-resize`} ref={register({ required: false })} name="web_message" required />
+                                <label htmlFor="comment">Napomena (opciono)</label>
+                                <textarea className={`no-resize`} ref={register({ required: false })} name="comment" required />
                             </div>
                         </div>
 
@@ -296,11 +363,11 @@ const PaymentInfo = (props) => {
                         </div>
 
                         <div className="form-item-container promo">
-                            <div className={`form-item-floating ${errors.promoCode && "invalid"}`}>
+                            <div className={`form-item-floating ${errors.friend_referral_code && "invalid"}`}>
                                 <InputComponent
-                                    name="promoCode"
+                                    name="friend_referral_code"
                                     labelText="Unesi kod"
-                                    errorMessage={errors.promoCode}
+                                    errorMessage={errors.friend_referral_code}
                                     // register={register}
                                     required={{
                                         required: false
@@ -333,14 +400,24 @@ const PaymentInfo = (props) => {
                                     ></img>
                                 </div>
                             </div>
-                            <div className="options bank-payment" data-payment="bank" onClick={(e) => changeActivePayMethod(e)}>
+                            <div className={`options bank-payment ${paymentMethodHTML ? "has-content" : ""}`} data-payment="bank" onClick={(e) => changeActivePayMethod(e)}>
                                 <div className="text-holder">
                                     <div className={`checkbox`}>
                                         <span className="filled"></span>
                                     </div>
                                     <span className="name">Plaćanje putem bankovnog računa</span>
                                 </div>
-                                <div className="payment-description"></div>
+                                <CSSTransition
+                                    in={Boolean(paymentMethod === "bank") && Boolean(paymentMethodHTML)}
+                                    timeout={1000}
+                                    classNames={{
+                                        enterActive: "animate__fadeIn",
+                                        exitActive: "animate__fadeOut"
+                                    }}
+                                    unmountOnExit
+                                >
+                                    <div className="payment-description animate__animated" dangerouslySetInnerHTML={{ __html: paymentMethodHTML }}></div>
+                                </CSSTransition>
                             </div>
                         </div>
 

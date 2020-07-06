@@ -80,9 +80,35 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                cursor: pointer;
 
                 &.cards {
                     margin-bottom: 40px;
+                }
+
+                &.bank-payment .payment-description {
+                    padding-left: 25px;
+                    p {
+                        margin: 1.2rem 0;
+                        color: #333;
+                        font-size: 1.4rem;
+                        line-height: 1.6;
+                    }
+
+                    a {
+                        color: $dark-blue;
+                    }
+
+                    strong {
+                        color: $dark-blue;
+                    }
+                }
+
+                &.bank-payment.has-content {
+                    flex-direction: column;
+                    padding: 20px;
+                    justify-content: flex-start;
+                    align-items: flex-start;
                 }
 
                 .text-holder {

@@ -25,7 +25,7 @@ const IndexPage = (props) => {
     const currentStep = useSelector(selectCurrentStep);
     const dispatch = useDispatch();
     const queryString = require("query-string");
-    const [test, setTest] = useState(false);
+    const [cssTransitionIsOpen, setCssTransitionIsOpen] = useState(false);
 
     useEffect(() => {
         dispatch(setIsLoading(false));
@@ -33,12 +33,12 @@ const IndexPage = (props) => {
 
     useEffect(() => {
         const promiseFunction = new Promise((resolve) => {
-            setTest(false);
+            setCssTransitionIsOpen(false);
             resolve();
         });
 
         promiseFunction.then(() => {
-            setTest(true);
+            setCssTransitionIsOpen(true);
         });
     }, [currentStep]);
 
@@ -112,7 +112,7 @@ const IndexPage = (props) => {
                 <ContainerFull>
                     <div className={`form-holder ${currentStep === 1 ? "homepage" : ""} ${currentStep === 3 ? "full-width" : ""}`}>
                         <CSSTransition
-                            in={test}
+                            in={cssTransitionIsOpen}
                             timeout={500}
                             classNames={{
                                 enterActive: "animate__fadeIn",

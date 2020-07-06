@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA } from "./globals.types";
+import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA, SET_USER_IP } from "./globals.types";
 
 import mainApi from "../apis/main-api";
 
@@ -20,6 +20,13 @@ export const setDataForURL = (data) => {
     return {
         type: SET_PAGE_DATA,
         payload: data
+    };
+};
+
+export const setUserIP = (_ip) => {
+    return {
+        type: SET_USER_IP,
+        payload: _ip
     };
 };
 

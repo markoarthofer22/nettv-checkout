@@ -5,6 +5,9 @@ const INITIAL_STATE = {
     mainProductId: null,
     variationProductId: null,
     variationProductName: null,
+    variantDurationID: null,
+    productCountryCode: null,
+    paymentType: "",
     headerValues: {
         name: "",
         price: "0.00",

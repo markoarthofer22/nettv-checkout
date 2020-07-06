@@ -29,7 +29,7 @@ const InputTypePhone = ({ returnInputValue, register, required, name, errorMessa
     useEffect(() => {
         if (inputValue) {
             document.getElementById("countries").focus();
-            returnInputValue(countriesID, inputValue, countriesName);
+            returnInputValue(countriesID, countriesNumber, countriesName);
         }
     }, [inputValue]);
 

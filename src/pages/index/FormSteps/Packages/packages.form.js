@@ -46,6 +46,7 @@ const PackagesForm = (props) => {
 
                 const initialPricing = {
                     currency: response.data.meta.currency,
+                    productCountryCode: response.data.meta.language_code,
                     headerValues: {
                         name: response.data.title,
                         price: response.data.meta.base_price

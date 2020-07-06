@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading, selectAllCountryIDs } from "./redux/globals/globals.selectors";
 import _ from "underscore";
+import { setUserIP } from "./redux/globals/globals.actions";
 
 //Global scss
 import "./css/App.scss";
@@ -15,7 +16,6 @@ import GlobalLoader from "./components/loaders/global.loader.component";
 import Helmet from "react-helmet";
 import ReactGA from "react-ga";
 import Routes from "./routes/Routes";
-import { config } from "react-transition-group";
 
 //geoIp
 const geoip2 = window.geoip2;
@@ -34,7 +34,9 @@ export default function App(props) {
     useEffect(() => {
         if (geoip2) {
             geoip2.country((response) => {
+                const customersCountryIP = response.traits.ip_address;
                 const customersCountryID = response.country.iso_code.toLowerCase();
+                dispatch(setUserIP(customersCountryIP));
                 setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
             });
         }
