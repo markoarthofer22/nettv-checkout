@@ -12,14 +12,15 @@ import "./sidePanel.scss";
 // components
 import Tooltip from "../../../components/tooltip/tooltip.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
+import { parse } from "query-string";
 
 const SidePanel = (props) => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const isMobile = useIsBreakpoint();
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
 
-    console.log(currentPrices);
+    // console.log(currentPrices);
 
     useEffect(() => {
         currentPrices.available &&
@@ -174,27 +175,32 @@ const SidePanel = (props) => {
                         <div className="cart-row">
                             <p className="light-cart-text">BOX</p>
                             {!currentPrices.paymentValues.boxPrice && !currentPrices.paymentValues.boxPriceDiscount && <p className="item-value">-</p>}
-                            {currentPrices.paymentValues.boxPrice && !currentPrices.paymentValues.boxPriceDiscount && (
-                                <p className="item-value">
-                                    {parseFloat(currentPrices.paymentValues.boxPrice).toFixed(2)} {currentPrices.currency}
-                                </p>
-                            )}
-                            {currentPrices.paymentValues.boxPrice &&
-                                currentPrices.paymentValues.boxPriceDiscount &&
-                                (parseFloat(currentPrices.paymentValues.boxPrice).toFixed(2) !== parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2) ? (
-                                    <p className="item-value">
-                                        <span className="no-discount">
+
+                            {parseInt(currentPrices.paymentValues.boxPrice) > 0 && parseInt(currentPrices.paymentValues.boxPriceDiscount) > 0 && (
+                                <>
+                                    {currentPrices.paymentValues.boxPrice && !currentPrices.paymentValues.boxPriceDiscount && (
+                                        <p className="item-value">
                                             {parseFloat(currentPrices.paymentValues.boxPrice).toFixed(2)} {currentPrices.currency}
-                                        </span>
-                                        <span className="discount-price">
-                                            {parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2)} {currentPrices.currency}
-                                        </span>
-                                    </p>
-                                ) : (
-                                    <p className="item-value">
-                                        {parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2)} {currentPrices.currency}
-                                    </p>
-                                ))}
+                                        </p>
+                                    )}
+                                    {currentPrices.paymentValues.boxPrice &&
+                                        currentPrices.paymentValues.boxPriceDiscount &&
+                                        (parseFloat(currentPrices.paymentValues.boxPrice).toFixed(2) !== parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2) ? (
+                                            <p className="item-value">
+                                                <span className="no-discount">
+                                                    {parseFloat(currentPrices.paymentValues.boxPrice).toFixed(2)} {currentPrices.currency}
+                                                </span>
+                                                <span className="discount-price">
+                                                    {parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2)} {currentPrices.currency}
+                                                </span>
+                                            </p>
+                                        ) : (
+                                            <p className="item-value">
+                                                {parseFloat(currentPrices.paymentValues.boxPriceDiscount).toFixed(2)} {currentPrices.currency}
+                                            </p>
+                                        ))}
+                                </>
+                            )}
                         </div>
                         <div className={`cart-row ${currentPrices.paymentValues.additionalExpenses ? "two-row" : ""}`}>
                             <p className="light-cart-text" style={{ marginBottom: 10 + "px" }}>

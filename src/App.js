@@ -4,32 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading, selectAllCountryIDs } from "./redux/globals/globals.selectors";
 import _ from "underscore";
 import { setUserIP } from "./redux/globals/globals.actions";
-
 //Global scss
 import "./css/App.scss";
-//Google analytics
-import GoogleAnalytics from "./components/google-analytics/google-analytics.component";
 //Components
 import Header from "./components/header/header.component";
 import GlobalLoader from "./components/loaders/global.loader.component";
 //helmet
 import Helmet from "react-helmet";
-import ReactGA from "react-ga";
 import Routes from "./routes/Routes";
 
 //geoIp
 const geoip2 = window.geoip2;
 
-// if (typeof window !== "undefined") {
-//   ReactGA.initialize("UA-55087715-1");
-//   ReactGA.ga("set", "anonymizeIp", true);
-// }
-
 export default function App(props) {
     const dispatch = useDispatch();
     const isError = useSelector(selectIsLoading);
     const allowedMarket = useSelector(selectAllCountryIDs);
-    const [userIpID, setUserIpID] = useState("other");
+    const [userIpID, setUserIpID] = useState("de");
+    // for test untill we get domain fixed
+    dispatch(setUserIP("2.17.11.255"));
 
     useEffect(() => {
         if (geoip2) {
@@ -71,11 +64,6 @@ export default function App(props) {
                             "@type": "Organization",
                             "url": "",
                             "name": "",
-                            "contactPoint": {
-                                "@type": "ContactPoint",
-                                "telephone": "+385 1 48-98-555",
-                                "contactType": "Customer service"
-                            }
                         }
                     `}
                 </script>
@@ -90,8 +78,6 @@ export default function App(props) {
                             <Route key={index} path={routes.path} exact={routes.exact} component={routes.component} />
                         ))}
                     </Switch>
-
-                    {/* <Footer /> */}
                 </>
             </div>
 

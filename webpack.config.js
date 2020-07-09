@@ -9,11 +9,25 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
-//const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const dotenv = require("dotenv");
+const fs = require("fs");
 
 module.exports = function (_env, argv) {
     const isProduction = argv.mode === "production";
     const isDevelopment = !isProduction;
+
+    //for env use in react and index.html
+    //fallback to production
+    const basePath = path.join(__dirname) + "/.env";
+    // We're concatenating the environment name to our filename to specify the correct env file!
+    const envPath = basePath + "." + _env.ENVIRONMENT;
+    // Check if the file exists, otherwise fall back to the production .env
+    const finalPath = fs.existsSync(envPath) ? envPath : basePath;
+    const fileEnv = dotenv.config({ path: finalPath }).parsed;
+    const envKeys = Object.keys(fileEnv).reduce((prev, next) => {
+        prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
+        return prev;
+    }, {});
 
     return {
         entry: "./src/index.js",
@@ -110,7 +124,8 @@ module.exports = function (_env, argv) {
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             new webpack.DefinePlugin({
                 __isBrowser__: "true"
-            })
+            }),
+            new webpack.DefinePlugin(envKeys)
         ].filter(Boolean),
 
         optimization: {

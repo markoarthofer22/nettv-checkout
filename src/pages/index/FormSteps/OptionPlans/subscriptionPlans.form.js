@@ -96,10 +96,7 @@ const SubscriptionPlans = (props) => {
                                             <div className="subscription-card--content">
                                                 {attributes.map((item, index) => (
                                                     <div className="option" key={index}>
-                                                        {/* prod */}
-                                                        {/* <img src={`/shop/assets/product-icons/${index}.svg`} alt="Icon" /> */}
-                                                        <img src={`/assets/product-icons/${index}.svg`} alt="Icon" />
-
+                                                        <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
                                                         <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
                                                     </div>
                                                 ))}
@@ -160,9 +157,7 @@ const SubscriptionPlans = (props) => {
                                             <div className="subscription-card--content">
                                                 {attributes.map((item, index) => (
                                                     <div className="option" key={index}>
-                                                        {/* prod */}
-                                                        {/* <img src={`/shop/assets/product-icons/${index}.svg`} alt="Icon" /> */}
-                                                        <img src={`/assets/product-icons/${index}.svg`} alt="Icon" />
+                                                        <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
                                                         <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
                                                     </div>
                                                 ))}

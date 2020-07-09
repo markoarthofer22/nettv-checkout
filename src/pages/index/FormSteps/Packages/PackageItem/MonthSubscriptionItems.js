@@ -36,15 +36,26 @@ const MonthSubscriptionItem = (props) => {
             const initialPricing = {
                 currency: metaData.meta.currency,
                 mainProductId: metaData.meta.product_code,
+                // variationProductId: "",
+                //     variationProductName: variation_name,
+                //     variantDurationID: duration_id,
+                //     productCountryCode: metaData.meta.language_code,
+                //     paymentType: "plan_variation",
                 headerValues: {
                     name: metaData.title,
                     price: metaData.meta.base_price,
                     subscriptionDuration: parseInt(name)
+                    // contractLength: contract_duration,
+                    //         isPromotion: false
                 },
                 paymentValues: {
                     subscriptionDiscountPrice: price_discount,
                     subscriptionFullPrice: price,
+                    //         boxPrice: pricing.box_price ? pricing.boxPrice : 0,
+                    //         boxPriceDiscount: pricing.box_discount_price ? pricing.box_discount_price : 0,
+                    // additionalExpenses: expenses,
                     totalPrice: price
+                    //         totalDiscount: total_saving
                 }
             };
             dispatch(resetToInitialValues(initialPricing));

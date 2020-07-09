@@ -45,7 +45,7 @@ $screen-xl-min: 1200px;
 //main titles
 @font-face {
     font-family: nettv-icons;
-    // prod
+    // prod${process.env.PUBLIC_URL}
     // src: url(/shop/fonts/nettv-icons.ttf) format("truetype");
     src: url(/fonts/nettv-icons.ttf) format("truetype");
 }
