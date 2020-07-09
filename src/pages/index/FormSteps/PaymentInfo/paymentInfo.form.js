@@ -67,6 +67,7 @@ const PaymentInfo = (props) => {
     useEffect(() => {
         if (checkoutRef.current) {
             checkoutRef.current.submit();
+            location.reload();
         }
     }, [checkoutRedirectArray]);
 
@@ -261,7 +262,7 @@ const PaymentInfo = (props) => {
 
         const data = {
             username: document.querySelector("input[name='email']").value,
-            country_name: currentPriceValues.productCountryCode.toUpperCase(),
+            country_name: localStorage.getItem("lang_code"),
             total_price: currentPriceValues.paymentValues.totalPrice,
             box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
