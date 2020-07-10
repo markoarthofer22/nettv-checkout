@@ -16,6 +16,9 @@ module.exports = function (_env, argv) {
     const isProduction = argv.mode === "production";
     const isDevelopment = !isProduction;
 
+    //for scss
+    require("dotenv").config({ path: path.join(__dirname) + "/.env." + _env.ENVIRONMENT });
+
     //for env use in react and index.html
     //fallback to production
     const basePath = path.join(__dirname) + "/.env";
@@ -62,7 +65,17 @@ module.exports = function (_env, argv) {
                 },
                 {
                     test: /\.css$|.scss$/,
-                    use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader", "css-loader", "postcss-loader", "sass-loader"]
+                    use: [
+                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+                        "css-loader",
+                        "postcss-loader",
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                additionalData: "$env: '" + process.env.PUBLIC_URL + "';"
+                            }
+                        }
+                    ]
                 },
                 {
                     test: /\.(png|jpg|gif|svg)$/,

@@ -6,6 +6,10 @@ const lang_codes = [
         countryName: "Nemačka"
     },
     {
+        countryCode: "au",
+        countryName: "Australija"
+    },
+    {
         countryCode: "nz",
         countryName: "Novi Zeland"
     },

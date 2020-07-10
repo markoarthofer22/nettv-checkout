@@ -102,6 +102,20 @@
                     strong {
                         color: $dark-blue;
                     }
+
+                    &.error {
+                        h4 {
+                            color: $dark-blue;
+                            font-size: 1.8rem;
+                            font-weight: 500;
+                            margin-bottom: 10px;
+                            margin-top: 25px;
+                        }
+
+                        p {
+                            margin: 0;
+                        }
+                    }
                 }
 
                 &.bank-payment.has-content {

@@ -9,6 +9,7 @@ import { setIsLoading } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
+import _ from "underscore";
 //styles
 import "./paymentinfo.scss";
 
@@ -33,7 +34,7 @@ const PaymentInfo = (props) => {
     const [buyersCountry, setBuyersCountry] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
-    const [paymentMethodHTML, setPaymentMethodHTML] = useState("");
+    const [paymentMethodHTML, setPaymentMethodHTML] = useState(null);
     const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
     const [referralCodeResponse, setReferralCodeResponse] = useState({
         status: false,
@@ -139,10 +140,19 @@ const PaymentInfo = (props) => {
         axios
             .post(paymentURL, { ...payload })
             .then((response) => {
-                console.log(response.data.fd);
+                if (!_.isEmpty(response.data.errors)) {
+                    setIsButtonDisabled(false);
+                    dispatch(setIsLoading(false));
+
+                    const entries = Object.entries(response.data.errors);
+                    for (const [property, value] of entries) {
+                        setError(property, "empty", "Test Error");
+                    }
+                    document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                    return;
+                }
 
                 const entries = Object.entries(response.data.fd);
-
                 let tempArray = [];
 
                 for (const [property, value] of entries) {
@@ -377,7 +387,17 @@ const PaymentInfo = (props) => {
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}
-                                            required={{ required: "Molimo unesite broj telefona" }}
+                                            required={{
+                                                required: "Molimo unesite broj telefona",
+                                                minLength: {
+                                                    value: 10,
+                                                    message: "Molimo unesite broj telefona"
+                                                },
+                                                pattern: {
+                                                    value: /^[\+\d]?(?:[\d-.\s()]*)$/,
+                                                    message: "Molimo koristite samo brojeve"
+                                                }
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -407,8 +427,12 @@ const PaymentInfo = (props) => {
                                         required={{
                                             required: "Ovo polje je obavezno",
                                             maxLength: {
-                                                value: 7,
+                                                value: 10,
                                                 message: "Ne možete unijeti više od 10 karaktera"
+                                            },
+                                            pattern: {
+                                                value: /^[\+\d]?(?:[\d-.\s()]*)$/,
+                                                message: "Molimo koristite samo brojeve"
                                             }
                                         }}
                                     />
@@ -477,24 +501,31 @@ const PaymentInfo = (props) => {
                                         ></img>
                                     </div>
                                 </div>
-                                <div className={`options bank-payment ${paymentMethodHTML ? "has-content" : ""}`} data-payment="bank" onClick={(e) => changeActivePayMethod(e)}>
+                                <div className={`options bank-payment ${paymentMethodHTML !== null ? "has-content" : ""}`} data-payment="bank" onClick={(e) => changeActivePayMethod(e)}>
                                     <div className="text-holder">
                                         <div className={`checkbox`}>
                                             <span className="filled"></span>
                                         </div>
                                         <span className="name">Plaćanje putem bankovnog računa</span>
                                     </div>
-                                    <CSSTransition
-                                        in={Boolean(paymentMethod === "bank") && Boolean(paymentMethodHTML)}
-                                        timeout={1000}
-                                        classNames={{
-                                            enterActive: "animate__fadeIn",
-                                            exitActive: "animate__fadeOut"
-                                        }}
-                                        unmountOnExit
-                                    >
-                                        <div className="payment-description animate__animated" dangerouslySetInnerHTML={{ __html: paymentMethodHTML }}></div>
-                                    </CSSTransition>
+                                    {paymentMethodHTML !== false ? (
+                                        <CSSTransition
+                                            in={Boolean(paymentMethod === "bank") && Boolean(paymentMethodHTML)}
+                                            timeout={1000}
+                                            classNames={{
+                                                enterActive: "animate__fadeIn",
+                                                exitActive: "animate__fadeOut"
+                                            }}
+                                            unmountOnExit
+                                        >
+                                            <div className="payment-description animate__animated" dangerouslySetInnerHTML={{ __html: paymentMethodHTML }}></div>
+                                        </CSSTransition>
+                                    ) : (
+                                        <div className="payment-description error animate__animated animate__fadeIn">
+                                            <h4>Došlo je do pogreške</h4>
+                                            <p>Molimo kontaktirajte administratora!</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
