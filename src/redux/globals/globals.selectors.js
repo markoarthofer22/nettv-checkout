@@ -9,3 +9,5 @@ export const globalError = createSelector([selectGlobals], (globals) => globals.
 export const selectAllCountryIDs = createSelector([selectGlobals], (globals) => globals.lang_codes);
 
 export const globalUserIP = createSelector([selectGlobals], (globals) => globals.userIP);
+
+export const globalUserHash = createSelector([selectGlobals], (globals) => globals.userHash);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
+import _ from "underscore";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +8,8 @@ import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/ste
 import { resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { setIsLoading } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
-import { selectAllCountryIDs, globalUserIP } from "../../../../redux/globals/globals.selectors";
+import { selectAllCountryIDs, globalUserIP, globalUserHash } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
-import _ from "underscore";
 //styles
 import "./paymentinfo.scss";
 
@@ -18,6 +18,7 @@ import Button from "../../../../components/buttons/button.component";
 import SvgIcon from "../../../../components/svg-icon/svg-icon.component";
 import InputComponent from "../../../../components/input/input.component";
 import InputTypePhone from "../../../../components/input/input-type-phone.component";
+import Popup from "../../../../components/popup/popup.component";
 
 //hooks
 import { useForm } from "react-hook-form";
@@ -26,30 +27,68 @@ const PaymentInfo = (props) => {
     const dispatch = useDispatch();
     const currentPriceValues = useSelector(currentPricing);
     const userIP = useSelector(globalUserIP);
+    const userHash = useSelector(globalUserHash);
     const allowedMarket = useSelector(selectAllCountryIDs);
     const [countriesList, setCountriesList] = useState(null);
-    const [countryName, setCountryName] = useState();
-    const [countryID, setCountryID] = useState();
     const [countryDial, setCountryDial] = useState();
     const [buyersCountry, setBuyersCountry] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
     const [paymentMethodHTML, setPaymentMethodHTML] = useState(null);
     const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
+    const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
+    const [redirectUrl, setRedirectUrl] = useState("");
+    const [selfCarePhone, setSelfCarePhone] = useState("");
+
+    const checkoutRef = useRef();
+    const { register, handleSubmit, errors, watch, setError } = useForm({
+        mode: "onChange",
+        reValidateMode: "onSubmit"
+    });
     const [referralCodeResponse, setReferralCodeResponse] = useState({
         status: false,
         message: "",
         value: ""
     });
-    const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
-    const [redirectUrl, setRedirectUrl] = useState("");
-    const checkoutRef = useRef();
-
-    const { register, handleSubmit, errors, watch, setError } = useForm({
-        mode: "onChange",
-        reValidateMode: "onSubmit"
+    const [bankCheckoutResponse, setBankCheckoutResponse] = useState({
+        error: "",
+        success: false,
+        response: ""
     });
 
+    //if returning user map values to input and disable
+    useEffect(() => {
+        if (userHash) {
+            setIsButtonDisabled(true);
+            dispatch(setIsLoading(true));
+            axios
+                .post("selfcare/auth/hash", {
+                    hash: userHash
+                })
+                .then((response) => {
+                    if (!_.isEmpty(response.data.data)) {
+                        const entries = Object.entries(response.data.data);
+                        for (const [property, value] of entries) {
+                            if (document.querySelector(`input[name='${property}']`)) {
+                                if (property === "phone") {
+                                    setSelfCarePhone("+" + value);
+                                } else {
+                                    document.querySelector(`input[name='${property}']`).disabled = true;
+                                    document.querySelector(`input[name='${property}']`).value = value;
+                                }
+                            }
+                        }
+                        document.querySelector(`input[name='password']`).disabled = true;
+                        document.querySelector(`input[name='confirm_password']`).disabled = true;
+                        setIsButtonDisabled(false);
+                        dispatch(setIsLoading(false));
+                        return;
+                    }
+                });
+        }
+    }, [userHash]);
+
+    // get all dial codes
     useEffect(() => {
         dispatch(setIsLoading(true));
         axios.get("netapi/dialing_codes").then((response) => {
@@ -65,6 +104,7 @@ const PaymentInfo = (props) => {
         }
     }, []);
 
+    //if success check for submit form and submit
     useEffect(() => {
         if (checkoutRef.current) {
             checkoutRef.current.submit();
@@ -72,15 +112,13 @@ const PaymentInfo = (props) => {
         }
     }, [checkoutRedirectArray]);
 
+    //handle all data from inputs
     const handleData = (_data, e) => {
         e.preventDefault();
-
-        if (paymentMethod !== "cards") return;
 
         setIsButtonDisabled(true);
         dispatch(setIsLoading(true));
 
-        let paymentURL = currentPriceValues.paymentType === "plan_box" ? "shoppayment/box_variation" : "shoppayment/product_variation";
         let payload = {};
 
         if (currentPriceValues.paymentType === "plan_box") {
@@ -91,7 +129,7 @@ const PaymentInfo = (props) => {
                 country_code: currentPriceValues.productCountryCode.toUpperCase(),
                 friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
                 ip_address: userIP,
-                account_status: "checkout",
+                account_status: userHash ? "self_care_account" : "checkout",
                 subscription_type: "paid",
                 utm_source: "email",
                 utm_medium: "abc",
@@ -119,7 +157,7 @@ const PaymentInfo = (props) => {
                 country_code: currentPriceValues.productCountryCode.toUpperCase(),
                 friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
                 ip_address: userIP,
-                account_status: "checkout",
+                account_status: userHash ? "self_care_account" : "checkout",
                 subscription_type: "paid",
                 utm_source: "email",
                 utm_medium: "abc",
@@ -137,51 +175,70 @@ const PaymentInfo = (props) => {
             };
         }
 
-        axios
-            .post(paymentURL, { ...payload })
-            .then((response) => {
-                if (!_.isEmpty(response.data.errors)) {
+        if (paymentMethod === "cards") {
+            let paymentURL = currentPriceValues.paymentType === "plan_box" ? "shoppayment/box_variation" : "shoppayment/product_variation";
+
+            axios
+                .post(paymentURL, { ...payload })
+                .then((response) => {
+                    if (!_.isEmpty(response.data.errors)) {
+                        setIsButtonDisabled(false);
+                        dispatch(setIsLoading(false));
+
+                        const entries = Object.entries(response.data.errors);
+                        for (const [property, value] of entries) {
+                            setError(property, "empty", "Test Error");
+                        }
+                        document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        return;
+                    }
+
+                    const entries = Object.entries(response.data.fd);
+                    let tempArray = [];
+
+                    for (const [property, value] of entries) {
+                        if (property === "post_url") {
+                            setRedirectUrl(value);
+                        }
+
+                        tempArray.push({
+                            item: property,
+                            value: value
+                        });
+                    }
+
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
 
-                    const entries = Object.entries(response.data.errors);
-                    for (const [property, value] of entries) {
-                        setError(property, "empty", "Test Error");
-                    }
-                    document.querySelector(`input[name='${entries[0][0]}']`).focus();
-                    return;
-                }
+                    if (tempArray.length < 1) return;
 
-                const entries = Object.entries(response.data.fd);
-                let tempArray = [];
+                    setCheckoutRedirectArray(tempArray);
+                })
+                .catch((error) => {
+                    setIsButtonDisabled(false);
+                    dispatch(setIsLoading(false));
+                });
+        } else if (paymentMethod === "bank") {
+            let paymentURL = currentPriceValues.paymentType === "plan_box" ? "shoppayment/bank/box" : "shoppayment/bank/variation";
 
-                for (const [property, value] of entries) {
-                    if (property === "post_url") {
-                        setRedirectUrl(value);
-                    }
-
-                    tempArray.push({
-                        item: property,
-                        value: value
-                    });
-                }
-
-                setIsButtonDisabled(false);
-                dispatch(setIsLoading(false));
-
-                if (tempArray.length < 1) return;
-
-                setCheckoutRedirectArray(tempArray);
-            })
-            .catch((error) => {
-                setIsButtonDisabled(false);
-                dispatch(setIsLoading(false));
-            });
+            axios
+                .post(paymentURL, { ...payload })
+                .then((response) => {
+                    setBankCheckoutResponse(response.data);
+                    setIsButtonDisabled(false);
+                    dispatch(setIsLoading(false));
+                })
+                .catch((error) => {
+                    setIsButtonDisabled(false);
+                    dispatch(setIsLoading(false));
+                });
+        }
     };
 
+    //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
-        setCountryName(countryName);
-        setCountryID(countryID);
+        // setCountryName(countryName);
+        // setCountryID(countryID);
         setCountryDial(countryDial);
     };
 
@@ -333,50 +390,77 @@ const PaymentInfo = (props) => {
                                 </div>
                             </div>
 
-                            <div className="form-item-container">
-                                <div className={`form-item-floating ${errors.password && "invalid"}`}>
-                                    <InputComponent
-                                        name="password"
-                                        showPasswordIcon={true}
-                                        type="password"
-                                        tooltip="Lozinka mora da sadrži najmanje 7 karaktera, minimum jedan broj i jedno veliko slovo."
-                                        labelText="Lozinka"
-                                        errorMessage={errors.password}
-                                        register={register}
-                                        required={{
-                                            required: "Ovo polje je obavezno",
-                                            minLength: {
-                                                value: 7,
-                                                message: "Lozinka mora sadržavati najmanje 7 znakova"
-                                            },
-                                            pattern: {
-                                                value: /^(?=.*[A-Z])(?=.*[0-9])/,
-                                                message: "Lozinka mora sadržavati barem jedno veliko slovo i jedan broj"
-                                            }
-                                        }}
-                                    />
+                            {userHash ? (
+                                <div className="form-item-container">
+                                    <div className={`form-item-floating ${errors.password && "invalid"}`}>
+                                        <InputComponent
+                                            disabled={true}
+                                            name="password"
+                                            showPasswordIcon={true}
+                                            type="password"
+                                            labelText="Lozinka"
+                                            errorMessage={errors.password}
+                                            register={register}
+                                        />
+                                    </div>
+                                    <div className={`form-item-floating ${errors.confirm_password && "invalid"}`}>
+                                        <InputComponent
+                                            disabled={true}
+                                            name="confirm_password"
+                                            type="password"
+                                            showPasswordIcon={true}
+                                            labelText="Ponovi lozinku:"
+                                            errorMessage={errors.confirm_password}
+                                            register={register}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={`form-item-floating ${errors.confirm_password && "invalid"}`}>
-                                    <InputComponent
-                                        name="confirm_password"
-                                        type="password"
-                                        showPasswordIcon={true}
-                                        labelText="Ponovi lozinku:"
-                                        errorMessage={errors.confirm_password}
-                                        register={register}
-                                        required={{
-                                            required: "Ovo polje je obavezno",
-                                            minLength: {
-                                                value: 7,
-                                                message: "Lozinka mora sadržavati najmanje 7 znakova"
-                                            },
-                                            validate: (value) => {
-                                                return value === watch("password") || "Lozinke se ne podudaraju";
-                                            }
-                                        }}
-                                    />
+                            ) : (
+                                <div className="form-item-container">
+                                    <div className={`form-item-floating ${errors.password && "invalid"}`}>
+                                        <InputComponent
+                                            name="password"
+                                            showPasswordIcon={true}
+                                            type="password"
+                                            tooltip="Lozinka mora da sadrži najmanje 7 karaktera, minimum jedan broj i jedno veliko slovo."
+                                            labelText="Lozinka"
+                                            errorMessage={errors.password}
+                                            register={register}
+                                            required={{
+                                                required: "Ovo polje je obavezno",
+                                                minLength: {
+                                                    value: 7,
+                                                    message: "Lozinka mora sadržavati najmanje 7 znakova"
+                                                },
+                                                pattern: {
+                                                    value: /^(?=.*[A-Z])(?=.*[0-9])/,
+                                                    message: "Lozinka mora sadržavati barem jedno veliko slovo i jedan broj"
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={`form-item-floating ${errors.confirm_password && "invalid"}`}>
+                                        <InputComponent
+                                            name="confirm_password"
+                                            type="password"
+                                            showPasswordIcon={true}
+                                            labelText="Ponovi lozinku:"
+                                            errorMessage={errors.confirm_password}
+                                            register={register}
+                                            required={{
+                                                required: "Ovo polje je obavezno",
+                                                minLength: {
+                                                    value: 7,
+                                                    message: "Lozinka mora sadržavati najmanje 7 znakova"
+                                                },
+                                                validate: (value) => {
+                                                    return value === watch("password") || "Lozinke se ne podudaraju";
+                                                }
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             {countriesList && (
                                 <div className="form-item-container">
@@ -384,6 +468,7 @@ const PaymentInfo = (props) => {
                                         <InputTypePhone
                                             countriesList={countriesList}
                                             returnInputValue={returnInputValue}
+                                            predefinedValue={selfCarePhone}
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}
@@ -566,11 +651,11 @@ const PaymentInfo = (props) => {
                                         />
                                         <label htmlFor="terms2">
                                             Potvrđujem da sam pročitao{" "}
-                                            <a target="_blank" href="https://nettvplus.com/Pravila-koriscenja/a30552-Uslovi-koriscenja.html">
+                                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
                                                 Uslove korišćenja
                                             </a>{" "}
                                             i{" "}
-                                            <a target="_blank" href="https://nettvplus.com/Pravila-koriscenja/a30551-Politika-privatnosti.html">
+                                            <a target="_blank" href="https://sbb-shop.ea93.work/politika-privatnosti/">
                                                 Politiku privatnosti
                                             </a>{" "}
                                             i saglasan sam sa njihovim uslovima.
@@ -599,6 +684,39 @@ const PaymentInfo = (props) => {
                         <input type="hidden" name={item.item} value={item.value} key={Math.random()} readOnly />
                     ))}
                 </form>
+            )}
+
+            {(bankCheckoutResponse.success || bankCheckoutResponse.error) && (
+                <CSSTransition in={bankCheckoutResponse.success || bankCheckoutResponse.error} timeout={500} classNames="slide-in" unmountOnExit>
+                    <Popup
+                        class="checkout-message"
+                        closePopup={(e) => {
+                            if (bankCheckoutResponse.error) {
+                                setBankCheckoutResponse({
+                                    success: false,
+                                    error: "",
+                                    response: ""
+                                });
+                            } else {
+                                setBankCheckoutResponse({
+                                    success: false,
+                                    error: "",
+                                    response: ""
+                                });
+                                location.reload();
+                            }
+                        }}
+                    >
+                        {bankCheckoutResponse.error ? (
+                            <div>
+                                <h2>Greška!</h2>
+                                <p>{bankCheckoutResponse.error}</p>
+                            </div>
+                        ) : (
+                            <div dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response ? bankCheckoutResponse.response : bankCheckoutResponse.error }}></div>
+                        )}
+                    </Popup>
+                </CSSTransition>
             )}
         </>
     );

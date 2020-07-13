@@ -8,7 +8,7 @@ import "./header.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
-import Logo from "../../../public/assets/logo.png";
+import Logo from "../../../public/assets/nettv-logo.svg";
 
 const Header = (props) => {
     const history = useHistory();
@@ -18,7 +18,7 @@ const Header = (props) => {
     return (
         <>
             <header className="header">
-                <a href="https://nettvplus.com/">
+                <a href="https://sbb-shop.ea93.work/">
                     <img src={Logo} alt="Logo" className="logo" />
                 </a>
             </header>

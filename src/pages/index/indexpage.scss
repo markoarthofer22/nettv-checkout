@@ -7,7 +7,7 @@
         flex-direction: column;
         padding: 0;
 
-        @include md {
+        @include lg {
             padding: 0 !important;
             flex-direction: row;
         }
@@ -18,14 +18,17 @@
             justify-content: flex-end;
 
             @include lg {
+                padding: 0 5rem 0 10rem;
+            }
+
+            @include rwd(1600) {
                 padding: 0 10rem 0 22rem;
             }
 
             .form-holder--steps {
-                // max-width: 1000px;
                 width: 100%;
-                -webkit-perspective: 1000;
-                -webkit-backface-visibility: hidden;
+                // -webkit-perspective: 1000;
+                // -webkit-backface-visibility: hidden;
             }
 
             &.homepage {

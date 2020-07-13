@@ -6,7 +6,7 @@ import { setInitialValues, resetToInitialValues } from "../../../../../redux/pri
 
 const MonthSubscriptionItem = (props) => {
     const { data, metaData } = props;
-    const { name, price, price_discount, description } = data;
+    const { duration_id, expenses, pricing, total_sum_discount, total_sum_no_discount, variation_id, variation_name } = data;
     const dispatch = useDispatch();
     const [isActive, setIsActive] = useState(null);
 
@@ -36,26 +36,26 @@ const MonthSubscriptionItem = (props) => {
             const initialPricing = {
                 currency: metaData.meta.currency,
                 mainProductId: metaData.meta.product_code,
-                // variationProductId: "",
-                //     variationProductName: variation_name,
-                //     variantDurationID: duration_id,
-                //     productCountryCode: metaData.meta.language_code,
-                //     paymentType: "plan_variation",
+                variationProductId: variation_id,
+                variationProductName: variation_name,
+                variantDurationID: duration_id,
+                productCountryCode: metaData.meta.language_code,
+                paymentType: "plan_variation",
                 headerValues: {
                     name: metaData.title,
                     price: metaData.meta.base_price,
-                    subscriptionDuration: parseInt(name)
-                    // contractLength: contract_duration,
-                    //         isPromotion: false
+                    subscriptionDuration: parseInt(variation_name),
+                    contractLength: 0,
+                    isPromotion: false
                 },
                 paymentValues: {
-                    subscriptionDiscountPrice: price_discount,
-                    subscriptionFullPrice: price,
-                    //         boxPrice: pricing.box_price ? pricing.boxPrice : 0,
-                    //         boxPriceDiscount: pricing.box_discount_price ? pricing.box_discount_price : 0,
-                    // additionalExpenses: expenses,
-                    totalPrice: price
-                    //         totalDiscount: total_saving
+                    subscriptionFullPrice: pricing.subscription_price,
+                    subscriptionDiscountPrice: pricing.subscription_discount_price,
+                    boxPrice: pricing.box_price ? pricing.boxPrice : 0,
+                    boxPriceDiscount: pricing.box_discount_price ? pricing.box_discount_price : 0,
+                    additionalExpenses: expenses,
+                    totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
+                    totalDiscount: 0
                 }
             };
             dispatch(resetToInitialValues(initialPricing));
@@ -69,8 +69,8 @@ const MonthSubscriptionItem = (props) => {
             </div>
 
             <div className="content">
-                <h3 className="title">{name}</h3>
-                <p className="text">{parseInt(name) > 5 ? "meseci" : "meseca"}</p>
+                <h3 className="title">{variation_name}</h3>
+                <p className="text">{parseInt(variation_name) > 5 ? "meseci" : "meseca"}</p>
             </div>
         </div>
     );

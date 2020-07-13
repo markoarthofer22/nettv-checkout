@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
-import { getDataForURL } from "../../../../redux/globals/globals.actions";
+import { getDataForURL, setUserHash } from "../../../../redux/globals/globals.actions";
 import { setInitialValues, resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.selectors";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
@@ -15,7 +15,7 @@ import "./packages.scss";
 import Tooltip from "../../../../components/tooltip/tooltip.component";
 import Button from "../../../../components/buttons/button.component";
 import SvgIcon from "../../../../components/svg-icon/svg-icon.component";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 //product Items
 import ProductsWithBox from "./PackageItem/ProductsWithBox";
@@ -38,6 +38,10 @@ const PackagesForm = (props) => {
             url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
         } else {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
+        }
+
+        if (queryParams["uec"]) {
+            dispatch(setUserHash(queryParams["uec"]));
         }
 
         dispatch(getDataForURL(url))
@@ -206,7 +210,11 @@ const PackagesForm = (props) => {
                         <li className="main-content--notice-box--list-item">
                             Možeš da nas obavestiš da želiš da vratiš BOX bez navođenja bilo kakvog posebnog razloga. To možeš da učiniš u roku od 14 dana od njegovog prijema poštom, mejlom, telefonom
                             i sl. Ako nam izjavu upućuješ poštom ili mejlom možeš i da popuniš izjavu koju ćemo ti poslati uz mejl nakon obavljene kupovine. Više informacija o postupku vraćanja možeš
-                            naći <Link to="https://nettvplus.com/Pravila-koriscenja/a30552-Uslovi-koriscenja.html#stb_device">ovde</Link> ili u mejlu koji ćemo ti poslati nakon kupovine.
+                            naći{" "}
+                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                                ovde
+                            </a>{" "}
+                            ili u mejlu koji ćemo ti poslati nakon kupovine.
                         </li>
                     </ul>
                 </div>

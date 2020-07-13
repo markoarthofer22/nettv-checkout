@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_USER_IP } from "./globals.types";
+import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_USER_IP, SET_USER_HASH } from "./globals.types";
 
 const lang_codes = [
     {
@@ -75,7 +75,8 @@ const INITIAL_STATE = {
     isLoading: false,
     lang_codes: lang_codes,
     userIP: "",
-    globalError: false
+    globalError: false,
+    userHash: ""
 };
 
 const globalsReducer = (state = INITIAL_STATE, action) => {
@@ -96,6 +97,13 @@ const globalsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 userIP: action.payload
+            };
+        }
+
+        case SET_USER_HASH: {
+            return {
+                ...state,
+                userHash: action.payload
             };
         }
 

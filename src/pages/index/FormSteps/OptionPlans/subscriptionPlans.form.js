@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { getDataForURL, setIsLoading } from "../../../../redux/globals/globals.actions";
 
@@ -10,11 +10,10 @@ import "./subscriptionPlans.scss";
 
 // components
 import Button from "../../../../components/buttons/button.component";
-import SvgIcon from "../../../../components/svg-icon/svg-icon.component";
 import { Link, useParams, useHistory } from "react-router-dom";
 import Container from "../../../../components/layout/container.component";
 import CustomSwiper from "../../../../components/swiper/swiper.component";
-import useIsBreakpoint from "../../../../hooks/useIsBreakpoint.hook";
+import useIsBreakpoint from "../../../../components/hooks/useIsBreakpoint.hook";
 
 const SubscriptionPlans = (props) => {
     const history = useHistory();

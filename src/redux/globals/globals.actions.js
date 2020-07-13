@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA, SET_USER_IP } from "./globals.types";
+import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA, SET_USER_IP, SET_USER_HASH } from "./globals.types";
 
 import mainApi from "../apis/main-api";
 
@@ -30,6 +30,12 @@ export const setUserIP = (_ip) => {
     };
 };
 
+export const setUserHash = (_hash) => {
+    return {
+        type: SET_USER_HASH,
+        payload: _hash
+    };
+};
 export const getDataForURL = (url) => {
     return (dispatch) => {
         dispatch(setIsLoading(true));

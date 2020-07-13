@@ -284,7 +284,11 @@
         align-items: center;
         max-width: 400px;
         width: 100%;
-        padding-left: 4rem;
+        padding: 0 3rem;
+        @include lg {
+            padding-left: 4rem;
+            padding-right: 0;
+        }
     }
 
     .promo-icon {

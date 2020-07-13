@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Select from "../select/select.component";
 import "./input-phone.scss";
-// const countries = require('../../JSON/countries_list.json');
+import _ from "underscore";
 
-const InputTypePhone = ({ returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesNumber, setCountriesNumber] = useState();
@@ -21,6 +21,12 @@ const InputTypePhone = ({ returnInputValue, register, required, name, errorMessa
         }
         setInputValue(`+${countriesNumber}`);
     };
+
+    useEffect(() => {
+        if (predefinedValue) {
+
+        }
+    }, [predefinedValue]);
 
     useEffect(() => {
         checkForCountryPhone(countriesID);
@@ -54,7 +60,7 @@ const InputTypePhone = ({ returnInputValue, register, required, name, errorMessa
                         name={name}
                         autoComplete="off"
                         ref={register ? register({ ...required }) : null}
-                        value={inputValue}
+                        value={predefinedValue ? predefinedValue : inputValue}
                         onChange={(e) => setInput(e)}
                     />
                     <span name={name} error={errorMessage && errorMessage.message} />

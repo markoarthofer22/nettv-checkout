@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-
+import _ from "underscore";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
-import useIsBreakpoint from "../../../hooks/useIsBreakpoint.hook";
+import useIsBreakpoint from "../../../components/hooks/useIsBreakpoint.hook";
 import Button from "../../../components/buttons/button.component";
 
 //styles
@@ -12,7 +12,6 @@ import "./sidePanel.scss";
 // components
 import Tooltip from "../../../components/tooltip/tooltip.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
-import { parse } from "query-string";
 
 const SidePanel = (props) => {
     const dispatch = useDispatch();
@@ -23,11 +22,13 @@ const SidePanel = (props) => {
     // console.log(currentPrices);
 
     useEffect(() => {
-        currentPrices.available &&
-            currentPrices.available.availableDevices &&
-            currentPrices.available.availableDevices.forEach((item) => {
-                document.querySelector(`.devices-icons--list-item[data-type="${item}"]`).classList.add("active");
-            });
+        currentPrices.available && currentPrices.available.availableDevices
+            ? currentPrices.available.availableDevices.forEach((item) => {
+                  document.querySelector(`.devices-icons--list-item[data-type="${item}"]`).classList.add("active");
+              })
+            : document.querySelectorAll(`.devices-icons--list-item`).forEach((item) => {
+                  item.classList.remove("active");
+              });
     }, [currentPrices.available.availableDevices]);
 
     return (
@@ -202,14 +203,14 @@ const SidePanel = (props) => {
                                 </>
                             )}
                         </div>
-                        <div className={`cart-row ${currentPrices.paymentValues.additionalExpenses ? "two-row" : ""}`}>
+                        <div className={`cart-row ${!_.isEmpty(currentPrices.paymentValues.additionalExpenses) ? "two-row" : ""}`}>
                             <p className="light-cart-text" style={{ marginBottom: 10 + "px" }}>
                                 Dodatni troškovi
                             </p>
-                            {!currentPrices.paymentValues.additionalExpenses && <p className="item-value">-</p>}
-                            {currentPrices.paymentValues.additionalExpenses &&
-                                currentPrices.paymentValues.additionalExpenses.activation_price &&
-                                (parseFloat(currentPrices.paymentValues.additionalExpenses.activation_price) > 0 ? (
+                            {_.isEmpty(currentPrices.paymentValues.additionalExpenses) && <p className="item-value">-</p>}
+
+                            {!_.isEmpty(currentPrices.paymentValues.additionalExpenses) ? (
+                                currentPrices.paymentValues.additionalExpenses.activation_price && currentPrices.paymentValues.additionalExpenses.activation_price > 0 ? (
                                     <div className="sub-item-value">
                                         <span className="name">- Aktivacija</span>{" "}
                                         <span className="value">
@@ -220,11 +221,11 @@ const SidePanel = (props) => {
                                     <div className="sub-item-value">
                                         <span className="name">- Aktivacija</span> <span className="value">-</span>
                                     </div>
-                                ))}
+                                )
+                            ) : null}
 
-                            {currentPrices.paymentValues.additionalExpenses &&
-                                currentPrices.paymentValues.additionalExpenses.delivery_price &&
-                                (parseFloat(currentPrices.paymentValues.additionalExpenses.delivery_price) > 0 ? (
+                            {!_.isEmpty(currentPrices.paymentValues.additionalExpenses) ? (
+                                currentPrices.paymentValues.additionalExpenses.delivery_price && currentPrices.paymentValues.additionalExpenses.delivery_price > 0 ? (
                                     <div className="sub-item-value">
                                         <span className="name">- Dostava</span>{" "}
                                         <span className="value">
@@ -235,7 +236,8 @@ const SidePanel = (props) => {
                                     <div className="sub-item-value">
                                         <span className="name">- Dostava</span> <span className="value">-</span>
                                     </div>
-                                ))}
+                                )
+                            ) : null}
                         </div>
                     </div>
 
@@ -251,14 +253,14 @@ const SidePanel = (props) => {
                             {!currentPrices.paymentValues.totalPrice && <p className="item-value">-</p>}
                         </div>
 
-                        {currentPrices.paymentValues.totalDiscount && parseFloat(currentPrices.paymentValues.totalDiscount) > 0 && (
+                        {currentPrices.paymentValues.totalDiscount && parseInt(currentPrices.paymentValues.totalDiscount) > 0 ? (
                             <div className="cart-row blue">
                                 <p className="cart-title">Uštedeli ste</p>
                                 <p className="item-value">
                                     {parseFloat(currentPrices.paymentValues.totalDiscount).toFixed(2)} {currentPrices.currency}
                                 </p>
                             </div>
-                        )}
+                        ) : null}
                     </div>
 
                     <div className="cart-row">

@@ -52,7 +52,19 @@ const pricingTabReducer = (state = INITIAL_STATE, action) => {
         case RESET_TO_INITIAL_VALUES: {
             return {
                 ...INITIAL_STATE,
-                ...action.payload
+                ...action.payload,
+                headerValues: {
+                    ...INITIAL_STATE.headerValues,
+                    ...action.payload.headerValues
+                },
+                available: {
+                    ...INITIAL_STATE.available,
+                    ...action.payload.available
+                },
+                paymentValues: {
+                    ...INITIAL_STATE.paymentValues,
+                    ...action.payload.paymentValues
+                }
             };
         }
         default:

@@ -254,10 +254,19 @@
             &-item {
                 font-size: 1.2rem;
                 color: #666;
-                line-height: 1.8rem;
+                line-height: 1.6rem;
                 padding-left: 1rem;
                 position: relative;
                 margin-bottom: 1rem;
+
+                a {
+                    color: $blue;
+                    transition: all 0.4s;
+
+                    &:hover {
+                        color: $dark-blue;
+                    }
+                }
 
                 &::before {
                     content: "*";
@@ -300,9 +309,9 @@
             width: calc(50% - 1rem);
         }
 
-        @include rwd(1600) {
-            flex-direction: row;
-        }
+        // @include rwd(1600) {
+        //     flex-direction: row;
+        // }
 
         &::before {
             content: "";

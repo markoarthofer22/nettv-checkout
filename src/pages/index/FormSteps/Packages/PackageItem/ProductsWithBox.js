@@ -72,6 +72,9 @@ const ProductsWithBox = (props) => {
                     additionalExpenses: expenses,
                     totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
                     totalDiscount: total_saving
+                },
+                available: {
+                    availableDevices: [...metaData.meta.additional.devices, "box"]
                 }
             };
 
