@@ -24,7 +24,7 @@ const InputTypePhone = ({ predefinedValue, returnInputValue, register, required,
 
     useEffect(() => {
         if (predefinedValue) {
-
+            setInputValue(predefinedValue);
         }
     }, [predefinedValue]);
 
@@ -49,9 +49,16 @@ const InputTypePhone = ({ predefinedValue, returnInputValue, register, required,
                 Broj telefona
             </label>
             <div className="form-item-phone">
-                <Select data={countriesList} placeholder="Odaberi državu" selectClass="select-countries" returnValue={returnValueFromSelect} isSearchable />
+                <Select
+                    data={countriesList}
+                    placeholder="Odaberi državu"
+                    selectClass={`select-countries ${Boolean(predefinedValue) ? "disabled" : ""}`}
+                    returnValue={returnValueFromSelect}
+                    isSearchable
+                />
                 <div className="countries-input-holder">
                     <input
+                        disabled={Boolean(predefinedValue)}
                         type="text"
                         className={errorMessage && "invalid"}
                         error={errorMessage && errorMessage.message}
@@ -60,7 +67,7 @@ const InputTypePhone = ({ predefinedValue, returnInputValue, register, required,
                         name={name}
                         autoComplete="off"
                         ref={register ? register({ ...required }) : null}
-                        value={predefinedValue ? predefinedValue : inputValue}
+                        value={inputValue}
                         onChange={(e) => setInput(e)}
                     />
                     <span name={name} error={errorMessage && errorMessage.message} />

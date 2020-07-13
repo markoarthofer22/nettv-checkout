@@ -70,7 +70,7 @@ const PaymentInfo = (props) => {
                         const entries = Object.entries(response.data.data);
                         for (const [property, value] of entries) {
                             if (document.querySelector(`input[name='${property}']`)) {
-                                if (property === "phone") {
+                                if (property == "phone") {
                                     setSelfCarePhone("+" + value);
                                 } else {
                                     document.querySelector(`input[name='${property}']`).disabled = true;
@@ -82,11 +82,10 @@ const PaymentInfo = (props) => {
                         document.querySelector(`input[name='confirm_password']`).disabled = true;
                         setIsButtonDisabled(false);
                         dispatch(setIsLoading(false));
-                        return;
                     }
                 });
         }
-    }, [userHash]);
+    }, [userHash, countriesList]);
 
     // get all dial codes
     useEffect(() => {

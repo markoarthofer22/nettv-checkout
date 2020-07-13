@@ -10,6 +10,19 @@
         flex-basis: 35%;
         height: 40px;
 
+        &.disabled {
+            pointer-events: none;
+
+            .select-header {
+                color: #999;
+
+                svg {
+                    fill: #999;
+                    stroke: #999;
+                }
+            }
+        }
+
         @include lg {
             flex-basis: 40%;
         }
@@ -20,8 +33,9 @@
             border: none;
             border-right: 1px solid #ccc;
             color: #333;
-
+            transition: all 0.4s;
             svg {
+                transition: all 0.4s;
                 fill: $black;
                 stroke: $black;
                 height: 10px;
