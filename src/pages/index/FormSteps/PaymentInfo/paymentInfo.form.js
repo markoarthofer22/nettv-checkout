@@ -3,12 +3,12 @@ import { CSSTransition } from "react-transition-group";
 import _ from "underscore";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { setIsLoading } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
-import { selectAllCountryIDs, globalUserIP, globalUserHash } from "../../../../redux/globals/globals.selectors";
+import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
 //styles
 import "./paymentinfo.scss";
@@ -28,6 +28,8 @@ const PaymentInfo = (props) => {
     const currentPriceValues = useSelector(currentPricing);
     const userIP = useSelector(globalUserIP);
     const userHash = useSelector(globalUserHash);
+    const userTZ = useSelector(globalUserTZ);
+    const userOriginCountry = useSelector(globalUserCountry);
     const allowedMarket = useSelector(selectAllCountryIDs);
     const [countriesList, setCountriesList] = useState(null);
     const [countryDial, setCountryDial] = useState();
@@ -128,6 +130,8 @@ const PaymentInfo = (props) => {
                 country_code: currentPriceValues.productCountryCode.toUpperCase(),
                 friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
                 ip_address: userIP,
+                originTZ: userTZ,
+                originCountry: userOriginCountry,
                 account_status: userHash ? "self_care_account" : "checkout",
                 subscription_type: "paid",
                 utm_source: "email",
@@ -156,6 +160,8 @@ const PaymentInfo = (props) => {
                 country_code: currentPriceValues.productCountryCode.toUpperCase(),
                 friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
                 ip_address: userIP,
+                originTZ: userTZ,
+                originCountry: userOriginCountry,
                 account_status: userHash ? "self_care_account" : "checkout",
                 subscription_type: "paid",
                 utm_source: "email",

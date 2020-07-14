@@ -11,3 +11,7 @@ export const selectAllCountryIDs = createSelector([selectGlobals], (globals) => 
 export const globalUserIP = createSelector([selectGlobals], (globals) => globals.userIP);
 
 export const globalUserHash = createSelector([selectGlobals], (globals) => globals.userHash);
+
+export const globalUserTZ = createSelector([selectGlobals], (globals) => globals.userTimeZone);
+
+export const globalUserCountry = createSelector([selectGlobals], (globals) => globals.userCountryOrigin);

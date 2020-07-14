@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectIsLoading, selectAllCountryIDs } from "./redux/globals/globals.selectors";
 import _ from "underscore";
-import { setUserIP } from "./redux/globals/globals.actions";
 //Global scss
 import "./css/App.scss";
 //Components
@@ -12,42 +11,42 @@ import GlobalLoader from "./components/loaders/global.loader.component";
 //helmet
 import Helmet from "react-helmet";
 import Routes from "./routes/Routes";
+import { setUserOriginCountry } from "./redux/globals/globals.actions";
 
-//geoIp
-const geoip2 = window.geoip2;
+const getCookie = (name) => {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(";");
+
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+};
 
 export default function App(props) {
-    const dispatch = useDispatch();
     const isError = useSelector(selectIsLoading);
+    const dispatch = useDispatch();
     const allowedMarket = useSelector(selectAllCountryIDs);
-    const [userIpID, setUserIpID] = useState("de");
-    // for test untill we get domain fixed
-    dispatch(setUserIP("2.17.11.255"));
+    const [userIpID, setUserIpID] = useState();
+    const lang_cookie = getCookie("originCountry");
 
     useEffect(() => {
-        if (geoip2) {
-            geoip2.country((response) => {
-                const customersCountryIP = response.traits.ip_address;
-                const customersCountryID = response.country.iso_code.toLowerCase();
-                dispatch(setUserIP(customersCountryIP));
-                setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
-            });
+        if (lang_cookie === null) {
+            setUserIpID("other");
+        } else {
+            const customersCountryID = lang_cookie.toLowerCase();
+            dispatch(setUserOriginCountry(customersCountryID));
+            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
         }
     }, []);
 
     useEffect(() => {
+        //for test
         if (localStorage.getItem("lang_code") === undefined) return;
-        localStorage.setItem("lang_code", userIpID && userIpID.countryCode ? userIpID.countryCode : userIpID);
+        localStorage.setItem("lang_code", userIpID);
     }, [userIpID]);
-
-    // disabled for now,
-    // useEffect(() => {
-    //     if (isError) {
-    //         document.body.classList.add("no-scroll");
-    //     } else {
-    //         document.body.classList.remove("no-scroll");
-    //     }
-    // }, [isError]);
 
     return (
         <>

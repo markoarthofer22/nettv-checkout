@@ -49,19 +49,18 @@ const IndexPage = (props) => {
                 ...queryParams,
                 lang_code: "other"
             };
+            let url = `/products/?${queryString.stringify(queryParams)}`;
+            history.push(url);
+        } else if (localStorage.getItem("lang_code") !== "undefined") {
+            queryParams = {
+                ...queryParams,
+                lang_code: localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
+            };
+
+            console.log(queryParams);
 
             let url = `/products/?${queryString.stringify(queryParams)}`;
             history.push(url);
-        } else {
-            if (localStorage.getItem("lang_code") !== "undefined") {
-                queryParams = {
-                    ...queryParams,
-                    lang_code: localStorage.getItem("lang_code")
-                };
-
-                let url = `/products/?${queryString.stringify(queryParams)}`;
-                history.push(url);
-            }
         }
     }, [localStorage.getItem("lang_code")]);
 

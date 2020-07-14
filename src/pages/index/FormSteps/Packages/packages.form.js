@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
-import { getDataForURL, setUserHash } from "../../../../redux/globals/globals.actions";
+import { getDataForURL, setUserHash, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
 import { setInitialValues, resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.selectors";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
@@ -47,7 +47,9 @@ const PackagesForm = (props) => {
         dispatch(getDataForURL(url))
             .then((response) => {
                 setData(response.data);
-
+                dispatch(setUserIP(response.data.origin));
+                dispatch(setUserTZ(response.data.originTZ));
+                dispatch(setUserOriginCountry(response.data.originCountry.toLowerCase()));
                 const initialPricing = {
                     currency: response.data.meta.currency,
                     productCountryCode: response.data.meta.language_code,
@@ -69,7 +71,7 @@ const PackagesForm = (props) => {
                     history.push(url);
                 }
             });
-    }, [history.location]);
+    }, [history.location, localStorage.getItem("lang_code")]);
 
     const DummyText =
         "EON Smart Box svaki TV pretvara u Smart TV. Pomoću EON Smart Boxa možete uživati u najboljem sadržaju iz NetTV Plus paketa i preuzimati aplikacije iz Google Play Store-a. Sve što vam je potrebno je HDMI priključak i internet konekcija.";

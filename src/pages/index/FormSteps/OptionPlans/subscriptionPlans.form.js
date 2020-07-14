@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //redux
 import { useDispatch } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
-import { getDataForURL, setIsLoading } from "../../../../redux/globals/globals.actions";
+import { getDataForURL, setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
 
 //styles
 import "./subscriptionPlans.scss";
@@ -30,7 +30,10 @@ const SubscriptionPlans = (props) => {
             url = `/products/${history.location.search}`;
         }
         dispatch(getDataForURL(url)).then((response) => {
-            setData(response.data);
+            setData(response.data.products);
+            dispatch(setUserIP(response.data.origin));
+            dispatch(setUserTZ(response.data.originTZ));
+            dispatch(setUserOriginCountry(response.data.originCountry.toLowerCase()));
         });
     }, [history.location, localStorage.getItem("lang_code")]);
 
