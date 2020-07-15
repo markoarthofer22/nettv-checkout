@@ -3,13 +3,16 @@ import _ from "underscore";
 import SvgIcon from "../svg-icon/svg-icon.component";
 import "./select.scss";
 
-const Select = (props) => {
+const Select = ({ title, data, selectClass, placeholder, label, returnValue, isSearchable }) => {
     const [isOpen, setOpen] = useState(false);
-    const [selectedTitle, setSelectedTitle] = useState(props.title);
-    const [selectData, setSelectData] = useState(props.data);
-    const { selectClass, placeholder, label, returnValue, isSearchable } = props;
+    const [selectedTitle, setSelectedTitle] = useState("");
+    const [selectData, setSelectData] = useState(data);
     const searchInput = useRef();
     const mainInput = useRef();
+
+    useEffect(() => {
+        setSelectedTitle(title);
+    }, [title]);
 
     useEffect(() => {
         /* if (isOpen) {
@@ -49,10 +52,10 @@ const Select = (props) => {
 
     const searchTroughSelectData = (e) => {
         if (e.target.value.length !== 0) {
-            let res = props.data.filter((item) => new RegExp(e.target.value, "i").test(item.country));
+            let res = data.filter((item) => new RegExp(e.target.value, "i").test(item.country));
             setSelectData(res);
         } else {
-            setSelectData(props.data);
+            setSelectData(data);
         }
     };
 

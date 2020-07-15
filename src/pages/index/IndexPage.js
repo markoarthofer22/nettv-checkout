@@ -43,21 +43,20 @@ const IndexPage = (props) => {
     }, [currentStep]);
 
     useEffect(() => {
+        if (localStorage.getItem("lang_code") === undefined) return;
         let queryParams = queryString.parse(history.location.search);
-        if ((!queryParams.lang_code || queryParams.lang_code === "") && !localStorage.getItem("lang_code")) {
+        if ((!queryParams.lang_code || queryParams.lang_code === "") && localStorage.getItem("lang_code") === undefined) {
             queryParams = {
                 ...queryParams,
                 lang_code: "other"
             };
             let url = `/products/?${queryString.stringify(queryParams)}`;
             history.push(url);
-        } else if (localStorage.getItem("lang_code") !== "undefined") {
+        } else {
             queryParams = {
                 ...queryParams,
                 lang_code: localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
             };
-
-            console.log(queryParams);
 
             let url = `/products/?${queryString.stringify(queryParams)}`;
             history.push(url);
@@ -72,7 +71,7 @@ const IndexPage = (props) => {
         } else {
             dispatch(setCurrentNavigationStep(1));
         }
-    }, []);
+    }, [history.location]);
 
     const selectActiveStep = (_step) => {
         let step = _step;

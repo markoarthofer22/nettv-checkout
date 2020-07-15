@@ -34,8 +34,9 @@ const PackagesForm = (props) => {
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
         let url;
-        if (queryParams["product_code"] && queryParams["lang_code"]) {
-            url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${queryParams["lang_code"]}`;
+
+        if (queryParams.product_code && queryParams.product_code !== "") {
+            url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=${localStorage.getItem("lang_code")}`;
         } else {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
         }

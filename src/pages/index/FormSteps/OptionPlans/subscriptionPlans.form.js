@@ -24,6 +24,7 @@ const SubscriptionPlans = (props) => {
 
     useEffect(() => {
         let url;
+
         if (localStorage.getItem("lang_code")) {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
         } else {

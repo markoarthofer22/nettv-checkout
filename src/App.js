@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { selectIsLoading, selectAllCountryIDs } from "./redux/globals/globals.selectors";
+import { Route, Switch, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAllCountryIDs } from "./redux/globals/globals.selectors";
 import _ from "underscore";
 //Global scss
 import "./css/App.scss";
@@ -11,7 +11,6 @@ import GlobalLoader from "./components/loaders/global.loader.component";
 //helmet
 import Helmet from "react-helmet";
 import Routes from "./routes/Routes";
-import { setUserOriginCountry } from "./redux/globals/globals.actions";
 
 const getCookie = (name) => {
     var nameEQ = name + "=";
@@ -26,26 +25,28 @@ const getCookie = (name) => {
 };
 
 export default function App(props) {
-    const isError = useSelector(selectIsLoading);
-    const dispatch = useDispatch();
     const allowedMarket = useSelector(selectAllCountryIDs);
-    const [userIpID, setUserIpID] = useState();
-    const lang_cookie = getCookie("originCountry");
+    const selected_lang_cookie = getCookie("selected_language");
+    const [userIpID, setUserIpID] = useState(
+        _.findWhere(allowedMarket, { countryCode: selected_lang_cookie.toLowerCase() })
+            ? _.findWhere(allowedMarket, { countryCode: selected_lang_cookie.toLowerCase() })
+            : { countryCode: localStorage.getItem("lang_code") }
+    );
+    const history = useHistory();
 
     useEffect(() => {
-        if (lang_cookie === null) {
-            setUserIpID("other");
+        if (selected_lang_cookie === null) {
+            setUserIpID({ countryCode: "other" });
         } else {
-            const customersCountryID = lang_cookie.toLowerCase();
-            dispatch(setUserOriginCountry(customersCountryID));
-            setUserIpID(_.findWhere(allowedMarket, { countryCode: customersCountryID }) ? _.findWhere(allowedMarket, { countryCode: customersCountryID }) : "other");
+            const selectedCustomerCountryID = selected_lang_cookie.toLowerCase();
+            setUserIpID(_.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) ? _.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) : { countryCode: "other" });
         }
-    }, []);
+    }, [history.location, selected_lang_cookie]);
 
     useEffect(() => {
         //for test
         if (localStorage.getItem("lang_code") === undefined) return;
-        localStorage.setItem("lang_code", userIpID);
+        localStorage.setItem("lang_code", userIpID.countryCode);
     }, [userIpID]);
 
     return (

@@ -3,39 +3,44 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
-    const [countriesNumber, setCountriesNumber] = useState();
+    const [countriesDial, setCountriesDial] = useState();
     const [inputValue, setInputValue] = useState("");
 
     const returnValueFromSelect = (name, value, valueNumber) => {
         setCountriesName(name);
         setCountriesID(value);
-        setCountriesNumber(valueNumber);
+        setCountriesDial(valueNumber);
     };
 
     const checkForCountryPhone = (countryID) => {
-        if (countryID === undefined && countriesNumber === undefined) {
+        if (countryID === undefined && countriesDial === undefined) {
             return;
         }
-        setInputValue(`+${countriesNumber}`);
+        setInputValue(`+${countriesDial}`);
     };
 
     useEffect(() => {
-        if (predefinedValue) {
+        if (predefinedValue && predefinedDialValue) {
+            let country = _.find(countriesList, (item) => item.dialing_code == predefinedDialValue);
+            setCountriesID(country.iso);
+            setCountriesName(country.country);
+            setCountriesDial(country.dialing_code);
             setInputValue(predefinedValue);
         }
-    }, [predefinedValue]);
+    }, [predefinedValue, predefinedDialValue]);
 
     useEffect(() => {
+        if (predefinedValue && predefinedDialValue) return;
         checkForCountryPhone(countriesID);
     }, [countriesID]);
 
     useEffect(() => {
         if (inputValue) {
             document.getElementById("countries").focus();
-            returnInputValue(countriesID, countriesNumber, countriesName);
+            returnInputValue(countriesID, countriesDial, countriesName);
         }
     }, [inputValue]);
 
@@ -50,6 +55,7 @@ const InputTypePhone = ({ predefinedValue, returnInputValue, register, required,
             </label>
             <div className="form-item-phone">
                 <Select
+                    title={predefinedDialValue && predefinedValue && countriesName}
                     data={countriesList}
                     placeholder="Odaberi državu"
                     selectClass={`select-countries ${Boolean(predefinedValue) ? "disabled" : ""}`}

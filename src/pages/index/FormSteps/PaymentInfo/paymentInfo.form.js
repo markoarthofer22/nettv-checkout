@@ -41,6 +41,8 @@ const PaymentInfo = (props) => {
     const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
     const [redirectUrl, setRedirectUrl] = useState("");
     const [selfCarePhone, setSelfCarePhone] = useState("");
+    const [selfCareDial, setSelfCareDial] = useState("");
+    const [isHashError, setIsHashError] = useState(true);
 
     const checkoutRef = useRef();
     const { register, handleSubmit, errors, watch, setError } = useForm({
@@ -68,11 +70,24 @@ const PaymentInfo = (props) => {
                     hash: userHash
                 })
                 .then((response) => {
+                    if (response.data.success === false) {
+                        setIsHashError(response.data.success);
+                        setIsButtonDisabled(false);
+                        dispatch(setIsLoading(false));
+                        return;
+                    } else {
+                        setIsHashError(response.data.success);
+                    }
+
                     if (!_.isEmpty(response.data.data)) {
                         const entries = Object.entries(response.data.data);
                         for (const [property, value] of entries) {
+                            if (property === "dialing_code") {
+                                setSelfCareDial(value);
+                            }
+
                             if (document.querySelector(`input[name='${property}']`)) {
-                                if (property == "phone") {
+                                if (property === "phone") {
                                     setSelfCarePhone("+" + value);
                                 } else {
                                     document.querySelector(`input[name='${property}']`).disabled = true;
@@ -395,7 +410,7 @@ const PaymentInfo = (props) => {
                                 </div>
                             </div>
 
-                            {userHash ? (
+                            {userHash && isHashError ? (
                                 <div className="form-item-container">
                                     <div className={`form-item-floating ${errors.password && "invalid"}`}>
                                         <InputComponent
@@ -474,6 +489,7 @@ const PaymentInfo = (props) => {
                                             countriesList={countriesList}
                                             returnInputValue={returnInputValue}
                                             predefinedValue={selfCarePhone}
+                                            predefinedDialValue={selfCareDial}
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}
