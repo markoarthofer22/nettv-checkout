@@ -1,4 +1,5 @@
-import { SET_INITIAL_VALUES, RESET_TO_INITIAL_VALUES } from "./pricingTab.types";
+import { SET_INITIAL_VALUES, RESET_TO_INITIAL_VALUES, SET_PAYMENT_OPTIONS } from "./pricingTab.types";
+import _ from "underscore";
 
 const INITIAL_STATE = {
     currency: "EUR",
@@ -13,7 +14,9 @@ const INITIAL_STATE = {
         price: "0.00",
         subscriptionDuration: null,
         contractLength: null,
-        isPromotion: false
+        isPromotion: false,
+        paymentOptions: {},
+        selectedPaymentOptions: {}
     },
     available: {
         availableDevices: null,
@@ -67,6 +70,32 @@ const pricingTabReducer = (state = INITIAL_STATE, action) => {
                 }
             };
         }
+
+        case SET_PAYMENT_OPTIONS:
+            let arr;
+
+            for (const [property, value] of Object.entries(state.headerValues.paymentOptions)) {
+                if (property === action.payload) {
+                    arr = value;
+                }
+            }
+
+            return {
+                ...state,
+                headerValues: {
+                    ...state.headerValues,
+                    subscriptionDuration: arr.subscription_duration,
+                    selectedPaymentOptions: arr
+                },
+                available: {
+                    ...state.available,
+                    ...action.payload.available
+                },
+                paymentValues: {
+                    ...state.paymentValues,
+                    ...action.payload.paymentValues
+                }
+            };
         default:
             return state;
     }

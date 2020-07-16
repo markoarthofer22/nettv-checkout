@@ -1,7 +1,7 @@
 import App from "../App";
 // pages
 import IndexPage from "../pages/index/IndexPage";
-import DefaultPage from "../pages/defaultPage/defaultPage.component";
+import IndexFreeTrial from "../pages/index_free_trial/IndexFreeTrial";
 
 export default [
     {
@@ -9,6 +9,7 @@ export default [
         routes: [
             {
                 path: "/",
+                exact: true,
                 component: IndexPage
             },
             {
@@ -20,6 +21,11 @@ export default [
                 path: "/products/code/",
                 exact: true,
                 component: IndexPage
+            },
+            {
+                path: "/free-trial/",
+                exact: true,
+                component: IndexFreeTrial
             }
         ]
     }

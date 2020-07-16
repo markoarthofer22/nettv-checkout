@@ -7,6 +7,7 @@ import { getDataForURL, setUserHash, setUserIP, setUserTZ, setUserOriginCountry 
 import { setInitialValues, resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.selectors";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
+import { useHistory } from "react-router-dom";
 
 //styles
 import "./packages.scss";
@@ -15,7 +16,6 @@ import "./packages.scss";
 import Tooltip from "../../../../components/tooltip/tooltip.component";
 import Button from "../../../../components/buttons/button.component";
 import SvgIcon from "../../../../components/svg-icon/svg-icon.component";
-import { useHistory } from "react-router-dom";
 
 //product Items
 import ProductsWithBox from "./PackageItem/ProductsWithBox";

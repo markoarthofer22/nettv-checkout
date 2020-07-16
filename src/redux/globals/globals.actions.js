@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA, SET_USER_ORIGIN, SET_USER_IP, SET_USER_TZ, SET_USER_HASH } from "./globals.types";
+import { SET_HEADER_TYPE, SET_IS_LOADING, SET_GLOBAL_ERROR, SET_PAGE_DATA, SET_USER_ORIGIN, SET_USER_IP, SET_USER_TZ, SET_USER_HASH } from "./globals.types";
 
 import mainApi from "../apis/main-api";
 
@@ -48,6 +48,13 @@ export const setUserOriginCountry = (_countryCode) => {
     return {
         type: SET_USER_ORIGIN,
         payload: _countryCode
+    };
+};
+
+export const setHeaderType = (_type) => {
+    return {
+        type: SET_HEADER_TYPE,
+        payload: _type
     };
 };
 

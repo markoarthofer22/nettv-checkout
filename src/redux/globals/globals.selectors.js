@@ -15,3 +15,5 @@ export const globalUserHash = createSelector([selectGlobals], (globals) => globa
 export const globalUserTZ = createSelector([selectGlobals], (globals) => globals.userTimeZone);
 
 export const globalUserCountry = createSelector([selectGlobals], (globals) => globals.userCountryOrigin);
+
+export const headerType = createSelector([selectGlobals], (globals) => globals.headerType);

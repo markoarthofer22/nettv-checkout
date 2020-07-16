@@ -1,4 +1,4 @@
-import { SET_IS_LOADING, SET_GLOBAL_ERROR, SET_USER_IP, SET_USER_HASH, SET_USER_ORIGIN, SET_USER_TZ } from "./globals.types";
+import { SET_HEADER_TYPE, SET_IS_LOADING, SET_GLOBAL_ERROR, SET_USER_IP, SET_USER_HASH, SET_USER_ORIGIN, SET_USER_TZ } from "./globals.types";
 
 const lang_codes = [
     {
@@ -78,7 +78,8 @@ const INITIAL_STATE = {
     globalError: false,
     userHash: "",
     userTimeZone: "",
-    userCountryOrigin: ""
+    userCountryOrigin: "",
+    headerType: ""
 };
 
 const globalsReducer = (state = INITIAL_STATE, action) => {
@@ -106,6 +107,13 @@ const globalsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 userHash: action.payload
+            };
+        }
+
+        case SET_HEADER_TYPE: {
+            return {
+                ...state,
+                headerType: action.payload
             };
         }
 

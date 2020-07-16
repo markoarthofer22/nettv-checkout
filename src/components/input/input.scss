@@ -114,6 +114,7 @@ textarea {
     display: flex;
     align-items: center;
     flex-direction: column;
+    transition: all 0.6s;
 
     @include sm {
         flex-direction: row;
@@ -150,6 +151,23 @@ textarea {
             @include lg {
                 width: calc(50% - 20px);
             }
+        }
+    }
+
+    &.small {
+        .form-item-floating:first-of-type {
+            width: 30%;
+        }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+
+        input {
+            border-color: hsla(0, 0%, 80%, 0.5);
+            color: #999;
+            pointer-events: none;
         }
     }
 }

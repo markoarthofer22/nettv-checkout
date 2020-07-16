@@ -36,6 +36,10 @@
     width: 100%;
     padding: 3rem;
 
+    &.gratis {
+        padding: 2.5rem 0 0 5.4rem;
+    }
+
     @include lg {
         padding: 2rem 0 0 4rem;
     }
@@ -101,6 +105,20 @@
 
         &.total {
             border-bottom: none;
+        }
+
+        &.gratis {
+            .cart-title {
+                font-size: 1.8rem;
+                padding-top: 0.5rem;
+            }
+
+            .item-value {
+                padding-top: 0.5rem;
+                font-size: 2.4rem;
+                font-weight: 700;
+                color: #333;
+            }
         }
 
         .cart-title {
@@ -273,10 +291,37 @@
     color: #999;
 }
 
+.cart-row.notice-gratis {
+    border-top: 1px solid #dcdcdc;
+    margin-top: 2rem;
+    padding: 2rem 0;
+    p {
+        color: #333;
+        font-size: 1.2rem;
+    }
+
+    a {
+        color: $blue;
+        font-weight: 700;
+        transition: all 0.6s;
+
+        &:hover {
+            color: $dark-blue;
+        }
+    }
+}
+
 .sidePanel .side-panel-promo {
     width: 100%;
     padding: 10px 0;
     background-color: $yellow;
+    &.gratis {
+        padding: 20px 0;
+
+        & > div {
+            justify-content: center;
+        }
+    }
 
     & > div {
         display: flex;

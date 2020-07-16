@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectAllCountryIDs } from "./redux/globals/globals.selectors";
+import { selectAllCountryIDs, headerType } from "./redux/globals/globals.selectors";
 import _ from "underscore";
 //Global scss
 import "./css/App.scss";
@@ -26,9 +26,10 @@ const getCookie = (name) => {
 
 export default function App(props) {
     const allowedMarket = useSelector(selectAllCountryIDs);
+    const headerProps = useSelector(headerType);
     const selected_lang_cookie = getCookie("selected_language");
     const [userIpID, setUserIpID] = useState(
-        _.findWhere(allowedMarket, { countryCode: selected_lang_cookie.toLowerCase() })
+        _.findWhere(allowedMarket, { countryCode: selected_lang_cookie })
             ? _.findWhere(allowedMarket, { countryCode: selected_lang_cookie.toLowerCase() })
             : { countryCode: localStorage.getItem("lang_code") }
     );
@@ -71,7 +72,7 @@ export default function App(props) {
 
             <div className="wrapper">
                 <>
-                    <Header />
+                    <Header type={headerProps} />
 
                     <Switch>
                         {Routes[0].routes.map((routes, index) => (

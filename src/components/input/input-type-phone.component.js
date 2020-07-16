@@ -3,7 +3,7 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ id, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesDial, setCountriesDial] = useState();
@@ -39,8 +39,10 @@ const InputTypePhone = ({ predefinedDialValue, predefinedValue, returnInputValue
 
     useEffect(() => {
         if (inputValue) {
-            document.getElementById("countries").focus();
-            returnInputValue(countriesID, countriesDial, countriesName);
+            document.getElementById(`${id ? id : "countries"}`).focus();
+            if (returnInputValue) {
+                returnInputValue(countriesID, countriesDial, countriesName);
+            }
         }
     }, [inputValue]);
 
@@ -68,7 +70,7 @@ const InputTypePhone = ({ predefinedDialValue, predefinedValue, returnInputValue
                         type="text"
                         className={errorMessage && "invalid"}
                         error={errorMessage && errorMessage.message}
-                        id="countries"
+                        id={`${id ? id : "countries"}`}
                         required
                         name={name}
                         autoComplete="off"
