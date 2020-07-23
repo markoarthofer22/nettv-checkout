@@ -509,7 +509,7 @@ const PaymentInfo = (props) => {
                                 </div>
                             )}
 
-                            {currentPriceValues.paymentType === "plan_box" && (
+                            {currentPriceValues.paymentType === "plan_box" || (currentPriceValues.headerValues.contractLength && parseInt(currentPriceValues.headerValues.contractLength) > 0) ? (
                                 <>
                                     <div className="group-title-holder">
                                         <h2 className="title">Adresa</h2>
@@ -573,7 +573,7 @@ const PaymentInfo = (props) => {
                                         </div>
                                     </div>
                                 </>
-                            )}
+                            ) : null}
 
                             <div className="group-title-holder">
                                 <h2 className="title">Imaš promo kod? Unesi ga ovde.</h2>
