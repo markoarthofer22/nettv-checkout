@@ -509,61 +509,71 @@ const PaymentInfo = (props) => {
                                 </div>
                             )}
 
-                            <div className="group-title-holder">
-                                <h2 className="title">Adresa</h2>
-                            </div>
+                            {currentPriceValues.paymentType === "plan_box" && (
+                                <>
+                                    <div className="group-title-holder">
+                                        <h2 className="title">Adresa</h2>
+                                    </div>
 
-                            <div className="form-item-container">
-                                <div className={`form-item-floating ${errors.address && "invalid"}`}>
-                                    <InputComponent name="address" labelText="Ulica i broj" errorMessage={errors.address} register={register} required={{ required: "Ovo polje je obavezno" }} />
-                                </div>
+                                    <div className="form-item-container">
+                                        <div className={`form-item-floating ${errors.address && "invalid"}`}>
+                                            <InputComponent
+                                                name="address"
+                                                labelText="Ulica i broj"
+                                                errorMessage={errors.address}
+                                                register={register}
+                                                required={{ required: "Ovo polje je obavezno" }}
+                                            />
+                                        </div>
 
-                                <div className={`form-item-floating ${errors.city && "invalid"}`}>
-                                    <InputComponent name="city" labelText="Grad" errorMessage={errors.city} register={register} required={{ required: "Ovo polje je obavezno" }} />
-                                </div>
-                            </div>
+                                        <div className={`form-item-floating ${errors.city && "invalid"}`}>
+                                            <InputComponent name="city" labelText="Grad" errorMessage={errors.city} register={register} required={{ required: "Ovo polje je obavezno" }} />
+                                        </div>
+                                    </div>
 
-                            <div className="form-item-container">
-                                <div className={`form-item-floating ${errors.zip && "invalid"}`}>
-                                    <InputComponent
-                                        name="zip"
-                                        labelText="Poštanski broj"
-                                        errorMessage={errors.zip}
-                                        register={register}
-                                        required={{
-                                            required: "Ovo polje je obavezno",
-                                            maxLength: {
-                                                value: 10,
-                                                message: "Ne možete unijeti više od 10 karaktera"
-                                            },
-                                            pattern: {
-                                                value: /^[\+\d]?(?:[\d-.\s()]*)$/,
-                                                message: "Molimo koristite samo brojeve"
-                                            }
-                                        }}
-                                    />
-                                </div>
+                                    <div className="form-item-container">
+                                        <div className={`form-item-floating ${errors.zip && "invalid"}`}>
+                                            <InputComponent
+                                                name="zip"
+                                                labelText="Poštanski broj"
+                                                errorMessage={errors.zip}
+                                                register={register}
+                                                required={{
+                                                    required: "Ovo polje je obavezno",
+                                                    maxLength: {
+                                                        value: 10,
+                                                        message: "Ne možete unijeti više od 10 karaktera"
+                                                    },
+                                                    pattern: {
+                                                        value: /^[\+\d]?(?:[\d-.\s()]*)$/,
+                                                        message: "Molimo koristite samo brojeve"
+                                                    }
+                                                }}
+                                            />
+                                        </div>
 
-                                <div className={`form-item-floating ${errors.state && "invalid"}`}>
-                                    <InputComponent
-                                        inputValue={buyersCountry ? buyersCountry : buyersCountryCustomInputValue}
-                                        onEveryChange={onInputChange}
-                                        disabled={buyersCountry && true}
-                                        name="state"
-                                        labelText="Država"
-                                        errorMessage={errors.state}
-                                        register={register}
-                                        required={{ required: "Ovo polje je obavezno" }}
-                                    />
-                                </div>
-                            </div>
+                                        <div className={`form-item-floating ${errors.state && "invalid"}`}>
+                                            <InputComponent
+                                                inputValue={buyersCountry ? buyersCountry : buyersCountryCustomInputValue}
+                                                onEveryChange={onInputChange}
+                                                disabled={buyersCountry && true}
+                                                name="state"
+                                                labelText="Država"
+                                                errorMessage={errors.state}
+                                                register={register}
+                                                required={{ required: "Ovo polje je obavezno" }}
+                                            />
+                                        </div>
+                                    </div>
 
-                            <div className="form-item-container single">
-                                <div className={`form-item-floating`}>
-                                    <label htmlFor="comment">Napomena (opciono)</label>
-                                    <textarea className={`no-resize`} ref={register({ required: false })} name="comment" required />
-                                </div>
-                            </div>
+                                    <div className="form-item-container single">
+                                        <div className={`form-item-floating`}>
+                                            <label htmlFor="comment">Napomena (opciono)</label>
+                                            <textarea className={`no-resize`} ref={register({ required: false })} name="comment" required />
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
                             <div className="group-title-holder">
                                 <h2 className="title">Imaš promo kod? Unesi ga ovde.</h2>

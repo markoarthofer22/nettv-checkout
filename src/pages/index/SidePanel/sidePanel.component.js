@@ -72,11 +72,11 @@ const SidePanel = (props) => {
                                     : parseInt(currentPrices.headerValues.subscriptionDuration) > 0
                                     ? currentPrices.headerValues.subscriptionDuration
                                     : "-"}{" "}
-                                {!currentPrices.headerValues.subscriptionDuration || parseInt(currentPrices.headerValues.subscriptionDuration) < 1
-                                    ? ""
-                                    : parseInt(currentPrices.headerValues.subscriptionDuration) > 21
-                                    ? "meseca"
-                                    : "meseci"}
+                                {(!currentPrices.headerValues.subscriptionDuration || parseInt(currentPrices.headerValues.subscriptionDuration) < 1) && ""}
+                                {(parseInt(currentPrices.headerValues.subscriptionDuration) === 1 || parseInt(currentPrices.headerValues.subscriptionDuration) === 21) && "mesec"}
+                                {parseInt(currentPrices.headerValues.subscriptionDuration) > 1 && parseInt(currentPrices.headerValues.subscriptionDuration) < 5 && "meseca"}
+                                {parseInt(currentPrices.headerValues.subscriptionDuration) > 4 && parseInt(currentPrices.headerValues.subscriptionDuration) < 21 && "meseci"}
+                                {parseInt(currentPrices.headerValues.subscriptionDuration) > 21 && parseInt(currentPrices.headerValues.subscriptionDuration) < 25 && "meseca"}
                             </p>
                         </div>
                         <div className="cart-row">
@@ -86,11 +86,11 @@ const SidePanel = (props) => {
                             </p>
                             <p className="item-value">
                                 {!currentPrices.headerValues.contractLength ? "-" : parseInt(currentPrices.headerValues.contractLength) > 0 ? currentPrices.headerValues.contractLength : "-"}{" "}
-                                {!currentPrices.headerValues.contractLength || parseInt(currentPrices.headerValues.contractLength) < 1
-                                    ? ""
-                                    : parseInt(currentPrices.headerValues.contractLength) > 21
-                                    ? "meseca"
-                                    : "meseci"}
+                                {(!currentPrices.headerValues.contractLength || parseInt(currentPrices.headerValues.contractLength) < 1) && ""}
+                                {(parseInt(currentPrices.headerValues.contractLength) === 1 || parseInt(currentPrices.headerValues.contractLength) === 21) && "mesec"}
+                                {parseInt(currentPrices.headerValues.contractLength) > 1 && parseInt(currentPrices.headerValues.contractLength) < 5 && "meseca"}
+                                {parseInt(currentPrices.headerValues.contractLength) > 4 && parseInt(currentPrices.headerValues.contractLength) < 21 && "meseci"}
+                                {parseInt(currentPrices.headerValues.contractLength) > 21 && parseInt(currentPrices.headerValues.contractLength) < 25 && "meseca"}
                             </p>
                         </div>
                     </div>
