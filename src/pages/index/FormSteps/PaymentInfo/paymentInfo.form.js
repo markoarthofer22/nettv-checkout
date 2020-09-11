@@ -164,8 +164,7 @@ const PaymentInfo = (props) => {
                 transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
-                paymentType: currentPriceValues.paymentType,
-                hosteddataid: ""
+                paymentType: currentPriceValues.paymentType
             };
         } else if (currentPriceValues.paymentType === "plan_variation") {
             payload = {
@@ -189,14 +188,22 @@ const PaymentInfo = (props) => {
                     : currentPriceValues.paymentValues.subscriptionFullPrice,
                 total_price: currentPriceValues.paymentValues.totalPrice,
                 currency: currentPriceValues.currency,
+                box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
+                activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
+                transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
+                discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
                 paymentType: currentPriceValues.paymentType,
-                hosteddataid: ""
+                address: "",
+                city: "",
+                zip: "",
+                state: "",
+                comment: ""
             };
         }
 
         if (paymentMethod === "cards") {
-            let paymentURL = currentPriceValues.paymentType === "plan_box" ? "shoppayment/box_variation" : "shoppayment/product_variation";
+            let paymentURL = "shoppayment/card";
 
             axios
                 .post(paymentURL, { ...payload })
@@ -239,7 +246,7 @@ const PaymentInfo = (props) => {
                     dispatch(setIsLoading(false));
                 });
         } else if (paymentMethod === "bank") {
-            let paymentURL = currentPriceValues.paymentType === "plan_box" ? "shoppayment/bank/box" : "shoppayment/bank/variation";
+            let paymentURL = "shoppayment/bank/bankpayment";
 
             axios
                 .post(paymentURL, { ...payload })
@@ -257,8 +264,6 @@ const PaymentInfo = (props) => {
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
-        // setCountryName(countryName);
-        // setCountryID(countryID);
         setCountryDial(countryDial);
     };
 
@@ -349,7 +354,8 @@ const PaymentInfo = (props) => {
 
         const data = {
             username: document.querySelector("input[name='email']").value,
-            country_name: localStorage.getItem("lang_code"),
+            // country_name: localStorage.getItem("lang_code"),
+            country_name: "de",
             total_price: currentPriceValues.paymentValues.totalPrice,
             box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
@@ -509,7 +515,7 @@ const PaymentInfo = (props) => {
                                 </div>
                             )}
 
-                            {currentPriceValues.paymentType === "plan_box" || (currentPriceValues.headerValues.contractLength && parseInt(currentPriceValues.headerValues.contractLength) > 0) ? (
+                            {currentPriceValues.paymentType === "plan_box" ? (
                                 <>
                                     <div className="group-title-holder">
                                         <h2 className="title">Adresa</h2>

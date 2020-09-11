@@ -27,6 +27,9 @@ const PackagesForm = (props) => {
     const queryString = require("query-string");
     const [data, setData] = useState(null);
     const [variation, setVariation] = useState(null);
+    const [box_variations, setBoxVariations] = useState([]);
+    const [variations, setVariations] = useState([]);
+
     const currentStep = useSelector(selectCurrentStep);
     const currentPriceValues = useSelector(currentPricing);
     const dispatch = useDispatch();
@@ -40,6 +43,8 @@ const PackagesForm = (props) => {
         } else {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
         }
+
+        // url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=de`;
 
         if (queryParams["uec"]) {
             dispatch(setUserHash(queryParams["uec"]));
@@ -63,6 +68,14 @@ const PackagesForm = (props) => {
                         features: response.data.meta.additional.features
                     }
                 };
+
+                response.data.variations.map((item) => {
+                    if (item.has_box) {
+                        setBoxVariations((oldArray) => [...oldArray, item]);
+                    } else {
+                        setVariations((oldArray) => [...oldArray, item]);
+                    }
+                });
 
                 dispatch(setInitialValues(initialPricing));
             })
@@ -148,21 +161,21 @@ const PackagesForm = (props) => {
                         <h3 className="main-content--title">Da li želiš da gledaš televiziju i preko BOX-a?</h3>
 
                         <div className="main-content--choices">
-                            <div className={`main-content--choices-item ${data && data.box_variations.length < 1 ? "disabled" : ""}`}>
+                            <div className={`main-content--choices-item ${data && box_variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Želim da gledam preko BOX-a</span>
                                     <Tooltip title={DummyText} styles="custom-tooltip" icon="icon-info" />
                                 </div>
-                                <Button isLoading={data && data.box_variations.length < 1} title="Odaberi" clicked={(e) => openProductsBoxList(e)} customClass="button-blue" />
+                                <Button isLoading={data && box_variations.length < 1} title="Odaberi" clicked={(e) => openProductsBoxList(e)} customClass="button-blue" />
                             </div>
 
-                            <div className={`main-content--choices-item ${data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1 ? "disabled" : ""}`}>
+                            <div className={`main-content--choices-item ${data && variations.length < 1 && data.monthly_subscriptions.variations.length < 1 ? "disabled" : ""}`}>
                                 <div className="values">
                                     <span className="name">Ne želim da gledam preko BOX-a</span>
                                     <Tooltip title={DummyTextSecond} styles="custom-tooltip" icon="icon-info" />
                                 </div>
                                 <Button
-                                    isLoading={data && data.variations.length < 1 && data.monthly_subscriptions.variations.length < 1}
+                                    isLoading={data && variations.length < 1 && data.monthly_subscriptions.variations.length < 1}
                                     title="Odaberi"
                                     clicked={(e) => openProductsNormalList(e)}
                                     customClass="button-blue"
@@ -176,8 +189,8 @@ const PackagesForm = (props) => {
                     <>
                         <h3 className="main-content--title with-margin">Odaberi način pretplate</h3>
                         <div className="box-variations">
-                            {data.box_variations.map((item, index) => (
-                                <ProductsWithBox metaData={data} item={item} key={index} index={index} />
+                            {box_variations.map((item, index) => (
+                                <ProductsWithBox metaData={data} isFeatured={box_variations.length % 2 !== 0 && index === 0} item={item} key={index} />
                             ))}
                         </div>
                     </>
@@ -187,8 +200,8 @@ const PackagesForm = (props) => {
                     <>
                         <h3 className="main-content--title with-margin">Odaberi način pretplate</h3>
                         <div className="box-variations">
-                            {data.variations.map((item, index) => (
-                                <ProductsNoBox metaData={data} item={item} key={index} />
+                            {variations.map((item, index) => (
+                                <ProductsNoBox isFeatured={(variations.length - 1) % 2 !== 0 && index === 0} key={index} metaData={data} item={item} />
                             ))}
                             <ProductsChooseSubs metaData={data} />
                         </div>

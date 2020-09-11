@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
 
 const ProductsNoBox = (props) => {
-    const { item, metaData } = props;
+    const { item, metaData, isFeatured } = props;
     const dispatch = useDispatch();
     const [isActive, setIsActive] = useState(null);
 
@@ -80,6 +80,9 @@ const ProductsNoBox = (props) => {
                     additionalExpenses: expenses,
                     totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
                     totalDiscount: total_saving
+                },
+                available: {
+                    availableDevices: metaData.meta.additional.devices
                 }
             };
 
@@ -88,7 +91,7 @@ const ProductsNoBox = (props) => {
     };
 
     return (
-        <div onClick={(e) => setProductAsActive(e)} className={`box-variations--item ${isActive === null ? "" : isActive ? "active" : ""}`}>
+        <div onClick={(e) => setProductAsActive(e)} className={`box-variations--item  ${isFeatured ? "featured" : ""} ${isActive === null ? "" : isActive ? "active" : ""}`}>
             <div className={`checkbox ${isActive ? "active" : ""}`}>
                 <span className="filled"></span>
             </div>

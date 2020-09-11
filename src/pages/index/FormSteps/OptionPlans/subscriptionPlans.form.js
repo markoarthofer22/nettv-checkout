@@ -27,6 +27,7 @@ const SubscriptionPlans = (props) => {
 
         if (localStorage.getItem("lang_code")) {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
+            // url = `/products/?lang_code=de`;
         } else {
             url = `/products/${history.location.search}`;
         }
@@ -86,6 +87,8 @@ const SubscriptionPlans = (props) => {
                                     const { title, meta } = item;
                                     const { attributes, base_price, currency, market, product_code, language_code } = meta;
 
+                                    console.log(attributes);
+
                                     return (
                                         <div className={`subscription-card gradient${index}`} key={index}>
                                             <div className="subscription-card--header">
@@ -97,12 +100,15 @@ const SubscriptionPlans = (props) => {
                                             </div>
 
                                             <div className="subscription-card--content">
-                                                {attributes.map((item, index) => (
-                                                    <div className="option" key={index}>
-                                                        <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
-                                                        <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
-                                                    </div>
-                                                ))}
+                                                {attributes &&
+                                                    attributes.map((item, index) => (
+                                                        <div className="option" key={index}>
+                                                            <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
+                                                            {item.benefit_icon && <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${item.benefit_icon}.svg`} alt="Icon" />}
+                                                            <span className="value">{item.benefit_name}</span>
+                                                            <span className="count-value">{item.benefit_description}</span>
+                                                        </div>
+                                                    ))}
                                             </div>
 
                                             <div className="subscription-card--actions">
