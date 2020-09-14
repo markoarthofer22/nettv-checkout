@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
 
 const ProductsWithBox = (props) => {
@@ -13,12 +13,12 @@ const ProductsWithBox = (props) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const promiseFunction = new Promise((resolve, reject) => {
+        const promiseFunction = new Promise((resolve) => {
             setIsActive(null);
-            document.querySelectorAll(".box-variations--item > .checkbox").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item > .checkbox").forEach((item) => {
                 item.classList.remove("active");
             });
-            document.querySelectorAll(".box-variations--item").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item").forEach((item) => {
                 item.classList.remove("active", "disabled");
             });
             resolve();
@@ -26,7 +26,7 @@ const ProductsWithBox = (props) => {
 
         promiseFunction.then(() => {
             setIsActive(true);
-            document.querySelectorAll(".box-variations--item").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item").forEach((item) => {
                 if (!item.classList.contains("active")) {
                     item.classList.add("disabled");
                 }
@@ -46,7 +46,8 @@ const ProductsWithBox = (props) => {
                 total_sum_discount,
                 total_sum_no_discount,
                 variation_id,
-                is_promotion
+                is_promotion,
+                contract_duration_tooltip
             } = item;
 
             const currentPricing = {
@@ -62,6 +63,7 @@ const ProductsWithBox = (props) => {
                     price: metaData.meta.base_price,
                     subscriptionDuration: subscription_duration,
                     contractLength: contract_duration,
+                    contractLengthText: contract_duration_tooltip,
                     isPromotion: is_promotion
                 },
                 paymentValues: {

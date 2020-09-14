@@ -7,7 +7,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 const middleware = [thunk];
 const isServer = useIsServer();
 
-// const store = createStore(rootReducer, window.INITIAL_STATE || {}, composeWithDevTools(applyMiddleware(...middleware)));
-const store = createStore(rootReducer, window.INITIAL_STATE || {}, applyMiddleware(...middleware));
+const store = createStore(rootReducer, window.INITIAL_STATE || {}, composeWithDevTools(applyMiddleware(...middleware)));
+// const store = createStore(rootReducer, window.INITIAL_STATE || {}, applyMiddleware(...middleware));
 
 export default store;

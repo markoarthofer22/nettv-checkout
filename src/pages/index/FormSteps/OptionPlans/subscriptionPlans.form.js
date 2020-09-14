@@ -10,7 +10,7 @@ import "./subscriptionPlans.scss";
 
 // components
 import Button from "../../../../components/buttons/button.component";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Container from "../../../../components/layout/container.component";
 import CustomSwiper from "../../../../components/swiper/swiper.component";
 import useIsBreakpoint from "../../../../components/hooks/useIsBreakpoint.hook";
@@ -27,7 +27,6 @@ const SubscriptionPlans = (props) => {
 
         if (localStorage.getItem("lang_code")) {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
-            // url = `/products/?lang_code=de`;
         } else {
             url = `/products/${history.location.search}`;
         }
@@ -85,9 +84,7 @@ const SubscriptionPlans = (props) => {
                             <div className={`subscription-cards ${data && data.length === 4 ? "four-columns" : "three-columns"}`}>
                                 {data.map((item, index) => {
                                     const { title, meta } = item;
-                                    const { attributes, base_price, currency, market, product_code, language_code } = meta;
-
-                                    console.log(attributes);
+                                    const { attributes, base_price, currency, product_code, language_code } = meta;
 
                                     return (
                                         <div className={`subscription-card gradient${index}`} key={index}>

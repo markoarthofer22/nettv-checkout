@@ -52,15 +52,15 @@ const FreePackage = (props) => {
 
             const currentPricing = {
                 currency: item.currency,
-                mainProductId: item.crm_id,
-                variantDurationID: item.payment_options.credit_card_data.duration_id, //ima
+                mainProductId: item.product_code,
+                variantDurationID: item.payment_options.credit_card.duration_id, //ima
                 productCountryCode: item.language_code,
                 headerValues: {
                     name: item.title,
                     price: 0,
                     paymentOptions: { ...item.payment_options }, //nista
-                    selectedPaymentOptions: { ...item.payment_options.credit_card_data },
-                    subscriptionDuration: item.payment_options.credit_card_data.subscription_duration,
+                    selectedPaymentOptions: { ...item.payment_options.credit_card },
+                    subscriptionDuration: item.payment_options.credit_card.subscription_duration,
                     isPromotion: true
                 },
                 paymentValues: {

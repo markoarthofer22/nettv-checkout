@@ -16,11 +16,14 @@ import Button from "../../../components/buttons/button.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
 import InputComponent from "../../../components/input/input.component";
 import InputTypePhone from "../../../components/input/input-type-phone.component";
+import Dialog from "../../../components/dialog/dialog.component";
 
 //hooks
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 const FreePaymentInfo = (props) => {
+    const history = useHistory();
     const dispatch = useDispatch();
     const currentPriceValues = useSelector(currentPricing);
     const selectedPricing = useSelector(selectedPaymentOptions);
@@ -37,6 +40,12 @@ const FreePaymentInfo = (props) => {
     const [phoneVerificationCode, setPhoneVerificationCode] = useState({
         message: "",
         status: false
+    });
+
+    const [bundleError, setBundleError] = useState({
+        isDialogOpen: false,
+        title: "",
+        message: ""
     });
 
     const checkoutRef = useRef();
@@ -88,7 +97,7 @@ const FreePaymentInfo = (props) => {
             currency: currentPriceValues.currency,
             activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
-            hosteddataid: ""
+            paymentType: paymentMethod === "cards" ? "credit_card" : "phone_verify"
         };
 
         if (paymentMethod === "cards") {
@@ -103,7 +112,17 @@ const FreePaymentInfo = (props) => {
 
                         const entries = Object.entries(response.data.errors);
                         for (const [property, value] of entries) {
-                            setError(property, "empty", "Test Error");
+                            if (property === "plan_id") {
+                                setBundleError({
+                                    isDialogOpen: true,
+                                    title: "Greška prilikom registracije!",
+                                    message: value
+                                });
+                            } else if (property === "system") {
+                                history.push("/404");
+                            } else {
+                                setError(property, "empty", value);
+                            }
                         }
                         document.querySelector(`input[name='${entries[0][0]}']`).focus();
                         return;
@@ -184,6 +203,7 @@ const FreePaymentInfo = (props) => {
             current.children[0].children[0].classList.add("active");
             setPaymentMethod(current.dataset.payment);
             dispatch(setPaymentOptions(current.dataset.type));
+            if (current.dataset.payment === "mob") setIsButtonDisabled(true);
         });
     };
 
@@ -237,6 +257,7 @@ const FreePaymentInfo = (props) => {
                 ...response.data.response
             });
             dispatch(setIsLoading(false));
+            setIsButtonDisabled(false);
         });
     };
 
@@ -360,7 +381,7 @@ const FreePaymentInfo = (props) => {
                             </div>
 
                             <div className="main-content--payment-options">
-                                <div className="options cards active" data-type="credit_card_data" data-payment="cards" onClick={(e) => changeActivePayMethod(e)}>
+                                <div className="options cards active" data-type="credit_card" data-payment="cards" onClick={(e) => changeActivePayMethod(e)}>
                                     <div className="text-holder">
                                         <div className={`checkbox active`}>
                                             <span className="filled"></span>
@@ -380,7 +401,7 @@ const FreePaymentInfo = (props) => {
                                 </div>
                                 <div
                                     className={`options bank-payment ${Boolean(paymentMethod === "mob") ? "has-content" : ""} ${phoneVerificationCode.status === true ? "disabled" : ""}`}
-                                    data-type="phone_verify_data"
+                                    data-type="phone_verify"
                                     data-payment="mob"
                                     onClick={(e) => changeActivePayMethod(e)}
                                 >
@@ -505,6 +526,15 @@ const FreePaymentInfo = (props) => {
                     ))}
                 </form>
             )}
+
+            <Dialog
+                title={bundleError.title}
+                message={bundleError.message}
+                isShowing={bundleError.isDialogOpen}
+                okCallback={() => {
+                    location.reload();
+                }}
+            />
         </>
     );
 };

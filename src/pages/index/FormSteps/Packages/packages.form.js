@@ -44,11 +44,9 @@ const PackagesForm = (props) => {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
         }
 
-        // url = `/products/code/?product_code=${queryParams["product_code"]}&lang_code=de`;
-
-        if (queryParams["uec"]) {
-            dispatch(setUserHash(queryParams["uec"]));
-        }
+        // if (queryParams["uec"]) {
+        //     dispatch(setUserHash(queryParams["uec"]));
+        // }
 
         dispatch(getDataForURL(url))
             .then((response) => {

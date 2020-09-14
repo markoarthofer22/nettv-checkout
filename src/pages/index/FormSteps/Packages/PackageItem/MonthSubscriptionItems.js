@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
-import { setInitialValues, resetToInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
+import { useDispatch } from "react-redux";
+import { resetToInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
 
 const MonthSubscriptionItem = (props) => {
     const { data, metaData } = props;
-    const { duration_id, expenses, pricing, total_sum_discount, total_sum_no_discount, variation_id, variation_name } = data;
+    const { duration_id, contract_duration_tooltip, expenses, pricing, total_sum_discount, total_sum_no_discount, variation_id, variation_name } = data;
     const dispatch = useDispatch();
     const [isActive, setIsActive] = useState(null);
 
@@ -46,6 +46,7 @@ const MonthSubscriptionItem = (props) => {
                     price: metaData.meta.base_price,
                     subscriptionDuration: parseInt(variation_name),
                     contractLength: 0,
+                    contractLengthText: contract_duration_tooltip,
                     isPromotion: false
                 },
                 paymentValues: {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
-import { setInitialValues, resetToInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
+import { useDispatch } from "react-redux";
+import { resetToInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
 
 //assets
 import eonLogo from "../../../../../../public/assets/eon_logo.png";

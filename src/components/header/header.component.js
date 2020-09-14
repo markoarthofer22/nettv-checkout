@@ -4,7 +4,7 @@ import React from "react";
 import "./header.scss";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import Logo from "../../../public/assets/nettv-logo.svg";
 
@@ -20,7 +20,7 @@ const Header = (props) => {
                 </a>
             </header>
             <div className="navigation-bar">
-                {type === "gratis" ? (
+                {type === "gratis" && (
                     <ul className="navigation-bar--list">
                         <li className={`navigation-bar--list-item ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}>
                             <span className="name">Tvoj paket</span>
@@ -32,7 +32,20 @@ const Header = (props) => {
                             <span className="name">Obrada porudžbine</span>
                         </li>
                     </ul>
-                ) : (
+                )}
+
+                {type === "bundle" && (
+                    <ul className="navigation-bar--list">
+                        <li className={`navigation-bar--list-item ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}>
+                            <span className="name">Podaci</span>
+                        </li>
+                        <li className={`navigation-bar--list-item ${currentStep === 2 ? "active" : currentStep > 2 ? "completed" : ""}`}>
+                            <span className="name">Plaćanje</span>
+                        </li>
+                    </ul>
+                )}
+
+                {type === "normal" && (
                     <ul className="navigation-bar--list">
                         <li className={`navigation-bar--list-item ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}>
                             <span className="name">Paketi</span>

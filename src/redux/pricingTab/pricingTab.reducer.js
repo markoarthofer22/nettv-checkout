@@ -14,6 +14,7 @@ const INITIAL_STATE = {
         price: "0.00",
         subscriptionDuration: null,
         contractLength: null,
+        contractLengthText: "Ponuda važi bez ugovorne obaveze",
         isPromotion: false,
         paymentOptions: {},
         selectedPaymentOptions: {}

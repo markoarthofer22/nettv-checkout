@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setInitialValues } from "../../../../../redux/pricingTab/pricingTab.actions";
 
 const ProductsNoBox = (props) => {
@@ -13,20 +13,20 @@ const ProductsNoBox = (props) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const promiseFunction = new Promise((resolve, reject) => {
+        const promiseFunction = new Promise((resolve) => {
             setIsActive(null);
             document.querySelector(".month-variations-holder").classList.remove("active");
-            document.querySelectorAll(".month-variations-holder .checkbox").forEach((item, index) => {
+            document.querySelectorAll(".month-variations-holder .checkbox").forEach((item) => {
                 item.classList.remove("active");
             });
-            document.querySelectorAll(".month-variations--item").forEach((item, index) => {
+            document.querySelectorAll(".month-variations--item").forEach((item) => {
                 item.classList.remove("active", "disabled");
             });
 
-            document.querySelectorAll(".box-variations--item > .checkbox").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item > .checkbox").forEach((item) => {
                 item.classList.remove("active");
             });
-            document.querySelectorAll(".box-variations--item").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item").forEach((item) => {
                 item.classList.remove("active", "disabled");
             });
             resolve();
@@ -34,7 +34,7 @@ const ProductsNoBox = (props) => {
 
         promiseFunction.then(() => {
             setIsActive(true);
-            document.querySelectorAll(".box-variations--item").forEach((item, index) => {
+            document.querySelectorAll(".box-variations--item").forEach((item) => {
                 if (!item.classList.contains("active")) {
                     item.classList.add("disabled");
                 }
@@ -54,7 +54,8 @@ const ProductsNoBox = (props) => {
                 total_sum_discount,
                 total_sum_no_discount,
                 variation_id,
-                is_promotion
+                is_promotion,
+                contract_duration_tooltip
             } = item;
 
             const currentPricing = {
@@ -70,6 +71,7 @@ const ProductsNoBox = (props) => {
                     price: metaData.meta.base_price,
                     subscriptionDuration: subscription_duration,
                     contractLength: contract_duration,
+                    contractLengthText: contract_duration_tooltip,
                     isPromotion: is_promotion
                 },
                 paymentValues: {

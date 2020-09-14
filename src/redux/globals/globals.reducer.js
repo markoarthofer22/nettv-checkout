@@ -79,7 +79,7 @@ const INITIAL_STATE = {
     userHash: "",
     userTimeZone: "",
     userCountryOrigin: "",
-    headerType: ""
+    headerType: "normal"
 };
 
 const globalsReducer = (state = INITIAL_STATE, action) => {

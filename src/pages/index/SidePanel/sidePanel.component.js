@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import _ from "underscore";
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import useIsBreakpoint from "../../../components/hooks/useIsBreakpoint.hook";
 import Button from "../../../components/buttons/button.component";
@@ -14,12 +14,9 @@ import Tooltip from "../../../components/tooltip/tooltip.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
 
 const SidePanel = (props) => {
-    const dispatch = useDispatch();
     const isMobile = useIsBreakpoint();
     const currentPrices = useSelector(currentPricing);
     const [openMobile, setOpenMobile] = useState(false);
-
-    // console.log(currentPrices);
 
     useEffect(() => {
         currentPrices.available && currentPrices.available.availableDevices
@@ -82,7 +79,7 @@ const SidePanel = (props) => {
                         <div className="cart-row">
                             <p className="light-cart-text">
                                 Ugovorna obaveza
-                                <Tooltip title="Ponuda važi uz ugovornu obavezu od 24m" styles="custom-tooltip" />
+                                {currentPrices.headerValues.contractLengthText && <Tooltip title={currentPrices.headerValues.contractLengthText} styles="custom-tooltip" />}
                             </p>
                             <p className="item-value">
                                 {!currentPrices.headerValues.contractLength ? "-" : parseInt(currentPrices.headerValues.contractLength) > 0 ? currentPrices.headerValues.contractLength : "-"}{" "}
