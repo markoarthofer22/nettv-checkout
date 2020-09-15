@@ -125,7 +125,7 @@ const PaymentInfo = (props) => {
                 transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
-                paymentType: currentPriceValues.paymentType
+                promotion_type: currentPriceValues.paymentType
             };
         } else if (currentPriceValues.paymentType === "plan_variation") {
             payload = {
@@ -154,7 +154,7 @@ const PaymentInfo = (props) => {
                 transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
-                paymentType: currentPriceValues.paymentType,
+                promotion_type: currentPriceValues.paymentType,
                 address: "",
                 city: "",
                 zip: "",

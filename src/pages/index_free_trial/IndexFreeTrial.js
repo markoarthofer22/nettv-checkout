@@ -61,29 +61,6 @@ const FreeTrialIndex = (props) => {
         }
     }, [history.location]);
 
-    // useEffect(() => {
-    //gledat po cookieu - override country_code
-
-    //     if (localStorage.getItem("lang_code") === undefined) return;
-    //     let queryParams = queryString.parse(history.location.search);
-    //     if ((!queryParams.lang_code || queryParams.lang_code === "") && localStorage.getItem("lang_code") === undefined) {
-    //         queryParams = {
-    //             ...queryParams,
-    //             lang_code: "other"
-    //         };
-    //         let url = `/products/?${queryString.stringify(queryParams)}`;
-    //         history.push(url);
-    //     } else {
-    //         queryParams = {
-    //             ...queryParams,
-    //             lang_code: localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
-    //         };
-
-    //         let url = `/products/?${queryString.stringify(queryParams)}`;
-    //         history.push(url);
-    //     }
-    // }, [localStorage.getItem("lang_code")]);
-
     const selectActiveStep = (_step) => {
         let step = _step;
 

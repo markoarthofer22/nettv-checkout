@@ -97,7 +97,7 @@ const FreePaymentInfo = (props) => {
             currency: currentPriceValues.currency,
             activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
-            paymentType: paymentMethod === "cards" ? "credit_card" : "phone_verify"
+            promotion_type: paymentMethod === "cards" ? "credit_card" : "phone_verify"
         };
 
         if (paymentMethod === "cards") {
@@ -154,12 +154,33 @@ const FreePaymentInfo = (props) => {
                     dispatch(setIsLoading(false));
                 });
         } else if (paymentMethod === "mob") {
-            return;
+            let paymentURL = "free-trial/phoneOrder";
 
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
-                    setBankCheckoutResponse(response.data);
+                    if (!_.isEmpty(response.data.errors)) {
+                        setIsButtonDisabled(false);
+                        dispatch(setIsLoading(false));
+
+                        const entries = Object.entries(response.data.errors);
+                        for (const [property, value] of entries) {
+                            if (property === "plan_id") {
+                                setBundleError({
+                                    isDialogOpen: true,
+                                    title: "Greška prilikom registracije!",
+                                    message: value
+                                });
+                            } else if (property === "system") {
+                                history.push("/404");
+                            } else {
+                                setError(property, "empty", value);
+                            }
+                        }
+                        document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        return;
+                    }
+
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
                 })
@@ -188,11 +209,11 @@ const FreePaymentInfo = (props) => {
 
         clearError(["phone_validation", "code_validation"]);
 
-        const promiseFunction = new Promise((resolve, reject) => {
-            document.querySelectorAll(".main-content--payment-options .checkbox").forEach((item, index) => {
+        const promiseFunction = new Promise((resolve) => {
+            document.querySelectorAll(".main-content--payment-options .checkbox").forEach((item) => {
                 item.classList.remove("active");
             });
-            document.querySelectorAll(".main-content--payment-options options").forEach((item, index) => {
+            document.querySelectorAll(".main-content--payment-options options").forEach((item) => {
                 item.classList.remove("active");
             });
             resolve(current);
@@ -203,7 +224,11 @@ const FreePaymentInfo = (props) => {
             current.children[0].children[0].classList.add("active");
             setPaymentMethod(current.dataset.payment);
             dispatch(setPaymentOptions(current.dataset.type));
-            if (current.dataset.payment === "mob") setIsButtonDisabled(true);
+            if (current.dataset.payment === "mob") {
+                setIsButtonDisabled(true);
+            } else {
+                setIsButtonDisabled(false);
+            }
         });
     };
 
@@ -251,7 +276,6 @@ const FreePaymentInfo = (props) => {
 
         dispatch(setIsLoading(true));
         axios.get(url).then((response) => {
-            console.log(response);
             setError("code_validation", "notMatch", response.data.response.message);
             setPhoneVerificationCode({
                 ...response.data.response

@@ -100,8 +100,7 @@ const SubscriptionPlans = (props) => {
                                                 {attributes &&
                                                     attributes.map((item, index) => (
                                                         <div className="option" key={index}>
-                                                            <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
-                                                            {item.benefit_icon && <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${item.benefit_icon}.svg`} alt="Icon" />}
+                                                            {item.benefit_icon && <img src={item.benefit_icon} alt="Icon" />}
                                                             <span className="value">{item.benefit_name}</span>
                                                             <span className="count-value">{item.benefit_description}</span>
                                                         </div>
@@ -148,7 +147,7 @@ const SubscriptionPlans = (props) => {
                             <CustomSwiper containerClass="subscription-cards--mobile" params={params}>
                                 {data.map((item, index) => {
                                     const { title, meta } = item;
-                                    const { attributes, base_price, currency, market, product_code, language_code } = meta;
+                                    const { attributes, base_price, currency, product_code, language_code } = meta;
 
                                     return (
                                         <div className={`subscription-card gradient${index}`} key={index}>
@@ -161,12 +160,14 @@ const SubscriptionPlans = (props) => {
                                             </div>
 
                                             <div className="subscription-card--content">
-                                                {attributes.map((item, index) => (
-                                                    <div className="option" key={index}>
-                                                        <img src={`${process.env.PUBLIC_URL}/assets/product-icons/${index}.svg`} alt="Icon" />
-                                                        <span className="value" dangerouslySetInnerHTML={{ __html: item }}></span>
-                                                    </div>
-                                                ))}
+                                                {attributes &&
+                                                    attributes.map((item, index) => (
+                                                        <div className="option" key={index}>
+                                                            {item.benefit_icon && <img src={item.benefit_icon} alt="Icon" />}
+                                                            <span className="value">{item.benefit_name}</span>
+                                                            <span className="count-value">{item.benefit_description}</span>
+                                                        </div>
+                                                    ))}
                                             </div>
 
                                             <div className="subscription-card--actions">

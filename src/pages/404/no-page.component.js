@@ -1,32 +1,40 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import Header from '../../components/header/header.component';
-import Navigation from '../../components/navigation/navigation.component';
-import Container from '../../components/layout/container.component';
-import './no-page.styles.scss';
+import React, { useEffect } from "react";
+import Helmet from "react-helmet";
 
-const NoPage = props => {
+//components
+import Button from "../../components/buttons/button.component";
+import Container from "../../components/layout/container.component";
+
+//Redux
+import { useDispatch } from "react-redux";
+import { setHeaderType } from "../../redux/globals/globals.actions";
+
+//styles
+import "./no-page.scss";
+
+const NoPage = (props) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setHeaderType("disabled"));
+    }, []);
+
     return (
         <>
             <Helmet>
-                <title>404 | AdventZagreb</title>
-                <meta type="description" content="404 Page" />
-                {/*OG META */}
-                <meta property="og:title" content="404 Page" />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={`https://www.adventzagreb.hr`} />
-                <meta property="og:image" content={`https://www.adventzagreb.hr/documents/advent-zagreb-default-og-image.jpg`} />
-                <meta property="og:description" content="Missing page (404)" />
-                <meta name="description" content="Missing page (404)" />
+                <title>NetTVPlus | 404</title>
             </Helmet>
 
             <section className="no-page">
                 <Container>
-                    <div className="four-o-four">
-                        <h2>
-                            404 <span>Oooops, we broke something.</span>
-                        </h2>
-                        <p>The page you are looking for doesn't exist.</p>
+                    <div className="no-page--holder">
+                        <h1 className="no-page--title">Stranica nije pronađena</h1>
+
+                        <h4 className="no-page--subtitle">Greška 404 - stranica ne postoji</h4>
+
+                        <a href="https://sbb-shop.ea93.work/" rel="noopener noreferrer">
+                            <Button title="Idi na početnu stranu" customClass="no-page--button"></Button>
+                        </a>
                     </div>
                 </Container>
             </section>

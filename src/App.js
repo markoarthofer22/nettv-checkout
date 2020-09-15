@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
+
+//redux
 import { useSelector } from "react-redux";
 import { selectAllCountryIDs, headerType } from "./redux/globals/globals.selectors";
 import _ from "underscore";
@@ -45,7 +47,6 @@ export default function App(props) {
     }, [history.location, selected_lang_cookie]);
 
     useEffect(() => {
-        //for test
         if (localStorage.getItem("lang_code") === undefined) return;
         localStorage.setItem("lang_code", userIpID.countryCode);
     }, [userIpID]);
