@@ -266,3 +266,89 @@
         }
     }
 }
+
+.credit-card-select {
+    position: relative;
+
+    &--selected {
+        span {
+            font-weight: 700;
+            color: #666;
+            font-size: 1.2rem;
+
+            @include lg {
+                font-size: 1.6rem;
+            }
+        }
+    }
+
+    &--dropdown {
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: $white;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        padding: 20px 20px;
+        transition: all 0.4s ease;
+        z-index: 100;
+        min-width: 250px;
+
+        &::before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #666;
+            position: absolute;
+            top: calc(0px - 6px);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        ul {
+            text-align: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            font-weight: 700;
+            color: #666;
+            font-size: 1.3rem;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba($black, 0.2);
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+
+            &:hover {
+                color: $blue;
+                border-bottom: 1px solid rgba($blue, 0.2);
+            }
+
+            &:first-of-type {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            &:last-of-type {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        &.opened {
+            visibility: visible;
+            opacity: 1;
+            top: calc(100% + 10px);
+        }
+    }
+}

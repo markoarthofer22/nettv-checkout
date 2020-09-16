@@ -6,9 +6,9 @@ import _ from "underscore";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
-import { setIsLoading } from "../../../../redux/globals/globals.actions";
+import { setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
-import { selectAllCountryIDs, globalUserIP, globalUserTZ, globalUserCountry } from "../../../../redux/globals/globals.selectors";
+import { selectAllCountryIDs, globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
 //styles
 import "./paymentinfo.scss";
@@ -32,6 +32,7 @@ const PaymentInfo = (props) => {
     const userIP = useSelector(globalUserIP);
     const userTZ = useSelector(globalUserTZ);
     const userOriginCountry = useSelector(globalUserCountry);
+    const userHash = useSelector(globalUserHash);
     const allowedMarket = useSelector(selectAllCountryIDs);
     const [countriesList, setCountriesList] = useState(null);
     const [countryDial, setCountryDial] = useState();
@@ -42,7 +43,11 @@ const PaymentInfo = (props) => {
     const [buyersCountryCustomInputValue, setBuyersCountryCustomInputValue] = useState("");
     const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
     const [redirectUrl, setRedirectUrl] = useState("");
-
+    const [selfCarePhone, setSelfCarePhone] = useState("");
+    const [selfCareDial, setSelfCareDial] = useState("");
+    const [creditCardInfo, setCreditCardInfo] = useState([]);
+    const [selectedCreditCardInfo, setSelectedCreditCardInfo] = useState({});
+    const [openCreditCardDropdown, setOpenCreditCardDropdown] = useState(false);
     const checkoutRef = useRef();
     const { register, handleSubmit, errors, watch, setError } = useForm({
         mode: "onChange",
@@ -64,6 +69,48 @@ const PaymentInfo = (props) => {
         title: "",
         message: ""
     });
+
+    // if returning user map values to input and disable
+    useEffect(() => {
+        if (userHash) {
+            setIsButtonDisabled(true);
+            dispatch(setIsLoading(true));
+            const entries = Object.entries(userHash);
+            for (const [property, value] of entries) {
+                if (property === "dialing_code") {
+                    setSelfCareDial(value);
+                }
+
+                if (property === "ip_address") {
+                    dispatch(setUserIP(value));
+                }
+
+                if (property === "originCountry") {
+                    dispatch(setUserOriginCountry(value));
+                }
+
+                if (property === "originTZ") {
+                    dispatch(setUserTZ(value));
+                }
+
+                if (property === "info") {
+                    setCreditCardInfo(value);
+                    setSelectedCreditCardInfo(_.find(value, (item) => item.primary_card === 1));
+                }
+
+                if (document.querySelector(`input[name='${property}']`)) {
+                    if (property === "phone") {
+                        setSelfCarePhone(`+${selfCareDial}${value}`);
+                    } else {
+                        document.querySelector(`input[name='${property}']`).disabled = true;
+                        document.querySelector(`input[name='${property}']`).value = value;
+                    }
+                }
+            }
+            setIsButtonDisabled(false);
+            dispatch(setIsLoading(false));
+        }
+    }, [userHash, countriesList, selfCareDial]);
 
     // get all dial codes
     useEffect(() => {
@@ -108,36 +155,7 @@ const PaymentInfo = (props) => {
                 ip_address: userIP,
                 originTZ: userTZ,
                 originCountry: userOriginCountry,
-                account_status: "checkout",
-                subscription_type: "paid",
-                utm_source: "email",
-                utm_medium: "abc",
-                utm_campaign: "fb",
-                plan_id: currentPriceValues.mainProductId,
-                duration_id: currentPriceValues.variantDurationID,
-                subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
-                    ? currentPriceValues.paymentValues.subscriptionDiscountPrice
-                    : currentPriceValues.paymentValues.subscriptionFullPrice,
-                total_price: currentPriceValues.paymentValues.totalPrice,
-                currency: currentPriceValues.currency,
-                box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
-                activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
-                transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
-                discount_value: "1.00",
-                promotion_id: currentPriceValues.variationProductId,
-                promotion_type: currentPriceValues.paymentType
-            };
-        } else if (currentPriceValues.paymentType === "plan_variation") {
-            payload = {
-                ..._data,
-                phone: returnPhoneWithoutDial(_data.phone, countryDial),
-                dialing_code: countryDial,
-                country_code: currentPriceValues.productCountryCode.toUpperCase(),
-                friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
-                ip_address: userIP,
-                originTZ: userTZ,
-                originCountry: userOriginCountry,
-                account_status: "checkout",
+                account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
                 subscription_type: "paid",
                 utm_source: "email",
                 utm_medium: "abc",
@@ -155,6 +173,39 @@ const PaymentInfo = (props) => {
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
                 promotion_type: currentPriceValues.paymentType,
+                credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
+                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
+            };
+        } else if (currentPriceValues.paymentType === "plan_variation") {
+            payload = {
+                ..._data,
+                phone: returnPhoneWithoutDial(_data.phone, countryDial),
+                dialing_code: countryDial,
+                country_code: currentPriceValues.productCountryCode.toUpperCase(),
+                friend_referral_code: referralCodeResponse.status ? referralCodeResponse.value : "",
+                ip_address: userIP,
+                originTZ: userTZ,
+                originCountry: userOriginCountry,
+                account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
+                subscription_type: "paid",
+                utm_source: "email",
+                utm_medium: "abc",
+                utm_campaign: "fb",
+                plan_id: currentPriceValues.mainProductId,
+                duration_id: currentPriceValues.variantDurationID,
+                subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
+                    ? currentPriceValues.paymentValues.subscriptionDiscountPrice
+                    : currentPriceValues.paymentValues.subscriptionFullPrice,
+                total_price: currentPriceValues.paymentValues.totalPrice,
+                currency: currentPriceValues.currency,
+                box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
+                activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
+                transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
+                discount_value: "1.00",
+                promotion_id: currentPriceValues.variationProductId,
+                promotion_type: currentPriceValues.paymentType,
+                credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
+                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0",
                 address: "",
                 city: "",
                 zip: "",
@@ -164,7 +215,7 @@ const PaymentInfo = (props) => {
         }
 
         if (paymentMethod === "cards") {
-            let paymentURL = "shoppayment/card";
+            let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
 
             axios
                 .post(paymentURL, { ...payload })
@@ -215,6 +266,11 @@ const PaymentInfo = (props) => {
                 .catch((error) => {
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
+                    setBundleError({
+                        isDialogOpen: true,
+                        title: "Greška prilikom registracije!",
+                        message: error.response.data.message
+                    });
                 });
         } else if (paymentMethod === "bank") {
             let paymentURL = "shoppayment/bank/bankpayment";
@@ -229,6 +285,11 @@ const PaymentInfo = (props) => {
                 .catch((error) => {
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
+                    setBundleError({
+                        isDialogOpen: true,
+                        title: "Greška prilikom registracije!",
+                        message: error.response.data.message
+                    });
                 });
         }
     };
@@ -349,6 +410,22 @@ const PaymentInfo = (props) => {
             });
     };
 
+    const setNewSelectedCardInfo = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setOpenCreditCardDropdown(false);
+        if (e.currentTarget.dataset.id == 1) {
+            setSelectedCreditCardInfo({
+                credit_card_id: 1,
+                credit_card_number: "Plaćanje putem kartice",
+                primary_card: 0
+            });
+        } else {
+            setSelectedCreditCardInfo(_.find(creditCardInfo, (item) => item.credit_card_id == e.currentTarget.dataset.id));
+        }
+    };
+
     return (
         <>
             <section className="payment-info">
@@ -386,7 +463,7 @@ const PaymentInfo = (props) => {
                                 </div>
                             </div>
 
-                            <div className="form-item-container">
+                            <div className={`form-item-container ${!_.isEmpty(userHash) ? "hidden" : ""}`}>
                                 <div className={`form-item-floating ${errors.password && "invalid"}`}>
                                     <InputComponent
                                         name="password"
@@ -397,7 +474,7 @@ const PaymentInfo = (props) => {
                                         errorMessage={errors.password}
                                         register={register}
                                         required={{
-                                            required: "Ovo polje je obavezno",
+                                            required: !_.isEmpty(userHash) ? false : "Ovo polje je obavezno",
                                             minLength: {
                                                 value: 7,
                                                 message: "Lozinka mora sadržavati najmanje 7 znakova"
@@ -418,7 +495,7 @@ const PaymentInfo = (props) => {
                                         errorMessage={errors.confirm_password}
                                         register={register}
                                         required={{
-                                            required: "Ovo polje je obavezno",
+                                            required: !_.isEmpty(userHash) ? false : "Ovo polje je obavezno",
                                             minLength: {
                                                 value: 7,
                                                 message: "Lozinka mora sadržavati najmanje 7 znakova"
@@ -437,6 +514,8 @@ const PaymentInfo = (props) => {
                                         <InputTypePhone
                                             countriesList={countriesList}
                                             returnInputValue={returnInputValue}
+                                            predefinedValue={selfCarePhone}
+                                            predefinedDialValue={selfCareDial}
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}
@@ -532,7 +611,6 @@ const PaymentInfo = (props) => {
                                         name="friend_referral_code"
                                         labelText="Unesi kod"
                                         errorMessage={errors.friend_referral_code}
-                                        // register={register}
                                         required={{
                                             required: false
                                         }}
@@ -551,7 +629,39 @@ const PaymentInfo = (props) => {
                                         <div className={`checkbox active`}>
                                             <span className="filled"></span>
                                         </div>
-                                        <span className="name">Plaćanje putem kartice</span>
+                                        {creditCardInfo.length > 0 ? (
+                                            <div className="credit-card-select">
+                                                <div className="credit-card-select--selected" onClick={() => setOpenCreditCardDropdown(!openCreditCardDropdown)}>
+                                                    {_.isEmpty(selectedCreditCardInfo) ? (
+                                                        creditCardInfo.map((item, index) => {
+                                                            if (item.primary_card === 1) {
+                                                                return (
+                                                                    <span key={index} data-id={item.credit_card_id}>
+                                                                        {item.credit_card_number}
+                                                                    </span>
+                                                                );
+                                                            }
+                                                        })
+                                                    ) : (
+                                                        <span data-id={selectedCreditCardInfo.credit_card_id}>{selectedCreditCardInfo.credit_card_number}</span>
+                                                    )}
+                                                </div>
+                                                <div className={`credit-card-select--dropdown ${openCreditCardDropdown ? "opened" : ""}`}>
+                                                    <ul>
+                                                        {creditCardInfo.map((item, index) => (
+                                                            <li key={index} data-id={item.credit_card_id} onClick={(e) => setNewSelectedCardInfo(e)}>
+                                                                {item.credit_card_number}
+                                                            </li>
+                                                        ))}
+                                                        <li data-id="1" onClick={(e) => setNewSelectedCardInfo(e)}>
+                                                            Plaćanje putem kartice
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <span className="name">Plaćanje putem kartice</span>
+                                        )}
                                     </div>
                                     <div className="cards-holder">
                                         <img

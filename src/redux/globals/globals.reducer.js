@@ -76,7 +76,7 @@ const INITIAL_STATE = {
     lang_codes: lang_codes,
     userIP: "",
     globalError: false,
-    userHash: "",
+    userHash: {},
     userTimeZone: "",
     userCountryOrigin: "",
     headerType: "normal"

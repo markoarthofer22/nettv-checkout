@@ -30,7 +30,7 @@ export const setUserIP = (_ip) => {
     };
 };
 
-export const setUserHash = (_hash) => {
+export const setUserHashInformation = (_hash) => {
     return {
         type: SET_USER_HASH,
         payload: _hash

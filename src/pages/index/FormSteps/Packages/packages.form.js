@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
-import { getDataForURL, setUserHash, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
+import { getDataForURL, setUserHashInformation, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
 import { setInitialValues, resetToInitialValues } from "../../../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.selectors";
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 import { useHistory } from "react-router-dom";
+import axios from "../../../../redux/apis/main-api";
 
 //styles
 import "./packages.scss";
@@ -44,9 +45,23 @@ const PackagesForm = (props) => {
             url = `/products/?lang_code=${localStorage.getItem("lang_code")}`;
         }
 
-        // if (queryParams["uec"]) {
-        //     dispatch(setUserHash(queryParams["uec"]));
-        // }
+        if (queryParams["uec"]) {
+            axios
+                .post("/selfcare/auth/hash", {
+                    hash: queryParams["uec"]
+                })
+                .then((response) => {
+                    if (response.data.success === false) {
+                        history.push("/404");
+                        return;
+                    }
+                    dispatch(setUserHashInformation(response.data.data));
+                    let queryParams = queryString.parse(history.location.search);
+                    delete queryParams["uec"];
+                    window.history.replaceState(null, null, `/products/?${queryString.stringify(queryParams)}`);
+                })
+                .catch((error) => {});
+        }
 
         dispatch(getDataForURL(url))
             .then((response) => {

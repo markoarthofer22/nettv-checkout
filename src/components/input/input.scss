@@ -170,6 +170,10 @@ textarea {
             pointer-events: none;
         }
     }
+
+    &.hidden {
+        display: none;
+    }
 }
 
 .form-item-floating {
