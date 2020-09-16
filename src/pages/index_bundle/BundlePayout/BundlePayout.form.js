@@ -87,7 +87,7 @@ const BundlePayout = (props) => {
                     dispatch(setUserHashInformation(response.data.data));
                     let queryParams = queryString.parse(history.location.search);
                     delete queryParams["uec"];
-                    window.history.replaceState(null, null, `/bundle/?${queryString.stringify(queryParams)}`);
+                    window.history.replaceState(null, null, `/shop/bundle/?${queryString.stringify(queryParams)}`);
                 })
                 .catch((error) => {});
         }
@@ -296,7 +296,7 @@ const BundlePayout = (props) => {
                     });
                 });
         } else if (paymentMethod === "bank") {
-            let paymentURL = "shoppayment/bank/bankpayment";
+            let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
 
             axios
                 .post(paymentURL, { ...payload })

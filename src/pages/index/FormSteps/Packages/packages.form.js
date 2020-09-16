@@ -58,7 +58,7 @@ const PackagesForm = (props) => {
                     dispatch(setUserHashInformation(response.data.data));
                     let queryParams = queryString.parse(history.location.search);
                     delete queryParams["uec"];
-                    window.history.replaceState(null, null, `/products/?${queryString.stringify(queryParams)}`);
+                    window.history.replaceState(null, null, `/shop/products/?${queryString.stringify(queryParams)}`);
                 })
                 .catch((error) => {});
         }

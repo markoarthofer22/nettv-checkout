@@ -273,7 +273,7 @@ const PaymentInfo = (props) => {
                     });
                 });
         } else if (paymentMethod === "bank") {
-            let paymentURL = "shoppayment/bank/bankpayment";
+            let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
 
             axios
                 .post(paymentURL, { ...payload })
