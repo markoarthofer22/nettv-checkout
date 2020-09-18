@@ -100,7 +100,7 @@ const SubscriptionPlans = (props) => {
                                                 {attributes &&
                                                     attributes.map((item, index) => (
                                                         <div className="option" key={index}>
-                                                            {item.benefit_icon && <img src={item.benefit_icon} alt="Icon" />}
+                                                            {item.benefit_icon && <img src={item.benefit_icon?.sizes?.thumbnail} alt="Icon" />}
                                                             <span className="value">{item.benefit_name}</span>
                                                             <span className="count-value">{item.benefit_description}</span>
                                                         </div>
@@ -163,7 +163,7 @@ const SubscriptionPlans = (props) => {
                                                 {attributes &&
                                                     attributes.map((item, index) => (
                                                         <div className="option" key={index}>
-                                                            {item.benefit_icon && <img src={item.benefit_icon} alt="Icon" />}
+                                                            {item.benefit_icon && <img src={item.benefit_icon?.sizes?.thumbnail} alt="Icon" />}
                                                             <span className="value">{item.benefit_name}</span>
                                                             <span className="count-value">{item.benefit_description}</span>
                                                         </div>

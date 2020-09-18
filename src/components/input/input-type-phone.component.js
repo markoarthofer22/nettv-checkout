@@ -3,7 +3,7 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ id, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ id, buyersCountryCode, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesDial, setCountriesDial] = useState();
@@ -19,8 +19,24 @@ const InputTypePhone = ({ id, predefinedDialValue, predefinedValue, returnInputV
         if (countryID === undefined && countriesDial === undefined) {
             return;
         }
+
+        if (countryID && countriesDial === undefined) {
+            let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
+            setInputValue(`+${country.dialing_code}`);
+            setCountriesName(country.country);
+            setCountriesID(country.iso.toLowerCase());
+            setCountriesDial(country.dialing_code);
+            return;
+        }
+
         setInputValue(`+${countriesDial}`);
     };
+
+    useEffect(() => {
+        if (buyersCountryCode) {
+            setCountriesID(buyersCountryCode);
+        }
+    }, [buyersCountryCode]);
 
     useEffect(() => {
         if (predefinedValue && predefinedDialValue) {
@@ -57,7 +73,7 @@ const InputTypePhone = ({ id, predefinedDialValue, predefinedValue, returnInputV
             </label>
             <div className="form-item-phone">
                 <Select
-                    title={predefinedDialValue && predefinedValue && countriesName}
+                    title={predefinedDialValue ? predefinedValue : countriesName ? countriesName : null}
                     data={countriesList}
                     placeholder="Odaberi državu"
                     selectClass={`select-countries ${Boolean(predefinedValue) ? "disabled" : ""}`}

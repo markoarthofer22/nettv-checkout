@@ -376,6 +376,7 @@ const FreePaymentInfo = (props) => {
                                     <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                         <InputTypePhone
                                             countriesList={countriesList}
+                                            buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}
                                             name="phone"
                                             errorMessage={errors.phone}

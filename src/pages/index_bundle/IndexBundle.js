@@ -29,6 +29,7 @@ const IndexBundle = (props) => {
         title: "",
         message: ""
     });
+    const [isViewVisible, setIsViewVisible] = useState(false);
 
     useEffect(() => {
         dispatch(setIsLoading(false));
@@ -66,8 +67,8 @@ const IndexBundle = (props) => {
                 }
             })
             .then((response) => {
+                setIsViewVisible(true);
                 const data = response.data;
-
                 const {
                     variation_name,
                     contract_duration,
@@ -124,6 +125,7 @@ const IndexBundle = (props) => {
             })
             .catch((error) => {
                 if (error) {
+                    setIsViewVisible(false);
                     setBundleError({
                         isDialogOpen: true,
                         title: error.response.data.msg,
@@ -142,19 +144,21 @@ const IndexBundle = (props) => {
                 </Helmet>
                 <ContainerFull>
                     <div className={`form-holder full-width`}>
-                        <CSSTransition
-                            in={cssTransitionIsOpen}
-                            timeout={500}
-                            classNames={{
-                                enterActive: "animate__fadeIn",
-                                exitActive: "animate__fadeOut"
-                            }}
-                            unmountOnExit
-                        >
-                            <div className={`form-holder--steps  animate__animated`}>
-                                <BundlePayout />
-                            </div>
-                        </CSSTransition>
+                        {isViewVisible && (
+                            <CSSTransition
+                                in={cssTransitionIsOpen}
+                                timeout={500}
+                                classNames={{
+                                    enterActive: "animate__fadeIn",
+                                    exitActive: "animate__fadeOut"
+                                }}
+                                unmountOnExit
+                            >
+                                <div className={`form-holder--steps  animate__animated`}>
+                                    <BundlePayout />
+                                </div>
+                            </CSSTransition>
+                        )}
                     </div>
 
                     <div className="side-panel-holder">
