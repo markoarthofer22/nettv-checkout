@@ -3,7 +3,7 @@ import _ from "underscore";
 import SvgIcon from "../svg-icon/svg-icon.component";
 import "./select.scss";
 
-const Select = ({ title, data, selectClass, placeholder, label, returnValue, isSearchable }) => {
+const Select = ({ title, data, selectClass, placeholder, returnValue, isSearchable }) => {
     const [isOpen, setOpen] = useState(false);
     const [selectedTitle, setSelectedTitle] = useState("");
     const [selectData, setSelectData] = useState(data);
@@ -52,8 +52,14 @@ const Select = ({ title, data, selectClass, placeholder, label, returnValue, isS
 
     const searchTroughSelectData = (e) => {
         if (e.target.value.length !== 0) {
-            let res = data.filter((item) => new RegExp(e.target.value, "i").test(item.country));
-            setSelectData(res);
+            let searchPattern;
+            if (e.target.value.charAt(0) === "+") {
+                searchPattern = e.target.value.slice(1);
+            } else {
+                searchPattern = e.target.value;
+            }
+            let res = data.filter((item) => Object.keys(item).some((itemChild) => String(item[itemChild]).toLowerCase().includes(searchPattern.toLowerCase())));
+            setSelectData(res ? res : []);
         } else {
             setSelectData(data);
         }
@@ -61,7 +67,6 @@ const Select = ({ title, data, selectClass, placeholder, label, returnValue, isS
 
     return (
         <div className={`select ${selectClass}`} ref={mainInput}>
-            {/* <label className="select-label">{label}</label> */}
             <div
                 className={`select-header ${isOpen ? "open" : ""} `}
                 onClick={() => {

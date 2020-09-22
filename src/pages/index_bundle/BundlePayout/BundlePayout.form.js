@@ -228,17 +228,23 @@ const BundlePayout = (props) => {
                 promotion_id: currentPriceValues.variationProductId,
                 promotion_type: currentPriceValues.paymentType,
                 credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
-                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0",
-                address: "",
-                city: "",
-                zip: "",
-                state: "",
-                comment: ""
+                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
             };
         }
 
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
+
+            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload,
+                    address: "",
+                    city: "",
+                    zip: "",
+                    state: "",
+                    comment: ""
+                };
+            }
 
             axios
                 .post(paymentURL, { ...payload })
@@ -297,6 +303,17 @@ const BundlePayout = (props) => {
                 });
         } else if (paymentMethod === "bank") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
+
+            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload,
+                    address: "",
+                    city: "",
+                    zip: "",
+                    state: "",
+                    comment: ""
+                };
+            }
 
             axios
                 .post(paymentURL, { ...payload })
@@ -547,7 +564,8 @@ const BundlePayout = (props) => {
                                 </div>
                             )}
 
-                            {currentPriceValues.paymentType === "plan_box" ? (
+                            {currentPriceValues.paymentType === "plan_box" ||
+                            (currentPriceValues.headerValues.contractLength !== null && parseInt(currentPriceValues.headerValues.contractLength) > 0) ? (
                                 <>
                                     <div className="group-title-holder">
                                         <h2 className="title">Adresa</h2>
@@ -581,10 +599,6 @@ const BundlePayout = (props) => {
                                                     maxLength: {
                                                         value: 10,
                                                         message: "Ne možete unijeti više od 10 karaktera"
-                                                    },
-                                                    pattern: {
-                                                        value: /^[\+\d]?(?:[\d-.\s()]*)$/,
-                                                        message: "Molimo koristite samo brojeve"
                                                     }
                                                 }}
                                             />

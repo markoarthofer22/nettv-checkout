@@ -6,9 +6,9 @@ import _ from "underscore";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { resetToInitialValues, setPaymentOptions } from "../../../redux/pricingTab/pricingTab.actions";
-import { setIsLoading } from "../../../redux/globals/globals.actions";
+import { setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
 import { currentPricing, selectedPaymentOptions } from "../../../redux/pricingTab/pricingTab.selectors";
-import { globalUserIP, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
+import { globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
 
 // components
@@ -27,6 +27,7 @@ const FreePaymentInfo = (props) => {
     const dispatch = useDispatch();
     const currentPriceValues = useSelector(currentPricing);
     const selectedPricing = useSelector(selectedPaymentOptions);
+    const userHash = useSelector(globalUserHash);
     const userIP = useSelector(globalUserIP);
     const userTZ = useSelector(globalUserTZ);
     const userOriginCountry = useSelector(globalUserCountry);
@@ -36,6 +37,8 @@ const FreePaymentInfo = (props) => {
     const [paymentMethod, setPaymentMethod] = useState("cards");
     const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
     const [redirectUrl, setRedirectUrl] = useState("");
+    const [selfCarePhone, setSelfCarePhone] = useState("");
+    const [selfCareDial, setSelfCareDial] = useState("");
     const [phoneVerification, setPhoneVerification] = useState(false);
     const [phoneVerificationCode, setPhoneVerificationCode] = useState({
         message: "",
@@ -63,6 +66,48 @@ const FreePaymentInfo = (props) => {
         });
     }, []);
 
+    // if returning user map values to input and disable
+    useEffect(() => {
+        if (userHash) {
+            setIsButtonDisabled(true);
+            dispatch(setIsLoading(true));
+            const entries = Object.entries(userHash);
+            for (const [property, value] of entries) {
+                if (property === "dialing_code") {
+                    setSelfCareDial(value);
+                }
+
+                if (property === "ip_address") {
+                    dispatch(setUserIP(value));
+                }
+
+                if (property === "originCountry") {
+                    dispatch(setUserOriginCountry(value));
+                }
+
+                if (property === "originTZ") {
+                    dispatch(setUserTZ(value));
+                }
+
+                // if (property === "info") {
+                //     setCreditCardInfo(value);
+                //     setSelectedCreditCardInfo(_.find(value, (item) => item.primary_card === 1));
+                // }
+
+                if (document.querySelector(`input[name='${property}']`)) {
+                    if (property === "phone") {
+                        setSelfCarePhone(`+${selfCareDial}${value}`);
+                    } else {
+                        document.querySelector(`input[name='${property}']`).disabled = true;
+                        document.querySelector(`input[name='${property}']`).value = value;
+                    }
+                }
+            }
+            setIsButtonDisabled(false);
+            dispatch(setIsLoading(false));
+        }
+    }, [userHash, countriesList, selfCareDial]);
+
     //if success check for submit form and submit
     useEffect(() => {
         if (checkoutRef.current) {
@@ -86,7 +131,7 @@ const FreePaymentInfo = (props) => {
             ip_address: userIP,
             originTZ: userTZ,
             originCountry: userOriginCountry,
-            account_status: "checkout",
+            account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
             subscription_type: "gratis",
             utm_source: "email",
             utm_medium: "abc",
@@ -101,6 +146,7 @@ const FreePaymentInfo = (props) => {
         };
 
         if (paymentMethod === "cards") {
+            // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
             let paymentURL = "free-trial/cardpayment";
 
             axios
@@ -154,6 +200,7 @@ const FreePaymentInfo = (props) => {
                     dispatch(setIsLoading(false));
                 });
         } else if (paymentMethod === "mob") {
+            // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
             let paymentURL = "free-trial/phoneOrder";
 
             axios
@@ -253,7 +300,7 @@ const FreePaymentInfo = (props) => {
             return;
         }
 
-        let url = `netapi/verify_phone?phone=${document.querySelector("input[name='phone_validation']").value}`;
+        let url = `netapi/send_sms_for_verify?phone=${document.querySelector("input[name='phone_validation']").value}`;
 
         dispatch(setIsLoading(true));
         axios.get(url).then((response) => {
@@ -326,7 +373,7 @@ const FreePaymentInfo = (props) => {
                                 </div>
                             </div>
 
-                            <div className="form-item-container">
+                            <div className={`form-item-container ${!_.isEmpty(userHash) ? "hidden" : ""}`}>
                                 <div className={`form-item-floating ${errors.password && "invalid"}`}>
                                     <InputComponent
                                         name="password"
@@ -337,7 +384,7 @@ const FreePaymentInfo = (props) => {
                                         errorMessage={errors.password}
                                         register={register}
                                         required={{
-                                            required: "Ovo polje je obavezno",
+                                            required: !_.isEmpty(userHash) ? false : "Ovo polje je obavezno",
                                             minLength: {
                                                 value: 7,
                                                 message: "Lozinka mora sadržavati najmanje 7 znakova"
@@ -358,7 +405,7 @@ const FreePaymentInfo = (props) => {
                                         errorMessage={errors.confirm_password}
                                         register={register}
                                         required={{
-                                            required: "Ovo polje je obavezno",
+                                            required: !_.isEmpty(userHash) ? false : "Ovo polje je obavezno",
                                             minLength: {
                                                 value: 7,
                                                 message: "Lozinka mora sadržavati najmanje 7 znakova"
@@ -378,6 +425,8 @@ const FreePaymentInfo = (props) => {
                                             countriesList={countriesList}
                                             buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}
+                                            predefinedValue={selfCarePhone}
+                                            predefinedDialValue={selfCareDial}
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}

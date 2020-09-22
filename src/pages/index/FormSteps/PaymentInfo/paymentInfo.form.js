@@ -49,7 +49,7 @@ const PaymentInfo = (props) => {
     const [selectedCreditCardInfo, setSelectedCreditCardInfo] = useState({});
     const [openCreditCardDropdown, setOpenCreditCardDropdown] = useState(false);
     const checkoutRef = useRef();
-    const { register, handleSubmit, errors, watch, setError } = useForm({
+    const { register, handleSubmit, errors, watch, setError, clearErrors } = useForm({
         mode: "onChange",
         reValidateMode: "onSubmit"
     });
@@ -62,6 +62,7 @@ const PaymentInfo = (props) => {
         error: "",
         success: false,
         response: ""
+        // response: {}
     });
 
     const [bundleError, setBundleError] = useState({
@@ -205,17 +206,23 @@ const PaymentInfo = (props) => {
                 promotion_id: currentPriceValues.variationProductId,
                 promotion_type: currentPriceValues.paymentType,
                 credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
-                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0",
-                address: "",
-                city: "",
-                zip: "",
-                state: "",
-                comment: ""
+                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
             };
         }
 
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
+
+            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload,
+                    address: "",
+                    city: "",
+                    zip: "",
+                    state: "",
+                    comment: ""
+                };
+            }
 
             axios
                 .post(paymentURL, { ...payload })
@@ -274,6 +281,17 @@ const PaymentInfo = (props) => {
                 });
         } else if (paymentMethod === "bank") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
+
+            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload,
+                    address: "",
+                    city: "",
+                    zip: "",
+                    state: "",
+                    comment: ""
+                };
+            }
 
             axios
                 .post(paymentURL, { ...payload })
@@ -426,6 +444,25 @@ const PaymentInfo = (props) => {
         }
     };
 
+    const verifyEmail = (e) => {
+        if (errors.email !== undefined) return;
+
+        axios
+            .get("netapi/check_email", {
+                params: {
+                    email: e.currentTarget.value
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("email", "manual", response.data.msg);
+                } else {
+                    clearErrors("email");
+                }
+            })
+            .catch((error) => {});
+    };
+
     return (
         <>
             <section className="payment-info">
@@ -446,6 +483,7 @@ const PaymentInfo = (props) => {
                                 <div className={`form-item-floating ${errors.email && "invalid"}`}>
                                     <InputComponent
                                         name="email"
+                                        onBlur={verifyEmail}
                                         labelText="Email"
                                         errorMessage={errors.email}
                                         register={register}
@@ -536,7 +574,8 @@ const PaymentInfo = (props) => {
                                 </div>
                             )}
 
-                            {currentPriceValues.paymentType === "plan_box" ? (
+                            {currentPriceValues.paymentType === "plan_box" ||
+                            (currentPriceValues.headerValues.contractLength !== null && parseInt(currentPriceValues.headerValues.contractLength) > 0) ? (
                                 <>
                                     <div className="group-title-holder">
                                         <h2 className="title">Adresa</h2>
@@ -570,10 +609,6 @@ const PaymentInfo = (props) => {
                                                     maxLength: {
                                                         value: 10,
                                                         message: "Ne možete unijeti više od 10 karaktera"
-                                                    },
-                                                    pattern: {
-                                                        value: /^[\+\d]?(?:[\d-.\s()]*)$/,
-                                                        message: "Molimo koristite samo brojeve"
                                                     }
                                                 }}
                                             />

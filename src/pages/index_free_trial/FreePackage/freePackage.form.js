@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import _ from "underscore";
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
+import axios from "../../../redux/apis/main-api";
+import { useDispatch } from "react-redux";
 import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { setInitialValues } from "../../../redux/pricingTab/pricingTab.actions";
-import { getDataForURL, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
+import { getDataForURL, setUserIP, setUserTZ, setUserOriginCountry, setUserHashInformation } from "../../../redux/globals/globals.actions";
 
 //styles
 
@@ -23,21 +24,32 @@ const FreePackage = (props) => {
 
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
+
+        if (queryParams["uec"]) {
+            axios
+                .post("/selfcare/auth/hash", {
+                    hash: queryParams["uec"]
+                })
+                .then((response) => {
+                    if (response.data.success === false) {
+                        history.push("/404");
+                        return;
+                    }
+                    dispatch(setUserHashInformation(response.data.data));
+                    let queryParams = queryString.parse(history.location.search);
+                    delete queryParams["uec"];
+                    window.history.replaceState(null, null, `/shop/free-trial/?${queryString.stringify(queryParams)}`);
+                })
+                .catch((error) => {});
+        }
+    }, []);
+
+    useEffect(() => {
+        let queryParams = queryString.parse(history.location.search);
         let url;
 
-        if (
-            queryParams.plan !== undefined &&
-            queryParams.plan !== "" &&
-            queryParams.country_code !== undefined &&
-            queryParams.country_code !== "" &&
-            queryParams.originCountry !== undefined &&
-            queryParams.originCountry !== "" &&
-            queryParams.originTZ !== undefined &&
-            queryParams.originTZ !== ""
-        ) {
-            url = `free-trial/?plan=${queryParams.plan}&country_code=${localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : queryParams.country_code}&originCountry=${
-                queryParams.originCountry
-            }&originTZ=${queryParams.originTZ}`;
+        if (queryParams.plan !== undefined && queryParams.plan !== "" && queryParams.country_code !== undefined && queryParams.country_code !== "") {
+            url = `free-trial/?plan=${queryParams.plan}&country_code=${localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : queryParams.country_code}`;
         } else {
             window.location = "https://sbb-shop.ea93.work/paketi";
             return;

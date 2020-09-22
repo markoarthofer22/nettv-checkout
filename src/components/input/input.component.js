@@ -5,7 +5,7 @@ import SvgIcon from "../svg-icon/svg-icon.component";
 
 import "./input.scss";
 
-const InputComponent = ({ type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue, tooltip, disabled, showPasswordIcon, showIcon, ref }) => {
+const InputComponent = ({ onBlur, type, name, inputClass, required, errorMessage, register, labelText, onEveryChange, inputValue, tooltip, disabled, showPasswordIcon, showIcon, ref }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
         <>
@@ -23,6 +23,7 @@ const InputComponent = ({ type, name, inputClass, required, errorMessage, regist
                 value={inputValue && inputValue.toString()}
                 ref={register ? register({ ...required }) : null}
                 onChange={(e) => (onEveryChange ? onEveryChange(e) : null)}
+                onBlur={(e) => (onBlur ? onBlur(e) : null)}
             />
 
             {showIcon && (
