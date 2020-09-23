@@ -49,7 +49,7 @@ const PaymentInfo = (props) => {
     const [selectedCreditCardInfo, setSelectedCreditCardInfo] = useState({});
     const [openCreditCardDropdown, setOpenCreditCardDropdown] = useState(false);
     const checkoutRef = useRef();
-    const { register, handleSubmit, errors, watch, setError, clearErrors } = useForm({
+    const { register, handleSubmit, errors, watch, setError, clearError } = useForm({
         mode: "onChange",
         reValidateMode: "onSubmit"
     });
@@ -445,6 +445,8 @@ const PaymentInfo = (props) => {
     };
 
     const verifyEmail = (e) => {
+        clearError("email");
+
         if (errors.email !== undefined) return;
 
         axios
@@ -457,7 +459,35 @@ const PaymentInfo = (props) => {
                 if (!response.data.success) {
                     setError("email", "manual", response.data.msg);
                 } else {
-                    clearErrors("email");
+                    clearError("email");
+                }
+            })
+            .catch((error) => {});
+    };
+
+    const verifyContactPhoneNumber = (e) => {
+        clearError("phone");
+        if (errors.phone !== undefined || e.currentTarget.value.length < 10) return;
+
+        let phoneNum;
+
+        if (e.currentTarget.value.charAt(0) === "+") {
+            phoneNum = e.currentTarget.value.slice(1);
+        } else {
+            phoneNum = e.currentTarget.value;
+        }
+
+        axios
+            .get("netapi/check_phone_number", {
+                params: {
+                    phone: phoneNum
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("phone", "manual", response.data.msg);
+                } else {
+                    clearError("phone");
                 }
             })
             .catch((error) => {});
@@ -551,6 +581,7 @@ const PaymentInfo = (props) => {
                                     <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                         <InputTypePhone
                                             countriesList={countriesList}
+                                            onBlur={verifyContactPhoneNumber}
                                             buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}
                                             predefinedValue={selfCarePhone}

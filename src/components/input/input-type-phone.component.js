@@ -3,7 +3,7 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ id, buyersCountryCode, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ id, onBlur, buyersCountryCode, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesDial, setCountriesDial] = useState();
@@ -63,7 +63,17 @@ const InputTypePhone = ({ id, buyersCountryCode, predefinedDialValue, predefined
     }, [inputValue]);
 
     const setInput = (e) => {
-        setInputValue(e.target.value);
+        if (countriesDial) {
+            let stringLength = String(countriesDial).length + 1;
+
+            if (e.target.value.substring(1, stringLength) === String(countriesDial)) {
+                setInputValue(e.target.value);
+            } else {
+                setInputValue(`+${countriesDial}`);
+            }
+        } else {
+            setInputValue(e.target.value);
+        }
     };
 
     return (
@@ -93,6 +103,7 @@ const InputTypePhone = ({ id, buyersCountryCode, predefinedDialValue, predefined
                         ref={register ? register({ ...required }) : null}
                         value={inputValue}
                         onChange={(e) => setInput(e)}
+                        onBlur={(e) => (onBlur ? onBlur(e) : null)}
                     />
                     <span name={name} error={errorMessage && errorMessage.message} />
                 </div>

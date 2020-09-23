@@ -49,7 +49,7 @@ const BundlePayout = (props) => {
     const [openCreditCardDropdown, setOpenCreditCardDropdown] = useState(false);
 
     const checkoutRef = useRef();
-    const { register, handleSubmit, errors, watch, setError } = useForm({
+    const { register, handleSubmit, errors, watch, setError, clearError } = useForm({
         mode: "onChange",
         reValidateMode: "onSubmit"
     });
@@ -454,6 +454,56 @@ const BundlePayout = (props) => {
         }
     };
 
+    const verifyEmail = (e) => {
+        clearError("email");
+
+        if (errors.email !== undefined) return;
+
+        axios
+            .get("netapi/check_email", {
+                params: {
+                    email: e.currentTarget.value
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("email", "manual", response.data.msg);
+                } else {
+                    clearError("email");
+                }
+            })
+            .catch((error) => {});
+    };
+
+    const verifyContactPhoneNumber = (e) => {
+        clearError("phone");
+
+        if (errors.phone !== undefined || e.currentTarget.value.length < 10) return;
+
+        let phoneNum;
+
+        if (e.currentTarget.value.charAt(0) === "+") {
+            phoneNum = e.currentTarget.value.slice(1);
+        } else {
+            phoneNum = e.currentTarget.value;
+        }
+
+        axios
+            .get("netapi/check_phone_number", {
+                params: {
+                    phone: phoneNum
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("phone", "manual", response.data.msg);
+                } else {
+                    clearError("phone");
+                }
+            })
+            .catch((error) => {});
+    };
+
     return (
         <>
             <section className="payment-info">
@@ -474,6 +524,7 @@ const BundlePayout = (props) => {
                                 <div className={`form-item-floating ${errors.email && "invalid"}`}>
                                     <InputComponent
                                         name="email"
+                                        onBlur={verifyEmail}
                                         labelText="Email"
                                         errorMessage={errors.email}
                                         register={register}
@@ -540,6 +591,7 @@ const BundlePayout = (props) => {
                                 <div className="form-item-container">
                                     <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                         <InputTypePhone
+                                            onBlur={verifyContactPhoneNumber}
                                             countriesList={countriesList}
                                             buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}

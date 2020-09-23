@@ -332,6 +332,54 @@ const FreePaymentInfo = (props) => {
         });
     };
 
+    const verifyEmail = (e) => {
+        clearError("email");
+        if (errors.email !== undefined) return;
+
+        axios
+            .get("netapi/check_email", {
+                params: {
+                    email: e.currentTarget.value
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("email", "manual", response.data.msg);
+                } else {
+                    clearError("email");
+                }
+            })
+            .catch((error) => {});
+    };
+
+    const verifyContactPhoneNumber = (e) => {
+        clearError("phone");
+        if (errors.phone !== undefined || e.currentTarget.value.length < 10) return;
+
+        let phoneNum;
+
+        if (e.currentTarget.value.charAt(0) === "+") {
+            phoneNum = e.currentTarget.value.slice(1);
+        } else {
+            phoneNum = e.currentTarget.value;
+        }
+
+        axios
+            .get("netapi/check_phone_number", {
+                params: {
+                    phone: phoneNum
+                }
+            })
+            .then((response) => {
+                if (!response.data.success) {
+                    setError("phone", "manual", response.data.msg);
+                } else {
+                    clearError("phone");
+                }
+            })
+            .catch((error) => {});
+    };
+
     return (
         <>
             <section className="payment-info">
@@ -356,6 +404,7 @@ const FreePaymentInfo = (props) => {
                                 <div className={`form-item-floating ${errors.email && "invalid"}`}>
                                     <InputComponent
                                         name="email"
+                                        onBlur={verifyEmail}
                                         labelText="Email"
                                         errorMessage={errors.email}
                                         register={register}
@@ -427,6 +476,7 @@ const FreePaymentInfo = (props) => {
                                             returnInputValue={returnInputValue}
                                             predefinedValue={selfCarePhone}
                                             predefinedDialValue={selfCareDial}
+                                            onBlur={verifyContactPhoneNumber}
                                             name="phone"
                                             errorMessage={errors.phone}
                                             register={register}
