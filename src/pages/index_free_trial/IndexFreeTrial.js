@@ -44,16 +44,7 @@ const FreeTrialIndex = (props) => {
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
 
-        if (
-            queryParams.plan !== undefined &&
-            queryParams.plan !== "" &&
-            queryParams.country_code !== undefined &&
-            queryParams.country_code !== "" &&
-            queryParams.originCountry !== undefined &&
-            queryParams.originCountry !== "" &&
-            queryParams.originTZ !== undefined &&
-            queryParams.originTZ !== ""
-        ) {
+        if (queryParams.plan !== undefined && queryParams.plan !== "" && queryParams.country_code !== undefined && queryParams.country_code !== "") {
             dispatch(setHeaderType("gratis"));
             dispatch(setCurrentNavigationStep(1));
         } else {

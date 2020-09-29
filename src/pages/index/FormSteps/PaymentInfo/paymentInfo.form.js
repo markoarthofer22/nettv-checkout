@@ -61,8 +61,7 @@ const PaymentInfo = (props) => {
     const [bankCheckoutResponse, setBankCheckoutResponse] = useState({
         error: "",
         success: false,
-        response: ""
-        // response: {}
+        response: {}
     });
 
     const [bundleError, setBundleError] = useState({
@@ -213,7 +212,11 @@ const PaymentInfo = (props) => {
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
 
-            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+            if (currentPriceValues.paymentType === "plan_box" && parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload
+                };
+            } else if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
                 payload = {
                     ...payload,
                     address: "",
@@ -276,13 +279,17 @@ const PaymentInfo = (props) => {
                     setBundleError({
                         isDialogOpen: true,
                         title: "Greška prilikom registracije!",
-                        message: error.response.data.message
+                        message: error.response ? error.response.data.message : "error"
                     });
                 });
         } else if (paymentMethod === "bank") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
 
-            if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+            if (currentPriceValues.paymentType === "plan_box" && parseInt(currentPriceValues.headerValues.contractLength) === 0) {
+                payload = {
+                    ...payload
+                };
+            } else if (parseInt(currentPriceValues.headerValues.contractLength) === 0) {
                 payload = {
                     ...payload,
                     address: "",
@@ -306,7 +313,7 @@ const PaymentInfo = (props) => {
                     setBundleError({
                         isDialogOpen: true,
                         title: "Greška prilikom registracije!",
-                        message: error.response.data.message
+                        message: error.response ? error.response.data.message : "error"
                     });
                 });
         }
@@ -345,9 +352,10 @@ const PaymentInfo = (props) => {
             current.children[0].children[0].classList.add("active");
             setPaymentMethod(current.dataset.payment);
             if (current.dataset.payment === "bank") {
-                if (document.querySelector("input[name='email']").value.length < 1) {
-                    setError("email", "empty", "Molimo unesite email adresu!");
-                    document.querySelector("input[name='email']").focus();
+                if (document.querySelector("input[name='name']").value.length < 1 && document.querySelector("input[name='surname']").value.length < 1) {
+                    setError("name", "empty", "Ovo polje ne može biti prazno!");
+                    setError("surname", "empty", "Ovo polje ne može biti prazno!");
+                    document.querySelector("input[name='name']").focus();
                     return;
                 }
                 fetchBankHTMLCode();
@@ -403,25 +411,18 @@ const PaymentInfo = (props) => {
         dispatch(setIsLoading(true));
 
         const data = {
-            username: document.querySelector("input[name='email']").value,
-            country_name: localStorage.getItem("lang_code"),
-            total_price: currentPriceValues.paymentValues.totalPrice,
-            box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
-            transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
-            subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
-                ? currentPriceValues.paymentValues.subscriptionDiscountPrice
-                : currentPriceValues.paymentValues.subscriptionFullPrice,
-            activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
-            addon_price: 0,
-            currency: currentPriceValues.currency,
-            ip_address: userIP
+            name_surname: `${document.querySelector("input[name='name']").value} ${document.querySelector("input[name='surname']").value}`,
+            country_code: localStorage.getItem("lang_code"),
+            ip_address: userIP,
+            promotion_id: currentPriceValues.variationProductId,
+            plan_id: currentPriceValues.mainProductId
         };
 
         axios
             .post("shoppayment/bank", { ...data })
             .then((response) => {
                 dispatch(setIsLoading(false));
-                setPaymentMethodHTML(response.data);
+                setPaymentMethodHTML(response.data.response);
             })
             .catch((error) => {
                 dispatch(setIsLoading(false));
@@ -467,7 +468,7 @@ const PaymentInfo = (props) => {
 
     const verifyContactPhoneNumber = (e) => {
         clearError("phone");
-        if (errors.phone !== undefined || e.currentTarget.value.length < 10) return;
+        if (errors.phone !== undefined || e.currentTarget.value.length < 5) return;
 
         let phoneNum;
 
@@ -591,10 +592,6 @@ const PaymentInfo = (props) => {
                                             register={register}
                                             required={{
                                                 required: "Molimo unesite broj telefona",
-                                                minLength: {
-                                                    value: 10,
-                                                    message: "Molimo unesite broj telefona"
-                                                },
                                                 pattern: {
                                                     value: /^[\+\d]?(?:[\d-.\s()]*)$/,
                                                     message: "Molimo koristite samo brojeve"
@@ -605,7 +602,7 @@ const PaymentInfo = (props) => {
                                 </div>
                             )}
 
-                            {currentPriceValues.paymentType === "plan_box" ||
+                            {currentPriceValues.paymentType !== "plan_variation" ||
                             (currentPriceValues.headerValues.contractLength !== null && parseInt(currentPriceValues.headerValues.contractLength) > 0) ? (
                                 <>
                                     <div className="group-title-holder">
@@ -850,13 +847,13 @@ const PaymentInfo = (props) => {
                                 setBankCheckoutResponse({
                                     success: false,
                                     error: "",
-                                    response: ""
+                                    response: {}
                                 });
                             } else {
                                 setBankCheckoutResponse({
                                     success: false,
                                     error: "",
-                                    response: ""
+                                    response: {}
                                 });
                                 location.reload();
                             }
@@ -868,7 +865,10 @@ const PaymentInfo = (props) => {
                                 <p>{bankCheckoutResponse.error}</p>
                             </div>
                         ) : (
-                            <div dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response ? bankCheckoutResponse.response : bankCheckoutResponse.error }}></div>
+                            <div className="checkout-message--content">
+                                <div className="checkout-message--title" dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response.title }}></div>
+                                <div className="checkout-message--paragraph" dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response.content }}></div>
+                            </div>
                         )}
                     </Popup>
                 </CSSTransition>

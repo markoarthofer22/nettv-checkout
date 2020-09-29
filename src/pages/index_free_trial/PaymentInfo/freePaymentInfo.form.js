@@ -354,7 +354,7 @@ const FreePaymentInfo = (props) => {
 
     const verifyContactPhoneNumber = (e) => {
         clearError("phone");
-        if (errors.phone !== undefined || e.currentTarget.value.length < 10) return;
+        if (errors.phone !== undefined || e.currentTarget.value.length < 5) return;
 
         let phoneNum;
 
@@ -482,10 +482,6 @@ const FreePaymentInfo = (props) => {
                                             register={register}
                                             required={{
                                                 required: "Molimo unesite broj telefona",
-                                                minLength: {
-                                                    value: 10,
-                                                    message: "Molimo unesite broj telefona"
-                                                },
                                                 pattern: {
                                                     value: /^[\+\d]?(?:[\d-.\s()]*)$/,
                                                     message: "Molimo koristite samo brojeve"

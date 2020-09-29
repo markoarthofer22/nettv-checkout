@@ -83,7 +83,7 @@ const InputTypePhone = ({ id, onBlur, buyersCountryCode, predefinedDialValue, pr
             </label>
             <div className="form-item-phone">
                 <Select
-                    title={predefinedDialValue ? predefinedValue : countriesName ? countriesName : null}
+                    title={countriesName ? countriesName : null}
                     data={countriesList}
                     placeholder="Odaberi državu"
                     selectClass={`select-countries ${Boolean(predefinedValue) ? "disabled" : ""}`}
