@@ -12,6 +12,7 @@ import { globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from ".
 import axios from "../../../redux/apis/main-api";
 
 // components
+import Popup from "../../../components/popup/popup.component";
 import Button from "../../../components/buttons/button.component";
 import SvgIcon from "../../../components/svg-icon/svg-icon.component";
 import InputComponent from "../../../components/input/input.component";
@@ -57,6 +58,11 @@ const FreePaymentInfo = (props) => {
         reValidateMode: "onSubmit"
     });
 
+    const [bankCheckoutResponse, setBankCheckoutResponse] = useState({
+        error: "",
+        success: false,
+        response: {}
+    });
     // get all dial codes
     useEffect(() => {
         dispatch(setIsLoading(true));
@@ -230,10 +236,16 @@ const FreePaymentInfo = (props) => {
 
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
+                    setBankCheckoutResponse(response.data);
                 })
                 .catch((error) => {
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
+                    setBundleError({
+                        isDialogOpen: true,
+                        title: "Greška prilikom registracije!",
+                        message: error.response ? error.response.data.message : "error"
+                    });
                 });
         }
     };
@@ -645,6 +657,42 @@ const FreePaymentInfo = (props) => {
                         <input type="hidden" name={item.item} value={item.value} key={Math.random()} readOnly />
                     ))}
                 </form>
+            )}
+
+            {(bankCheckoutResponse.success || bankCheckoutResponse.error) && (
+                <CSSTransition in={bankCheckoutResponse.success || bankCheckoutResponse.error} timeout={500} classNames="slide-in" unmountOnExit>
+                    <Popup
+                        class="checkout-message"
+                        closePopup={(e) => {
+                            if (bankCheckoutResponse.error) {
+                                setBankCheckoutResponse({
+                                    success: false,
+                                    error: "",
+                                    response: {}
+                                });
+                            } else {
+                                setBankCheckoutResponse({
+                                    success: false,
+                                    error: "",
+                                    response: {}
+                                });
+                                location.reload();
+                            }
+                        }}
+                    >
+                        {bankCheckoutResponse.error ? (
+                            <div>
+                                <h2>Greška!</h2>
+                                <p>{bankCheckoutResponse.error}</p>
+                            </div>
+                        ) : (
+                            <div className="checkout-message--content">
+                                <div className="checkout-message--title" dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response.title }}></div>
+                                <div className="checkout-message--paragraph" dangerouslySetInnerHTML={{ __html: bankCheckoutResponse.response.content }}></div>
+                            </div>
+                        )}
+                    </Popup>
+                </CSSTransition>
             )}
 
             <Dialog
