@@ -3,7 +3,7 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ id, onBlur, buyersCountryCode, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({ id, onBlur, buyersCountryCode, copiedPhoneValue, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesDial, setCountriesDial] = useState();
@@ -29,7 +29,11 @@ const InputTypePhone = ({ id, onBlur, buyersCountryCode, predefinedDialValue, pr
             return;
         }
 
-        setInputValue(`+${countriesDial}`);
+        if (copiedPhoneValue) {
+            setInputValue(`+${countriesDial}${copiedPhoneValue}`);
+        } else {
+            setInputValue(`+${countriesDial}`);
+        }
     };
 
     useEffect(() => {
@@ -51,7 +55,7 @@ const InputTypePhone = ({ id, onBlur, buyersCountryCode, predefinedDialValue, pr
     useEffect(() => {
         if (predefinedValue && predefinedDialValue) return;
         checkForCountryPhone(countriesID);
-    }, [countriesID]);
+    }, [countriesID, copiedPhoneValue]);
 
     useEffect(() => {
         if (inputValue) {

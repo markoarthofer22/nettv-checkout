@@ -34,6 +34,7 @@ const FreePaymentInfo = (props) => {
     const userOriginCountry = useSelector(globalUserCountry);
     const [countriesList, setCountriesList] = useState(null);
     const [countryDial, setCountryDial] = useState();
+    const [countryPhoneNumber, setCountryPhoneNumber] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cards");
     const [checkoutRedirectArray, setCheckoutRedirectArray] = useState();
@@ -53,7 +54,7 @@ const FreePaymentInfo = (props) => {
     });
 
     const checkoutRef = useRef();
-    const { register, handleSubmit, errors, watch, setError, clearError } = useForm({
+    const { register, handleSubmit, errors, watch, setError, clearError, getValues } = useForm({
         mode: "onChange",
         reValidateMode: "onSubmit"
     });
@@ -63,6 +64,7 @@ const FreePaymentInfo = (props) => {
         success: false,
         response: {}
     });
+
     // get all dial codes
     useEffect(() => {
         dispatch(setIsLoading(true));
@@ -387,10 +389,17 @@ const FreePaymentInfo = (props) => {
                     setError("phone", "manual", response.data.msg);
                 } else {
                     clearError("phone");
+                    setCountryPhoneNumber(returnPhoneWithoutDial(getValues("phone"), countryDial));
                 }
             })
             .catch((error) => {});
     };
+
+    // useEffect(() => {
+    //     if (paymentMethod === "mob" && countryPhoneNumber.length > 0) {
+    //         console.log(countryPhoneNumber);
+    //     }
+    // }, [paymentMethod]);
 
     return (
         <>
@@ -484,6 +493,7 @@ const FreePaymentInfo = (props) => {
                                     <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                         <InputTypePhone
                                             countriesList={countriesList}
+                                            copiedPhoneValue={countryPhoneNumber.length > 0 ? countryPhoneNumber : null}
                                             buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}
                                             predefinedValue={selfCarePhone}
@@ -560,7 +570,12 @@ const FreePaymentInfo = (props) => {
                                                             <InputTypePhone
                                                                 id="phone_validation"
                                                                 countriesList={countriesList}
+                                                                buyersCountryCode={userOriginCountry ? userOriginCountry : null}
+                                                                copiedPhoneValue={countryPhoneNumber.length > 0 ? countryPhoneNumber : null}
                                                                 errorMessage={errors.phone_validation}
+                                                                onBlur={() =>
+                                                                    setCountryPhoneNumber(returnPhoneWithoutDial(document.querySelector("input[name='phone_validation']").value, countryDial))
+                                                                }
                                                                 name="phone_validation"
                                                                 required={{ required: false }}
                                                             />
@@ -571,13 +586,7 @@ const FreePaymentInfo = (props) => {
 
                                                 <div className={`form-item-container promo small ${!phoneVerification ? "disabled" : ""} `}>
                                                     <div className={`form-item-floating ${errors.code_validation && "invalid"}`}>
-                                                        <InputComponent
-                                                            name="code_validation"
-                                                            labelText="Unos koda"
-                                                            errorMessage={errors.code_validation}
-                                                            // register={register}
-                                                            required={{ required: false }}
-                                                        />
+                                                        <InputComponent name="code_validation" labelText="Unos koda" errorMessage={errors.code_validation} required={{ required: false }} />
                                                     </div>
                                                     <Button isLoading={!phoneVerification} customClass="promo-code-button blue" title="Verifikuj kod" clicked={(e) => verifyPhoneNumber(e)} />
                                                 </div>
