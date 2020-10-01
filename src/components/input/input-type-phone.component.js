@@ -45,10 +45,6 @@ const InputTypePhone = ({
 
         if (copiedCountryIso && countryID && countriesDial) {
             let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
-
-            console.log("tu sam");
-            console.log(country);
-            console.log(copiedPhoneValue);
             setInputValue(`+${country.dialing_code}${copiedPhoneValue}`);
             setCountriesName(country.country);
             setCountriesID(country.iso.toLowerCase());
@@ -56,10 +52,6 @@ const InputTypePhone = ({
             return;
         }
 
-        // if (copiedPhoneValue) {
-        //     setInputValue(`+${countriesDial}${copiedPhoneValue}`);
-        // } else {
-        // }
         setInputValue(`+${countriesDial}`);
     };
 
