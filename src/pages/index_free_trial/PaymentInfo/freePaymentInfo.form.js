@@ -46,7 +46,9 @@ const FreePaymentInfo = (props) => {
         message: "",
         status: false
     });
-
+    const [creditCardInfo, setCreditCardInfo] = useState([]);
+    const [selectedCreditCardInfo, setSelectedCreditCardInfo] = useState({});
+    const [openCreditCardDropdown, setOpenCreditCardDropdown] = useState(false);
     const [bundleError, setBundleError] = useState({
         isDialogOpen: false,
         title: "",
@@ -97,14 +99,15 @@ const FreePaymentInfo = (props) => {
                     dispatch(setUserTZ(value));
                 }
 
-                // if (property === "info") {
-                //     setCreditCardInfo(value);
-                //     setSelectedCreditCardInfo(_.find(value, (item) => item.primary_card === 1));
-                // }
+                if (property === "info") {
+                    setCreditCardInfo(value);
+                    setSelectedCreditCardInfo(_.find(value, (item) => item.primary_card === 1));
+                }
 
                 if (document.querySelector(`input[name='${property}']`)) {
                     if (property === "phone") {
                         setSelfCarePhone(`+${selfCareDial}${value}`);
+                        setCountryPhoneNumber(value);
                     } else {
                         document.querySelector(`input[name='${property}']`).disabled = true;
                         document.querySelector(`input[name='${property}']`).value = value;
@@ -150,12 +153,13 @@ const FreePaymentInfo = (props) => {
             currency: currentPriceValues.currency,
             activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
-            promotion_type: paymentMethod === "cards" ? "credit_card" : "phone_verify"
+            promotion_type: paymentMethod === "cards" ? "credit_card" : "phone_verify",
+            credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
+            new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
         };
 
         if (paymentMethod === "cards") {
-            // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
-            let paymentURL = "free-trial/cardpayment";
+            let paymentURL = !_.isEmpty(userHash) ? "/selfcare/free-trial/cardpayment" : "free-trial/cardpayment";
 
             axios
                 .post(paymentURL, { ...payload })
@@ -395,11 +399,21 @@ const FreePaymentInfo = (props) => {
             .catch((error) => {});
     };
 
-    // useEffect(() => {
-    //     if (paymentMethod === "mob" && countryPhoneNumber.length > 0) {
-    //         console.log(countryPhoneNumber);
-    //     }
-    // }, [paymentMethod]);
+    const setNewSelectedCardInfo = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setOpenCreditCardDropdown(false);
+        if (e.currentTarget.dataset.id == 1) {
+            setSelectedCreditCardInfo({
+                credit_card_id: 1,
+                credit_card_number: "30 dana uz podatke o platnoj kartici",
+                primary_card: 0
+            });
+        } else {
+            setSelectedCreditCardInfo(_.find(creditCardInfo, (item) => item.credit_card_id == e.currentTarget.dataset.id));
+        }
+    };
 
     return (
         <>
@@ -528,7 +542,39 @@ const FreePaymentInfo = (props) => {
                                         <div className={`checkbox active`}>
                                             <span className="filled"></span>
                                         </div>
-                                        <span className="name">30 dana uz podatke o platnoj kartici</span>
+                                        {creditCardInfo.length > 0 ? (
+                                            <div className="credit-card-select">
+                                                <div className="credit-card-select--selected" onClick={() => setOpenCreditCardDropdown(!openCreditCardDropdown)}>
+                                                    {_.isEmpty(selectedCreditCardInfo) ? (
+                                                        creditCardInfo.map((item, index) => {
+                                                            if (item.primary_card === 1) {
+                                                                return (
+                                                                    <span key={index} data-id={item.credit_card_id}>
+                                                                        {item.credit_card_number}
+                                                                    </span>
+                                                                );
+                                                            }
+                                                        })
+                                                    ) : (
+                                                        <span data-id={selectedCreditCardInfo.credit_card_id}>{selectedCreditCardInfo.credit_card_number}</span>
+                                                    )}
+                                                </div>
+                                                <div className={`credit-card-select--dropdown ${openCreditCardDropdown ? "opened" : ""}`}>
+                                                    <ul>
+                                                        {creditCardInfo.map((item, index) => (
+                                                            <li key={index} data-id={item.credit_card_id} onClick={(e) => setNewSelectedCardInfo(e)}>
+                                                                {item.credit_card_number}
+                                                            </li>
+                                                        ))}
+                                                        <li data-id="1" onClick={(e) => setNewSelectedCardInfo(e)}>
+                                                            30 dana uz podatke o platnoj kartici
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <span className="name">30 dana uz podatke o platnoj kartici</span>
+                                        )}
                                     </div>
                                     <div className="cards-holder">
                                         <img
