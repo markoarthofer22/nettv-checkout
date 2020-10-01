@@ -196,8 +196,8 @@ const BundlePayout = (props) => {
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
                 promotion_type: currentPriceValues.paymentType,
-                credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
-                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
+                credit_card_id: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "") : "",
+                new_card_selected: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0") : "1"
             };
         } else if (currentPriceValues.paymentType === "plan_variation") {
             payload = {
@@ -227,8 +227,8 @@ const BundlePayout = (props) => {
                 discount_value: "1.00",
                 promotion_id: currentPriceValues.variationProductId,
                 promotion_type: currentPriceValues.paymentType,
-                credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
-                new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
+                credit_card_id: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "") : "",
+                new_card_selected: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0") : "1"
             };
         }
 

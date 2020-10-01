@@ -155,8 +155,8 @@ const FreePaymentInfo = (props) => {
             activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
             transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
             promotion_type: paymentMethod === "cards" ? "credit_card" : "phone_verify",
-            credit_card_id: selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "",
-            new_card_selected: selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0"
+            credit_card_id: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "") : "",
+            new_card_selected: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0") : "1"
         };
 
         if (paymentMethod === "cards") {
@@ -619,6 +619,8 @@ const FreePaymentInfo = (props) => {
                                                             <InputTypePhone
                                                                 id="phone_validation"
                                                                 countriesList={countriesList}
+                                                                predefinedValue={selfCarePhone}
+                                                                predefinedDialValue={selfCareDial}
                                                                 returnInputValue={returnInputValue}
                                                                 copiedCountryIso={countryIso}
                                                                 buyersCountryCode={userOriginCountry ? userOriginCountry : null}

@@ -79,6 +79,8 @@ const InputTypePhone = ({
 
     useEffect(() => {
         if (predefinedValue && predefinedDialValue) return;
+        console.log(copiedPhoneValue);
+
         checkForCountryPhone(countriesID);
     }, [countriesID, copiedPhoneValue]);
 
