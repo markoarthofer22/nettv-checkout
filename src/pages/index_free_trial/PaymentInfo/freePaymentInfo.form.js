@@ -33,6 +33,7 @@ const FreePaymentInfo = (props) => {
     const userTZ = useSelector(globalUserTZ);
     const userOriginCountry = useSelector(globalUserCountry);
     const [countriesList, setCountriesList] = useState(null);
+    const [countryIso, setCountryIso] = useState();
     const [countryDial, setCountryDial] = useState();
     const [countryPhoneNumber, setCountryPhoneNumber] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -258,6 +259,7 @@ const FreePaymentInfo = (props) => {
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
+        setCountryIso(countryID.toLowerCase());
         setCountryDial(countryDial);
     };
 
@@ -507,6 +509,7 @@ const FreePaymentInfo = (props) => {
                                     <div className={`form-item-floating ${errors.phone && "invalid"} phone-type`}>
                                         <InputTypePhone
                                             countriesList={countriesList}
+                                            copiedCountryIso={countryIso}
                                             copiedPhoneValue={countryPhoneNumber.length > 0 ? countryPhoneNumber : null}
                                             buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                             returnInputValue={returnInputValue}
@@ -616,6 +619,8 @@ const FreePaymentInfo = (props) => {
                                                             <InputTypePhone
                                                                 id="phone_validation"
                                                                 countriesList={countriesList}
+                                                                returnInputValue={returnInputValue}
+                                                                copiedCountryIso={countryIso}
                                                                 buyersCountryCode={userOriginCountry ? userOriginCountry : null}
                                                                 copiedPhoneValue={countryPhoneNumber.length > 0 ? countryPhoneNumber : null}
                                                                 errorMessage={errors.phone_validation}

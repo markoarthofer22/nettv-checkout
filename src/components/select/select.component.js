@@ -40,10 +40,13 @@ const Select = ({ title, data, selectClass, placeholder, returnValue, isSearchab
     }, [isOpen]);
 
     const toggleDropdown = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         setOpen(!isOpen);
     };
 
     const selectItem = (e, name, value, valueNumber) => {
+        e.preventDefault();
         e.stopPropagation();
         setOpen(false);
         setSelectedTitle(name);
@@ -69,8 +72,8 @@ const Select = ({ title, data, selectClass, placeholder, returnValue, isSearchab
         <div className={`select ${selectClass}`} ref={mainInput}>
             <div
                 className={`select-header ${isOpen ? "open" : ""} `}
-                onClick={() => {
-                    toggleDropdown();
+                onClick={(e) => {
+                    toggleDropdown(e);
                 }}
             >
                 {selectedTitle ? <div className="selected-item-title">{selectedTitle ? selectedTitle : ""}</div> : <div className="placeholder">{placeholder ? placeholder : ""}</div>}

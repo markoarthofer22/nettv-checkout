@@ -3,7 +3,21 @@ import Select from "../select/select.component";
 import "./input-phone.scss";
 import _ from "underscore";
 
-const InputTypePhone = ({ id, onBlur, buyersCountryCode, copiedPhoneValue, predefinedDialValue, predefinedValue, returnInputValue, register, required, name, errorMessage, countriesList }) => {
+const InputTypePhone = ({
+    id,
+    onBlur,
+    copiedCountryIso,
+    buyersCountryCode,
+    copiedPhoneValue,
+    predefinedDialValue,
+    predefinedValue,
+    returnInputValue,
+    register,
+    required,
+    name,
+    errorMessage,
+    countriesList
+}) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
     const [countriesDial, setCountriesDial] = useState();
@@ -29,11 +43,24 @@ const InputTypePhone = ({ id, onBlur, buyersCountryCode, copiedPhoneValue, prede
             return;
         }
 
-        if (copiedPhoneValue) {
-            setInputValue(`+${countriesDial}${copiedPhoneValue}`);
-        } else {
-            setInputValue(`+${countriesDial}`);
+        if (copiedCountryIso && countryID && countriesDial) {
+            let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
+
+            console.log("tu sam");
+            console.log(country);
+            console.log(copiedPhoneValue);
+            setInputValue(`+${country.dialing_code}${copiedPhoneValue}`);
+            setCountriesName(country.country);
+            setCountriesID(country.iso.toLowerCase());
+            setCountriesDial(country.dialing_code);
+            return;
         }
+
+        // if (copiedPhoneValue) {
+        //     setInputValue(`+${countriesDial}${copiedPhoneValue}`);
+        // } else {
+        // }
+        setInputValue(`+${countriesDial}`);
     };
 
     useEffect(() => {
@@ -41,6 +68,12 @@ const InputTypePhone = ({ id, onBlur, buyersCountryCode, copiedPhoneValue, prede
             setCountriesID(buyersCountryCode);
         }
     }, [buyersCountryCode]);
+
+    useEffect(() => {
+        if (copiedCountryIso) {
+            setCountriesID(copiedCountryIso);
+        }
+    }, [copiedCountryIso]);
 
     useEffect(() => {
         if (predefinedValue && predefinedDialValue) {
