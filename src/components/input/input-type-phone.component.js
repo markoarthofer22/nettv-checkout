@@ -16,7 +16,8 @@ const InputTypePhone = ({
     required,
     name,
     errorMessage,
-    countriesList
+    countriesList,
+    disableFocus
 }) => {
     const [countriesID, setCountriesID] = useState();
     const [countriesName, setCountriesName] = useState();
@@ -43,20 +44,15 @@ const InputTypePhone = ({
             return;
         }
 
-        console.log(id, copiedCountryIso);
-        console.log(id, countryID);
-        console.log(id, countriesDial);
-
-        if (copiedCountryIso && countryID && countriesDial) {
-            let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
-            setInputValue(`+${country.dialing_code}${copiedPhoneValue ? copiedPhoneValue : ""}`);
-            setCountriesName(country.country);
-            setCountriesID(country.iso.toLowerCase());
-            setCountriesDial(country.dialing_code);
-            return;
-        }
-
         setInputValue(`+${countriesDial}`);
+    };
+
+    const copyCountryValues = (countryID) => {
+        let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
+        setInputValue(`+${country.dialing_code}${copiedPhoneValue ? copiedPhoneValue : ""}`);
+        setCountriesName(country.country);
+        setCountriesID(country.iso.toLowerCase());
+        setCountriesDial(country.dialing_code);
     };
 
     useEffect(() => {
@@ -84,12 +80,20 @@ const InputTypePhone = ({
     useEffect(() => {
         if (predefinedValue && predefinedDialValue) return;
 
-        checkForCountryPhone(countriesID);
+        if (copiedPhoneValue && countriesID) {
+            copyCountryValues(countriesID);
+        } else {
+            checkForCountryPhone(countriesID);
+        }
     }, [countriesID, copiedPhoneValue]);
+
+    useEffect(() => {}, [countriesID, copiedPhoneValue]);
 
     useEffect(() => {
         if (inputValue) {
-            // document.getElementById(`${id ? id : "countries"}`).focus();
+            if (!disableFocus) {
+                document.getElementById(`${id ? id : "countries"}`).focus();
+            }
             if (returnInputValue) {
                 returnInputValue(countriesID, countriesDial, countriesName);
             }

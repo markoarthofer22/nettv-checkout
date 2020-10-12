@@ -618,6 +618,7 @@ const FreePaymentInfo = (props) => {
                                                         <div className={`form-item-floating ${errors.phone_validation && "invalid"} phone-type`}>
                                                             <InputTypePhone
                                                                 id="phone_validation"
+                                                                disableFocus
                                                                 countriesList={countriesList}
                                                                 predefinedValue={selfCarePhone}
                                                                 predefinedDialValue={selfCareDial}
