@@ -43,9 +43,13 @@ const InputTypePhone = ({
             return;
         }
 
+        console.log(id, copiedCountryIso);
+        console.log(id, countryID);
+        console.log(id, countriesDial);
+
         if (copiedCountryIso && countryID && countriesDial) {
             let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
-            setInputValue(`+${country.dialing_code}${copiedPhoneValue}`);
+            setInputValue(`+${country.dialing_code}${copiedPhoneValue ? copiedPhoneValue : ""}`);
             setCountriesName(country.country);
             setCountriesID(country.iso.toLowerCase());
             setCountriesDial(country.dialing_code);
@@ -85,7 +89,7 @@ const InputTypePhone = ({
 
     useEffect(() => {
         if (inputValue) {
-            document.getElementById(`${id ? id : "countries"}`).focus();
+            // document.getElementById(`${id ? id : "countries"}`).focus();
             if (returnInputValue) {
                 returnInputValue(countriesID, countriesDial, countriesName);
             }
