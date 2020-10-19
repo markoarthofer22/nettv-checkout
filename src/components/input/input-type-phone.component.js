@@ -37,6 +37,9 @@ const InputTypePhone = ({
 
         if (countryID && countriesDial === undefined) {
             let country = _.find(countriesList, (item) => item.iso == countryID.toUpperCase());
+
+            if(country === undefined) return;
+ 
             setInputValue(`+${country.dialing_code}`);
             setCountriesName(country.country);
             setCountriesID(country.iso.toLowerCase());
