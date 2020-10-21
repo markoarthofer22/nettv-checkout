@@ -48,8 +48,8 @@ const FreePackage = (props) => {
         let queryParams = queryString.parse(history.location.search);
         let url;
 
-        if (queryParams.plan !== undefined && queryParams.plan !== "" && queryParams.country_code !== undefined && queryParams.country_code !== "") {
-            url = `free-trial/?plan=${queryParams.plan}&country_code=${localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : queryParams.country_code}`;
+        if (queryParams.plan !== undefined && queryParams.plan !== "" ) {
+            url = `free-trial/?plan=${queryParams.plan}&country_code=${localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : queryParams.country_code ? queryParams.country_code : "other" }`;
         } else {
             window.location = "https://sbb-shop.ea93.work/paketi";
             return;

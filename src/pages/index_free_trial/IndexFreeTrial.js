@@ -44,7 +44,7 @@ const FreeTrialIndex = (props) => {
     useEffect(() => {
         let queryParams = queryString.parse(history.location.search);
 
-        if (queryParams.plan !== undefined && queryParams.plan !== "" && queryParams.country_code !== undefined && queryParams.country_code !== "") {
+        if (queryParams.plan !== undefined && queryParams.plan !== "") {
             dispatch(setHeaderType("gratis"));
             dispatch(setCurrentNavigationStep(1));
         } else {
