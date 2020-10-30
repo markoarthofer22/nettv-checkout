@@ -45,6 +45,7 @@ const IndexPage = (props) => {
     useEffect(() => {
         if (localStorage.getItem("lang_code") === undefined) return;
         let queryParams = queryString.parse(history.location.search);
+
         if ((!queryParams.lang_code || queryParams.lang_code === "") && localStorage.getItem("lang_code") === undefined) {
             queryParams = {
                 ...queryParams,
@@ -55,7 +56,7 @@ const IndexPage = (props) => {
         } else {
             queryParams = {
                 ...queryParams,
-                lang_code: localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
+                lang_code: queryParams.lang_code ? queryParams.lang_code : localStorage.getItem("lang_code")
             };
 
             let url = `/products/?${queryString.stringify(queryParams)}`;

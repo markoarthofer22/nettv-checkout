@@ -59,11 +59,20 @@ const IndexBundle = (props) => {
     }, [history.location]);
 
     const mapBundleData = (_hash) => {
+        let queryParams = queryString.parse(history.location.search);
+        let lang;
+
+        if (queryParams.lang_code && queryParams.lang_code !== "") {
+            lang = queryParams.lang_code;
+        } else if (queryParams.country_code && queryParams.country_code !== "") {
+            lang = queryParams.country_code;
+        }
+
         axios
             .get(`/products/bundle`, {
                 params: {
                     hash: _hash,
-                    lang_code: localStorage.getItem("lang_code")
+                    lang_code: lang ? lang : localStorage.getItem("lang_code")
                 }
             })
             .then((response) => {

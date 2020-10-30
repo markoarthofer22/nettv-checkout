@@ -30,19 +30,29 @@ export default function App(props) {
     const allowedMarket = useSelector(selectAllCountryIDs);
     const headerProps = useSelector(headerType);
     const selected_lang_cookie = getCookie("selected_language");
-    const [userIpID, setUserIpID] = useState(
-        _.findWhere(allowedMarket, { countryCode: selected_lang_cookie })
-            ? _.findWhere(allowedMarket, { countryCode: selected_lang_cookie.toLowerCase() })
-            : { countryCode: localStorage.getItem("lang_code") }
-    );
+    const [userIpID, setUserIpID] = useState("");
+    const queryString = require("query-string");
     const history = useHistory();
+    let queryParams = queryString.parse(history.location.search);
 
     useEffect(() => {
         if (selected_lang_cookie === null) {
-            setUserIpID({ countryCode: "other" });
+            if (queryParams.lang_code && queryParams.lang_code !== "") {
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: queryParams.lang_code }) ? _.findWhere(allowedMarket, { countryCode: queryParams.lang_code }) : { countryCode: "other" });
+            } else if (queryParams.country_code && queryParams.country_code !== "") {
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: queryParams.country_code }) ? _.findWhere(allowedMarket, { countryCode: queryParams.country_code }) : { countryCode: "other" });
+            } else {
+                setUserIpID({ countryCode: "other" });
+            }
         } else {
-            const selectedCustomerCountryID = selected_lang_cookie.toLowerCase();
-            setUserIpID(_.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) ? _.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) : { countryCode: "other" });
+            if (queryParams.lang_code && queryParams.lang_code !== "") {
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: queryParams.lang_code }) ? _.findWhere(allowedMarket, { countryCode: queryParams.lang_code }) : { countryCode: "other" });
+            } else if (queryParams.country_code && queryParams.country_code !== "") {
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: queryParams.country_code }) ? _.findWhere(allowedMarket, { countryCode: queryParams.country_code }) : { countryCode: "other" });
+            } else {
+                const selectedCustomerCountryID = selected_lang_cookie.toLowerCase();
+                setUserIpID(_.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) ? _.findWhere(allowedMarket, { countryCode: selectedCustomerCountryID }) : { countryCode: "other" });
+            }
         }
     }, [history.location, selected_lang_cookie]);
 
