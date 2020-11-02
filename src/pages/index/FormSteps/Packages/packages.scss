@@ -87,7 +87,8 @@
             padding: 2rem;
             border-radius: 3px;
             justify-content: space-between;
-            background: linear-gradient(90deg, #46c5ac, #2194cf);
+            // background: linear-gradient(90deg, #46c5ac, #2194cf);
+            background: $darker-blue;
             box-shadow: 1.4px 1.4px 5px 0 rgba(0, 0, 0, 0.2);
             z-index: 10;
 
@@ -295,9 +296,8 @@
         margin-bottom: 3rem;
         cursor: pointer;
         position: relative;
-        background: -webkit-gradient(linear, left top, right top, from(#46c5ac), to(#2194cf));
-        background: -o-linear-gradient(left, #46c5ac, #2194cf);
-        background: linear-gradient(90deg, #46c5ac, #2194cf);
+        // background: linear-gradient(90deg, #46c5ac, #2194cf);
+        background: $darker-blue;
         padding: 50px 30px;
         box-shadow: 1.4px 1.4px 5px 0 rgba(0, 0, 0, 0.2);
         border-radius: 0.3rem;
@@ -330,7 +330,7 @@
             left: 20px;
             top: 20px;
             z-index: 2;
-            border: 1px solid $blue;
+            border: 1px solid $darker-blue;
             border-radius: 100%;
             width: 25px;
             height: 25px;
@@ -342,7 +342,7 @@
 
             &.active {
                 .filled {
-                    background-color: $blue;
+                    background-color: $darker-blue;
                     opacity: 1;
                     visibility: visible;
                 }
@@ -391,7 +391,7 @@
         }
 
         &.disabled {
-            background: linear-gradient(90deg, rgba(70, 197, 172, 0.3), rgba(33, 148, 207, 0.3));
+            background: rgba($darker-blue, 0.3);
             -webkit-box-shadow: none;
             box-shadow: none;
 
