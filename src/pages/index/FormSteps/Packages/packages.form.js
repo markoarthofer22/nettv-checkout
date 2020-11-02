@@ -63,6 +63,9 @@ const PackagesForm = (props) => {
                 .catch((error) => {});
         }
 
+        setBoxVariations([]);
+        setVariations([]);
+
         dispatch(getDataForURL(url))
             .then((response) => {
                 setData(response.data);
