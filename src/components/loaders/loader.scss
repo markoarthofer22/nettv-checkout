@@ -1,3 +1,4 @@
+@import "../../css/variables.scss";
 .main-loader-container {
     position: fixed;
     display: flex;
@@ -10,7 +11,7 @@
     height: 100%;
 
     .loader {
-        color: #2194cf;
+        color: $darker-blue;
         font-size: 90px;
         text-indent: -9999em;
         overflow: hidden;

@@ -166,7 +166,7 @@
                     color: #fff;
                     font-size: 1.4rem;
                     font-weight: 500;
-                    background-color: #2194cf;
+                    background-color: $darker-blue;
                     padding: 1.3rem 7.5rem;
                     border-radius: 0.3rem;
 
@@ -403,7 +403,7 @@
                     color: #fff;
                     font-size: 1.4rem;
                     font-weight: 500;
-                    background-color: #2194cf;
+                    background-color: $darker-blue;
                     padding: 1.3rem 7.5rem;
                     border-radius: 0.3rem;
 
@@ -480,12 +480,12 @@
             color: #666;
 
             a {
-                color: #3cb2ee;
+                color: $darker-blue;
                 font-weight: 700;
                 transition: all 0.4s;
 
                 &:hover {
-                    color: #2159a4;
+                    color: $blue;
                 }
             }
         }

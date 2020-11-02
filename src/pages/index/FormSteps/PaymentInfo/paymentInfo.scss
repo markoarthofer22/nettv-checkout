@@ -74,15 +74,17 @@
                 }
 
                 &.blue {
-                    color: $dark-blue;
-                    border-color: $dark-blue;
+                    color: $darker-blue;
+                    border-color: $darker-blue;
 
                     &:hover {
                         color: $white;
                     }
 
                     &::before {
-                        background-image: linear-gradient(hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0)), linear-gradient(101deg, $dark-blue, $blue);
+                        // background-image: linear-gradient(hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0)), linear-gradient(101deg, $dark-blue, $blue);
+                        background-image: none;
+                        background-color: $darker-blue;
                     }
                 }
             }
@@ -121,16 +123,16 @@
                     }
 
                     a {
-                        color: $dark-blue;
+                        color: $darker-blue;
                     }
 
                     strong {
-                        color: $dark-blue;
+                        color: $darker-blue;
                     }
 
                     &.error {
                         h4 {
-                            color: $dark-blue;
+                            color: $darker-blue;
                             font-size: 1.8rem;
                             font-weight: 500;
                             margin-bottom: 10px;
@@ -164,7 +166,7 @@
                 .checkbox {
                     position: relative;
                     z-index: 2;
-                    border: 1px solid $blue;
+                    border: 1px solid $darker-blue;
                     border-radius: 100%;
                     width: 15px;
                     height: 15px;
@@ -182,7 +184,7 @@
 
                     &.active {
                         .filled {
-                            background-color: $blue;
+                            background-color: $darker-blue;
                             opacity: 1;
                             visibility: visible;
                         }
@@ -249,7 +251,7 @@
 
                 .button-name {
                     display: block;
-                    color: $blue;
+                    color: $darker-blue;
                     font-weight: 400;
                     font-size: 1.6rem;
                     transition: all 0.4s;
@@ -258,7 +260,7 @@
                 svg {
                     width: 18px;
                     height: 18px;
-                    fill: $blue;
+                    fill: $darker-blue;
                     margin-right: 5px;
                     transition: all 0.4s;
                 }
@@ -329,8 +331,8 @@
             transition: all 0.4s ease;
 
             &:hover {
-                color: $blue;
-                border-bottom: 1px solid rgba($blue, 0.2);
+                color: $darker-blue;
+                border-bottom: 1px solid rgba($darker-blue, 0.2);
             }
 
             &:first-of-type {

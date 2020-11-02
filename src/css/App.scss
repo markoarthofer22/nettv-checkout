@@ -180,7 +180,7 @@ strong {
         transition: all 0.3s;
 
         &:hover {
-            background-color: $dark-blue;
+            background-color: $darker-blue;
             color: $white;
         }
     }
@@ -216,7 +216,7 @@ strong {
     & > ul {
         margin: 0;
         list-style: none;
-        background-color: $dark-blue;
+        background-color: $darker-blue;
         border-radius: 4px;
         max-height: 500px;
         opacity: 1;
@@ -239,7 +239,7 @@ strong {
 
             &:hover {
                 background-color: $white;
-                color: $dark-blue;
+                color: $darker-blue;
             }
         }
     }

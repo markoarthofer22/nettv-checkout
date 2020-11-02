@@ -39,7 +39,8 @@
             }
 
             &--item {
-                background: linear-gradient(#2e6ab7, #1b4c8b);
+                // background: linear-gradient(#4a1bff, #1b4c8b);
+                background-color: $darker-blue;
                 box-sizing: border-box;
                 border-radius: 50%;
                 height: 60px;
@@ -146,8 +147,8 @@
                     cursor: pointer;
                     height: 15px;
                     width: 15px;
-                    // border: 1px solid #2e6ab7;
-                    color: #2e6ab7 !important;
+                    // border: 1px solid $darker-blue;
+                    color: $darker-blue !important;
                     border-radius: 100%;
                     margin-left: 10px;
                     margin-right: 20px;
@@ -215,7 +216,7 @@
 
                 .button-name {
                     display: block;
-                    color: $blue;
+                    color: $darker-blue;
                     font-weight: 400;
                     font-size: 1.6rem;
                     transition: all 0.4s;
@@ -224,7 +225,7 @@
                 svg {
                     width: 18px;
                     height: 18px;
-                    fill: $blue;
+                    fill: $darker-blue;
                     margin-right: 5px;
                     transition: all 0.4s;
                 }
@@ -272,7 +273,7 @@
                     content: "*";
                     position: absolute;
                     left: 0;
-                    color: $blue;
+                    color: $dark-blue;
                 }
             }
         }
