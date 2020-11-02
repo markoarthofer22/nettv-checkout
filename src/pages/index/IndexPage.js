@@ -14,7 +14,7 @@ import "./indexpage.scss";
 
 //components
 import ContainerFull from "../../components/layout/container-full.component";
-import PackagesForm from "./FormSteps/Packages/Packages.form";
+import PackagesForm from "./FormSteps/Packages/packages.form";
 import SidePanel from "./SidePanel/sidePanel.component";
 import PaymentInfo from "./FormSteps/PaymentInfo/paymentInfo.form";
 import SubscriptionPlans from "./FormSteps/OptionPlans/subscriptionPlans.form";

@@ -9,7 +9,7 @@ import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
 //styles
-import "../../index/FormSteps/PaymentInfo/paymentinfo.scss";
+import "../../index/FormSteps/PaymentInfo/paymentInfo.scss";
 
 // components
 import Button from "../../../components/buttons/button.component";

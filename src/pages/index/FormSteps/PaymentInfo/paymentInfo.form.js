@@ -11,7 +11,7 @@ import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selector
 import { selectAllCountryIDs, globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
 //styles
-import "./paymentinfo.scss";
+import "./paymentInfo.scss";
 
 // components
 import Button from "../../../../components/buttons/button.component";
