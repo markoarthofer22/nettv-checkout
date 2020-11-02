@@ -50,7 +50,7 @@ const FreePackage = (props) => {
 
         if (queryParams.plan !== undefined && queryParams.plan !== "") {
             url = `free-trial/?plan=${queryParams.plan}&country_code=${
-                localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : queryParams.country_code ? queryParams.country_code : "other"
+                queryParams.country_code ? queryParams.country_code : localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
             }`;
         } else {
             window.location = "https://sbb-shop.ea93.work/paketi";

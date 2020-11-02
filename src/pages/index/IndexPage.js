@@ -56,7 +56,7 @@ const IndexPage = (props) => {
         } else {
             queryParams = {
                 ...queryParams,
-                lang_code: queryParams.lang_code ? queryParams.lang_code : localStorage.getItem("lang_code")
+                lang_code: queryParams.lang_code ? queryParams.lang_code : localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
             };
 
             let url = `/products/?${queryString.stringify(queryParams)}`;
