@@ -5,9 +5,12 @@ import _ from "underscore";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading, setUserHashInformation, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
+import { setExistingTransactionResponse } from "../../../redux/pricingTab/pricingTab.actions";
+import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
+
 //styles
 import "../../index/FormSteps/PaymentInfo/paymentInfo.scss";
 
@@ -271,6 +274,15 @@ const BundlePayout = (props) => {
                             }
                         }
                         document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        return;
+                    }
+
+                    if(response.data.existing_transaction !== undefined) {
+                        dispatch(setExistingTransactionResponse(response.data.response));
+                        // sendGAevent(payload);
+                        setIsButtonDisabled(false);
+                        dispatch(setCurrentNavigationStep(2));
+                        dispatch(setIsLoading(false));
                         return;
                     }
 

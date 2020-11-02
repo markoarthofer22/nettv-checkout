@@ -4,10 +4,11 @@ import { CSSTransition } from "react-transition-group";
 
 //redux
 import axios from "../../redux/apis/main-api";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import { setIsLoading, setHeaderType, setUserTZ, setUserIP, setUserOriginCountry } from "../../redux/globals/globals.actions";
 import { setInitialValues } from "../../redux/pricingTab/pricingTab.actions";
+import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
 
 //styles
@@ -18,9 +19,12 @@ import ContainerFull from "../../components/layout/container-full.component";
 import SidePanel from "../index/SidePanel/sidePanel.component";
 import GlobalLoader from "../../components/loaders/global.loader.component";
 import BundlePayout from "./BundlePayout/BundlePayout.form";
+import PaymentSuccess from "./PaymentSuccess/paymentSuccess.component";
 import Dialog from "../../components/dialog/dialog.component";
+
 const IndexBundle = (props) => {
     const history = useHistory();
+    const currentStep = useSelector(selectCurrentStep);
     const dispatch = useDispatch();
     const queryString = require("query-string");
     const [cssTransitionIsOpen, setCssTransitionIsOpen] = useState(false);
@@ -144,6 +148,24 @@ const IndexBundle = (props) => {
             });
     };
 
+    const selectActiveStep = (_step) => {
+        let step = _step;
+        switch (step) {
+            case 1:
+                return <BundlePayout />;
+                // return <PaymentSuccess />;
+                break;
+
+            case 2:
+                return <PaymentSuccess />;
+                break;
+
+            default:
+                return null;
+                break;
+        }
+    };
+
     return (
         <>
             <GlobalLoader />
@@ -164,7 +186,7 @@ const IndexBundle = (props) => {
                                 unmountOnExit
                             >
                                 <div className={`form-holder--steps  animate__animated`}>
-                                    <BundlePayout />
+                                    {selectActiveStep(currentStep)}
                                 </div>
                             </CSSTransition>
                         )}

@@ -1,0 +1,201 @@
+import React from "react";
+
+// redux
+import { useSelector } from "react-redux";
+import { existingTransactionResponse } from "../../../redux/pricingTab/pricingTab.selectors";
+
+//styles
+import "./paymentSuccess.scss";
+
+const PaymentSuccess = (props) => {
+    const existingTransaction = useSelector(existingTransactionResponse);
+
+    return (
+        <div class="order-wrap">
+            {existingTransaction.customer_data && (existingTransaction.customer_data.customer_name || existingTransaction.customer_data.customer_surname) && (
+            <div class="order-header">
+                <h2>
+                    Pozdrav <strong>{existingTransaction.customer_data.customer_name} {existingTransaction.customer_data.customer_surname}</strong>
+                </h2>
+                <p>
+                    Tvoja pretplata je uspešna. Ispod možeš pogledati detalje pretplate, a na unetu email adresu ti je
+                    poslat mail sa istim detaljima.
+                </p>
+            </div>
+            )}
+            <div class="order-row">
+                <h4>Sažetak narudžbe</h4>
+
+                <ul class="order-list">
+                    <li class="border">
+                        <p class="key">Paket:</p>
+                        <p class="value">Pretplata</p>
+                    </li>
+                    {existingTransaction.plan_data && existingTransaction.plan_data.promotion && (
+                    <li class="border">
+                        <p class="key">Akcija:</p>
+                        <p class="value">{existingTransaction.plan_data.promotion}</p>
+                    </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.subscription_duration && (
+                    <li class="border">
+                        <p class="key">Period:</p>
+                        <p class="value">
+                            {existingTransaction.plan_data.subscription_duration}
+                            {existingTransaction.plan_data.subscription_duration === 7 ? 'Sezona' : 'Meseci'}
+                        </p>
+                    </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.subscription_end && (
+                    <li class="border">
+                        <p class="key">Datum isteka:</p>
+                        <p class="value">{existingTransaction.plan_data.subscription_end}</p>
+                    </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.subscription_price && (
+                    <li class="border">
+                        <p class="key">Cena:</p>
+                        <p class="value cl-2">{existingTransaction.plan_data.subscription_price}</p>
+                    </li>
+                    )}
+                </ul>
+
+                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_variation' && ( // in prod should be plan_box
+                <div>
+                    <h4>Dodatni troškovi:</h4>
+                    <ul class="order-list">
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_price && (
+                        <li class="border">
+                            <p class="key">STB:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.box_price}</p>
+                        </li>
+                        )}
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_activation_price && (
+                        <li class="border">
+                            <p class="key">STB aktivacija:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.box_activation_price}</p>
+                        </li>
+                        )}
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_transport_price && (
+                        <li class="border">
+                            <p class="key">STB transport:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.box_transport_price}</p>
+                        </li>
+                        )}
+                        {existingTransaction.plan_data && existingTransaction.plan_data.transaction_fee && (
+                        <li class="margin">
+                            <p class="key">Troškovi transakcije:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.transaction_fee}</p>
+                        </li>
+                        )}
+                    </ul>
+                </div>
+                )}
+
+                <h4>Ukupno:</h4>
+                <ul class="order-list">
+                    {existingTransaction.plan_data && existingTransaction.plan_data.total_price && (
+                        <li class="border">
+                            <p class="key">Odmah:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.total_price}</p>
+                        </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.price_monthly && (
+                        <li class="border">
+                            <p class="key">Mesečno:</p>
+                            <p class="value cl-2">{existingTransaction.plan_data.price_monthly}</p>
+                        </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.subscription_start && (
+                        <li class="border">
+                            <p class="key">Datum pretplate:</p>
+                            <p class="value">{existingTransaction.plan_data.subscription_start}</p>
+                        </li>
+                    )}
+                    {existingTransaction.plan_data && existingTransaction.plan_data.payment_type && (
+                        <li class="margin">
+                            <p class="key">Način plaćanja:</p>
+                            <p class="value">{existingTransaction.plan_data.payment_type}</p>
+                        </li>
+                    )}
+                </ul>
+
+                <h4>Podaci o korisniku:</h4>
+                <ul class="order-list">
+                    {existingTransaction.customer_data && existingTransaction.customer_data.customer_name && (
+                        <li class="border">
+                            <p class="key">Ime:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_name}</p>
+                        </li>
+                    )}
+                    {existingTransaction.customer_data && existingTransaction.customer_data.customer_surname && (
+                        <li class="border">
+                            <p class="key">Prezime:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_surname}</p>
+                        </li>
+                    )}
+                    {existingTransaction.customer_data && existingTransaction.customer_data.email && (
+                        <li class="border">
+                            <p class="key">Email:</p>
+                            <p class="value">{existingTransaction.customer_data.email}</p>
+                        </li>
+                    )}
+                    {existingTransaction.customer_data && existingTransaction.customer_data.customer_phone && (
+                        <li class="border">
+                            <p class="key">Telefon:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_phone}</p>
+                        </li>
+                    )}
+                    {existingTransaction.customer_data && existingTransaction.customer_data.country && (
+                        <li class="border">
+                            <p class="key">Zemlja:</p>
+                            <p class="value">{existingTransaction.customer_data.country}</p>
+                        </li>
+                    )}
+                </ul>
+
+                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_variation' && ( // in prod should be plan_box
+                <div>
+                    <h4>Podaci o dostavi:</h4>
+                    <ul class="order-list">
+                        {existingTransaction.customer_data && existingTransaction.customer_data.country && (
+                        <li class="border">
+                            <p class="key">Zemlja:</p>
+                            <p class="value">{existingTransaction.customer_data.country}</p>
+                        </li>
+                        )}
+                        {existingTransaction.customer_data && existingTransaction.customer_data.customer_city && (
+                        <li class="border">
+                            <p class="key">Grad:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_city}</p>
+                        </li>
+                        )}
+                        {existingTransaction.customer_data && existingTransaction.customer_data.customer_address && (
+                        <li class="border">
+                            <p class="key">Ulica:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_address}</p>
+                        </li>
+                        )}
+                        {existingTransaction.customer_data && existingTransaction.customer_data.customer_zip && (
+                        <li class="border">
+                            <p class="key">Poštanski broj:</p>
+                            <p class="value">{existingTransaction.customer_data.customer_zip}</p>
+                        </li>
+                        )}
+                    </ul>
+                </div>
+                )}
+
+            </div>
+
+            <div class="order-cta">
+                <a href="https://my.nettvplus.gr/signin" class="order-btn">
+                    Povratak
+                </a>
+            </div>
+
+        </div>
+    );
+};
+
+export default PaymentSuccess;

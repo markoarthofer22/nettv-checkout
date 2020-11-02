@@ -1,4 +1,4 @@
-import { SET_INITIAL_VALUES, RESET_TO_INITIAL_VALUES, SET_PAYMENT_OPTIONS } from "./pricingTab.types";
+import { SET_INITIAL_VALUES, RESET_TO_INITIAL_VALUES, SET_PAYMENT_OPTIONS, SET_EXISTING_TRANSACTION_RESPONSE } from "./pricingTab.types";
 import _ from "underscore";
 
 const INITIAL_STATE = {
@@ -31,7 +31,8 @@ const INITIAL_STATE = {
         additionalExpenses: null,
         totalPrice: null,
         totalDiscount: null
-    }
+    },
+    existingTransactionResponse: {}
 };
 
 const pricingTabReducer = (state = INITIAL_STATE, action) => {
@@ -97,6 +98,13 @@ const pricingTabReducer = (state = INITIAL_STATE, action) => {
                     ...action.payload.paymentValues
                 }
             };
+
+        case SET_EXISTING_TRANSACTION_RESPONSE:
+            return {
+                ...state,
+                existingTransactionResponse: action.payload
+            };
+
         default:
             return state;
     }
