@@ -27,10 +27,12 @@ const PaymentSuccess = (props) => {
                 <h4>Sažetak narudžbe</h4>
 
                 <ul class="order-list">
+                    {existingTransaction.plan_data && existingTransaction.plan_data.plan && (
                     <li class="border">
                         <p class="key">Paket:</p>
-                        <p class="value">Pretplata</p>
+                        <p class="value">{existingTransaction.plan_data.plan}</p>
                     </li>
+                    )}
                     {existingTransaction.plan_data && existingTransaction.plan_data.promotion && (
                     <li class="border">
                         <p class="key">Akcija:</p>
@@ -41,7 +43,7 @@ const PaymentSuccess = (props) => {
                     <li class="border">
                         <p class="key">Period:</p>
                         <p class="value">
-                            {existingTransaction.plan_data.subscription_duration}
+                            {existingTransaction.plan_data.subscription_duration} mes
                         </p>
                     </li>
                     )}
@@ -133,10 +135,10 @@ const PaymentSuccess = (props) => {
                             <p class="value">{existingTransaction.customer_data.customer_surname}</p>
                         </li>
                     )}
-                    {existingTransaction.customer_data && existingTransaction.customer_data.email && (
+                    {existingTransaction.customer_data && existingTransaction.customer_data.customer_email && (
                         <li class="border">
                             <p class="key">Email:</p>
-                            <p class="value">{existingTransaction.customer_data.email}</p>
+                            <p class="value">{existingTransaction.customer_data.customer_email}</p>
                         </li>
                     )}
                     {existingTransaction.customer_data && existingTransaction.customer_data.customer_phone && (
@@ -145,10 +147,10 @@ const PaymentSuccess = (props) => {
                             <p class="value">{existingTransaction.customer_data.customer_phone}</p>
                         </li>
                     )}
-                    {existingTransaction.customer_data && existingTransaction.customer_data.country && (
+                    {existingTransaction.customer_data && existingTransaction.customer_data.customer_country && (
                         <li class="border">
                             <p class="key">Zemlja:</p>
-                            <p class="value">{existingTransaction.customer_data.country}</p>
+                            <p class="value">{existingTransaction.customer_data.customer_country}</p>
                         </li>
                     )}
                 </ul>
@@ -157,10 +159,10 @@ const PaymentSuccess = (props) => {
                 <div>
                     <h4>Podaci o dostavi:</h4>
                     <ul class="order-list">
-                        {existingTransaction.customer_data && existingTransaction.customer_data.country && (
+                        {existingTransaction.customer_data && existingTransaction.customer_data.customer_country && (
                         <li class="border">
                             <p class="key">Zemlja:</p>
-                            <p class="value">{existingTransaction.customer_data.country}</p>
+                            <p class="value">{existingTransaction.customer_data.customer_country}</p>
                         </li>
                         )}
                         {existingTransaction.customer_data && existingTransaction.customer_data.customer_city && (

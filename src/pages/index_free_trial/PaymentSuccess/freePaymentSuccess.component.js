@@ -53,6 +53,12 @@ const FreePaymentSuccess = (props) => {
                         <p class="value">{existingTransaction.subscription_end}</p>
                     </li>
                     )}
+                    {existingTransaction.payment_type && (
+                        <li class="border">
+                            <p class="key">Način plaćanja:</p>
+                            <p class="value">{existingTransaction.payment_type}</p>
+                        </li>
+                    )}
                     {existingTransaction.subscription_price && existingTransaction.subscription_price !== 0 && (
                     <li class="border">
                         <p class="key">Cena:</p>
@@ -75,10 +81,10 @@ const FreePaymentSuccess = (props) => {
                             <p class="value">{existingTransaction.customer_surname}</p>
                         </li>
                     )}
-                    {existingTransaction.email && (
+                    {existingTransaction.customer_email && (
                         <li class="border">
                             <p class="key">Email:</p>
-                            <p class="value">{existingTransaction.email}</p>
+                            <p class="value">{existingTransaction.customer_email}</p>
                         </li>
                     )}
                     {existingTransaction.customer_phone && (
@@ -87,10 +93,10 @@ const FreePaymentSuccess = (props) => {
                             <p class="value">{existingTransaction.customer_phone}</p>
                         </li>
                     )}
-                    {existingTransaction.country && (
+                    {existingTransaction.customer_country && (
                         <li class="border">
                             <p class="key">Zemlja:</p>
-                            <p class="value">{existingTransaction.country}</p>
+                            <p class="value">{existingTransaction.customer_country}</p>
                         </li>
                     )}
                 </ul>

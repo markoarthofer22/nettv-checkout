@@ -312,8 +312,10 @@ const PaymentInfo = (props) => {
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
-                    setBankCheckoutResponse(response.data);
+                    dispatch(setExistingTransactionResponse(response.data.response));
+                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
+                    dispatch(setCurrentNavigationStep(5));
                     dispatch(setIsLoading(false));
                 })
                 .catch((error) => {
