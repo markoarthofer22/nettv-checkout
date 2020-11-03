@@ -225,6 +225,12 @@ const FreePaymentInfo = (props) => {
             // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
             let paymentURL = "free-trial/phoneOrder";
 
+            if (!_.isEmpty(userHash)) {
+                paymentURL = "selfcare/free-trial/phoneOrder";
+                payload.credit_card_id = '';
+                payload.new_card_selected = 1;
+            }
+
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
@@ -247,6 +253,15 @@ const FreePaymentInfo = (props) => {
                             }
                         }
                         document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        return;
+                    }
+
+                    if(response.data.existing_transaction !== undefined) {
+                        dispatch(setExistingTransactionResponse(response.data.response));
+                        // sendGAevent(payload);
+                        setIsButtonDisabled(false);
+                        dispatch(setCurrentNavigationStep(3));
+                        dispatch(setIsLoading(false));
                         return;
                     }
 
@@ -330,6 +345,9 @@ const FreePaymentInfo = (props) => {
         }
 
         let url = `netapi/send_sms_for_verify?phone=${document.querySelector("input[name='phone_validation']").value}`;
+        if (!_.isEmpty(userHash)) {
+            url += '&selfcare=1';
+        }
 
         dispatch(setIsLoading(true));
         axios.get(url).then((response) => {

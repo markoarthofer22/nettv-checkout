@@ -42,7 +42,6 @@ const PaymentSuccess = (props) => {
                         <p class="key">Period:</p>
                         <p class="value">
                             {existingTransaction.plan_data.subscription_duration}
-                            {existingTransaction.plan_data.subscription_duration === 7 ? 'Sezona' : 'Meseci'}
                         </p>
                     </li>
                     )}

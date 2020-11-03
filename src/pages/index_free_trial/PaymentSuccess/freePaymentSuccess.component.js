@@ -41,7 +41,19 @@ const FreePaymentSuccess = (props) => {
                         </p>
                     </li>
                     )}
-                    {existingTransaction.subscription_price && (
+                    {existingTransaction.subscription_start && (
+                    <li class="border">
+                        <p class="key">Datum isteka:</p>
+                        <p class="value">{existingTransaction.subscription_start}</p>
+                    </li>
+                    )}
+                    {existingTransaction.subscription_end && (
+                    <li class="border">
+                        <p class="key">Datum isteka:</p>
+                        <p class="value">{existingTransaction.subscription_end}</p>
+                    </li>
+                    )}
+                    {existingTransaction.subscription_price && existingTransaction.subscription_price !== 0 && (
                     <li class="border">
                         <p class="key">Cena:</p>
                         <p class="value cl-2">{existingTransaction.subscription_price}</p>
@@ -67,6 +79,18 @@ const FreePaymentSuccess = (props) => {
                         <li class="border">
                             <p class="key">Email:</p>
                             <p class="value">{existingTransaction.email}</p>
+                        </li>
+                    )}
+                    {existingTransaction.customer_phone && (
+                        <li class="border">
+                            <p class="key">Telefon:</p>
+                            <p class="value">{existingTransaction.customer_phone}</p>
+                        </li>
+                    )}
+                    {existingTransaction.country && (
+                        <li class="border">
+                            <p class="key">Zemlja:</p>
+                            <p class="value">{existingTransaction.country}</p>
                         </li>
                     )}
                 </ul>
