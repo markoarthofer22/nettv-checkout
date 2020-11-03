@@ -5,7 +5,7 @@ import _ from "underscore";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
-import { resetToInitialValues, setPaymentOptions } from "../../../redux/pricingTab/pricingTab.actions";
+import { resetToInitialValues, setPaymentOptions, setExistingTransactionResponse } from "../../../redux/pricingTab/pricingTab.actions";
 import { setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
 import { currentPricing, selectedPaymentOptions } from "../../../redux/pricingTab/pricingTab.selectors";
 import { globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../redux/globals/globals.selectors";
@@ -184,6 +184,15 @@ const FreePaymentInfo = (props) => {
                             }
                         }
                         document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        return;
+                    }
+
+                    if(response.data.existing_transaction !== undefined) {
+                        dispatch(setExistingTransactionResponse(response.data.response));
+                        // sendGAevent(payload);
+                        setIsButtonDisabled(false);
+                        dispatch(setCurrentNavigationStep(3));
+                        dispatch(setIsLoading(false));
                         return;
                     }
 

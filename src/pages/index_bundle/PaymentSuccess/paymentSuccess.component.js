@@ -60,29 +60,29 @@ const PaymentSuccess = (props) => {
                     )}
                 </ul>
 
-                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_variation' && ( // in prod should be plan_box
+                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_box' && (
                 <div>
                     <h4>Dodatni troškovi:</h4>
                     <ul class="order-list">
-                        {existingTransaction.plan_data && existingTransaction.plan_data.box_price && (
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_price && existingTransaction.plan_data.box_price !== 0 && (
                         <li class="border">
                             <p class="key">STB:</p>
                             <p class="value cl-2">{existingTransaction.plan_data.box_price}</p>
                         </li>
                         )}
-                        {existingTransaction.plan_data && existingTransaction.plan_data.box_activation_price && (
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_activation_price && existingTransaction.plan_data.box_activation_price !== 0 && (
                         <li class="border">
                             <p class="key">STB aktivacija:</p>
                             <p class="value cl-2">{existingTransaction.plan_data.box_activation_price}</p>
                         </li>
                         )}
-                        {existingTransaction.plan_data && existingTransaction.plan_data.box_transport_price && (
+                        {existingTransaction.plan_data && existingTransaction.plan_data.box_transport_price && existingTransaction.plan_data.box_transport_price !== 0 && (
                         <li class="border">
                             <p class="key">STB transport:</p>
                             <p class="value cl-2">{existingTransaction.plan_data.box_transport_price}</p>
                         </li>
                         )}
-                        {existingTransaction.plan_data && existingTransaction.plan_data.transaction_fee && (
+                        {existingTransaction.plan_data && existingTransaction.plan_data.transaction_fee && existingTransaction.plan_data.transaction_fee !== 0 && (
                         <li class="margin">
                             <p class="key">Troškovi transakcije:</p>
                             <p class="value cl-2">{existingTransaction.plan_data.transaction_fee}</p>
@@ -154,7 +154,7 @@ const PaymentSuccess = (props) => {
                     )}
                 </ul>
 
-                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_variation' && ( // in prod should be plan_box
+                {existingTransaction.plan_data && existingTransaction.plan_data.cms_promotion_type === 'plan_box' && (
                 <div>
                     <h4>Podaci o dostavi:</h4>
                     <ul class="order-list">
@@ -189,7 +189,7 @@ const PaymentSuccess = (props) => {
             </div>
 
             <div class="order-cta">
-                <a href="https://my.nettvplus.gr/signin" class="order-btn">
+                <a href="https://moj.nettvplus.com/signin" class="order-btn">
                     Povratak
                 </a>
             </div>
