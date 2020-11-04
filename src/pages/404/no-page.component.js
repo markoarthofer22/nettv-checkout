@@ -8,6 +8,7 @@ import Container from "../../components/layout/container.component";
 //Redux
 import { useDispatch } from "react-redux";
 import { setHeaderType } from "../../redux/globals/globals.actions";
+import {homeUrl} from "../../redux/globals/globals.endpoints";
 
 //styles
 import "./no-page.scss";
@@ -32,7 +33,7 @@ const NoPage = (props) => {
 
                         <h4 className="no-page--subtitle">Greška 404 - stranica ne postoji</h4>
 
-                        <a href="https://sbb-shop.ea93.work/" rel="noopener noreferrer">
+                        <a href={homeUrl} rel="noopener noreferrer">
                             <Button title="Idi na početnu stranu" customClass="no-page--button"></Button>
                         </a>
                     </div>

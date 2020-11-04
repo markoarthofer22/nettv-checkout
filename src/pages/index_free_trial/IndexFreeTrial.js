@@ -8,6 +8,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { setIsLoading, setHeaderType } from "../../redux/globals/globals.actions";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
+import {homeUrl} from "../../redux/globals/globals.endpoints";
 
 //styles
 import "../index/indexpage.scss";
@@ -49,7 +50,7 @@ const FreeTrialIndex = (props) => {
             dispatch(setHeaderType("gratis"));
             dispatch(setCurrentNavigationStep(1));
         } else {
-            window.location = "https://sbb-shop.ea93.work/paketi";
+            window.location = homeUrl + "paketi";
         }
     }, [history.location]);
 

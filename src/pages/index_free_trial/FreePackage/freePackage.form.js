@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { setInitialValues } from "../../../redux/pricingTab/pricingTab.actions";
 import { getDataForURL, setUserIP, setUserTZ, setUserOriginCountry, setUserHashInformation } from "../../../redux/globals/globals.actions";
+import {homeUrl} from "../../../redux/globals/globals.endpoints";
 
 //styles
 
@@ -53,7 +54,7 @@ const FreePackage = (props) => {
                 queryParams.country_code ? queryParams.country_code : localStorage.getItem("lang_code") ? localStorage.getItem("lang_code") : "other"
             }`;
         } else {
-            window.location = "https://sbb-shop.ea93.work/paketi";
+            window.location = homeUrl + "paketi";
             return;
         }
 

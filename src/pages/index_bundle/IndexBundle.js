@@ -10,6 +10,7 @@ import { setIsLoading, setHeaderType, setUserTZ, setUserIP, setUserOriginCountry
 import { setInitialValues } from "../../redux/pricingTab/pricingTab.actions";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
+import {homeUrl} from "../../redux/globals/globals.endpoints";
 
 //styles
 import "../index/indexpage.scss";
@@ -58,7 +59,7 @@ const IndexBundle = (props) => {
             dispatch(setCurrentNavigationStep(1));
             mapBundleData(queryParams.hash);
         } else {
-            window.location = "https://sbb-shop.ea93.work/paketi";
+            window.location = homeUrl + "paketi";
         }
     }, [history.location]);
 
@@ -202,7 +203,7 @@ const IndexBundle = (props) => {
                 message={bundleError.message}
                 isShowing={bundleError.isDialogOpen}
                 okCallback={() => {
-                    window.location = "https://sbb-shop.ea93.work/paketi";
+                    window.location = homeUrl + "paketi";
                 }}
             />
         </>

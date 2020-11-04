@@ -10,6 +10,7 @@ import { setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../
 import { currentPricing, selectedPaymentOptions } from "../../../redux/pricingTab/pricingTab.selectors";
 import { globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
+import {homeUrl} from "../../../redux/globals/globals.endpoints";
 
 // components
 import Popup from "../../../components/popup/popup.component";
@@ -714,11 +715,11 @@ const FreePaymentInfo = (props) => {
                                         />
                                         <label htmlFor="terms2">
                                             Potvrđujem da sam pročitao{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                                            <a target="_blank" href={homeUrl + 'uslovi-koriscenja'}>
                                                 Uslove korišćenja
                                             </a>{" "}
                                             i{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/politika-privatnosti/">
+                                            <a target="_blank" href={homeUrl + 'politika-privatnosti'}>
                                                 Politiku privatnosti
                                             </a>{" "}
                                             i saglasan sam sa njihovim uslovima.

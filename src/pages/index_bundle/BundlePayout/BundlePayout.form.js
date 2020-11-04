@@ -10,6 +10,7 @@ import { setExistingTransactionResponse } from "../../../redux/pricingTab/pricin
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
+import {homeUrl} from "../../../redux/globals/globals.endpoints";
 
 //styles
 import "../../index/FormSteps/PaymentInfo/paymentInfo.scss";
@@ -828,11 +829,11 @@ const BundlePayout = (props) => {
                                         />
                                         <label htmlFor="terms2">
                                             Potvrđujem da sam pročitao{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                                            <a target="_blank" href={homeUrl + 'uslovi-koriscenja'}>
                                                 Uslove korišćenja
                                             </a>{" "}
                                             i{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/politika-privatnosti/">
+                                            <a target="_blank" href={homeUrl + 'politika-privatnosti'}>
                                                 Politiku privatnosti
                                             </a>{" "}
                                             i saglasan sam sa njihovim uslovima.
@@ -880,7 +881,7 @@ const BundlePayout = (props) => {
                                     error: "",
                                     response: {}
                                 });
-                                window.location = "https://sbb-shop.ea93.work/paketi";
+                                window.location = homeUrl + "paketi";
                             }
                         }}
                     >

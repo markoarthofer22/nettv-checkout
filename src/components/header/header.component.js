@@ -1,5 +1,5 @@
 import React from "react";
-
+import {homeUrl} from "../../redux/globals/globals.endpoints";
 // styles
 import "./header.scss";
 
@@ -15,7 +15,7 @@ const Header = (props) => {
     return (
         <>
             <header className="header">
-                <a href="https://sbb-shop.ea93.work/">
+                <a href={homeUrl}>
                     <img src={Logo} alt="Logo" className="logo" />
                 </a>
             </header>

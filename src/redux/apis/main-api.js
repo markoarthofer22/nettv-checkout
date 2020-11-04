@@ -1,7 +1,7 @@
 import axios from "axios";
+import {homeUrl} from '../globals/globals.endpoints';
 
-// const API = "https://nettvplus.com/oec/";
-const TestAPI = "https://pp.nettvplus.com/wp-json/wp/ea/";
+const TestAPI = homeUrl + "wp-json/wp/ea/";
 
 export default axios.create({
     baseURL: TestAPI,
