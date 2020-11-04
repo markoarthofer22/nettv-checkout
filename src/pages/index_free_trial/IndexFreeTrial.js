@@ -16,6 +16,7 @@ import "../index/indexpage.scss";
 import ContainerFull from "../../components/layout/container-full.component";
 import SidePanel from "./SidePanel/freeSidePanel.component";
 import FreePaymentInfo from "./PaymentInfo/freePaymentInfo.form";
+import FreePaymentSuccess from "./PaymentSuccess/freePaymentSuccess.component";
 import GlobalLoader from "../../components/loaders/global.loader.component";
 import FreePackage from "./FreePackage/freePackage.form";
 
@@ -62,6 +63,10 @@ const FreeTrialIndex = (props) => {
 
             case 2:
                 return <FreePaymentInfo />;
+                break;
+
+            case 3:
+                return <FreePaymentSuccess />;
                 break;
 
             default:

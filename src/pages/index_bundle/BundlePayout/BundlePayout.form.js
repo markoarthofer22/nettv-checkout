@@ -4,9 +4,9 @@ import _ from "underscore";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
+import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { setIsLoading, setUserHashInformation, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
 import { setExistingTransactionResponse } from "../../../redux/pricingTab/pricingTab.actions";
-import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
@@ -337,8 +337,10 @@ const BundlePayout = (props) => {
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
-                    setBankCheckoutResponse(response.data);
+                    dispatch(setExistingTransactionResponse(response.data.response));
+                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
+                    dispatch(setCurrentNavigationStep(2));
                     dispatch(setIsLoading(false));
                 })
                 .catch((error) => {

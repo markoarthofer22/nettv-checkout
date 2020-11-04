@@ -17,6 +17,7 @@ import ContainerFull from "../../components/layout/container-full.component";
 import PackagesForm from "./FormSteps/Packages/packages.form";
 import SidePanel from "./SidePanel/sidePanel.component";
 import PaymentInfo from "./FormSteps/PaymentInfo/paymentInfo.form";
+import PaymentSuccess from "../index_bundle/PaymentSuccess/paymentSuccess.component";
 import SubscriptionPlans from "./FormSteps/OptionPlans/subscriptionPlans.form";
 import GlobalLoader from "../../components/loaders/global.loader.component";
 
@@ -81,20 +82,18 @@ const IndexPage = (props) => {
             case 1:
                 return <SubscriptionPlans />;
                 break;
-
             case 2:
                 return <PackagesForm />;
                 break;
-
             case 3:
                 return <PackagesForm />;
-
                 break;
             case 4:
                 return <PaymentInfo />;
-
                 break;
-
+            case 5:
+                return <PaymentSuccess />;
+                break;
             default:
                 return null;
                 break;
