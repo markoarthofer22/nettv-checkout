@@ -111,8 +111,10 @@ const FreePaymentInfo = (props) => {
                         setSelfCarePhone(`+${selfCareDial}${value}`);
                         setCountryPhoneNumber(value);
                     } else {
-                        document.querySelector(`input[name='${property}']`).disabled = true;
-                        document.querySelector(`input[name='${property}']`).value = value;
+                        if (value) {
+                            document.querySelector(`input[name='${property}']`).disabled = true;
+                            document.querySelector(`input[name='${property}']`).value = value;
+                        }
                     }
                 }
             }

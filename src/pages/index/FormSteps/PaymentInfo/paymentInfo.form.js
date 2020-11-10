@@ -103,8 +103,10 @@ const PaymentInfo = (props) => {
                     if (property === "phone") {
                         setSelfCarePhone(`+${selfCareDial}${value}`);
                     } else {
-                        document.querySelector(`input[name='${property}']`).disabled = true;
-                        document.querySelector(`input[name='${property}']`).value = value;
+                        if (value) {
+                            document.querySelector(`input[name='${property}']`).disabled = true;
+                            document.querySelector(`input[name='${property}']`).value = value;
+                        }
                     }
                 }
             }
