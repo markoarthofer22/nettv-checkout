@@ -170,6 +170,8 @@ const BundlePayout = (props) => {
         setIsButtonDisabled(true);
         dispatch(setIsLoading(true));
 
+        const utmTags = getUtmTags();
+
         let payload = {};
 
         if (currentPriceValues.paymentType === "plan_box") {
@@ -184,9 +186,9 @@ const BundlePayout = (props) => {
                 originCountry: userOriginCountry,
                 account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
                 subscription_type: "paid",
-                utm_source: "email",
-                utm_medium: "abc",
-                utm_campaign: "fb",
+                utm_source: utmTags.utm_source,
+                utm_medium: utmTags.utm_medium,
+                utm_campaign: utmTags.utm_campaign,
                 plan_id: currentPriceValues.mainProductId,
                 duration_id: currentPriceValues.variantDurationID,
                 subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
@@ -215,9 +217,9 @@ const BundlePayout = (props) => {
                 originCountry: userOriginCountry,
                 account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
                 subscription_type: "paid",
-                utm_source: "email",
-                utm_medium: "abc",
-                utm_campaign: "fb",
+                utm_source: utmTags.utm_source,
+                utm_medium: utmTags.utm_medium,
+                utm_campaign: utmTags.utm_campaign,
                 plan_id: currentPriceValues.mainProductId,
                 duration_id: currentPriceValues.variantDurationID,
                 subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
@@ -355,6 +357,16 @@ const BundlePayout = (props) => {
                 });
         }
     };
+
+    const getUtmTags = () => {
+        const queryParams = queryString.parse(location.search);
+        return {
+            utm_source: queryParams.utm_source || "",
+            utm_medium: queryParams.utm_medium || "",
+            utm_campaign: queryParams.utm_campaign || ""
+        }
+    }
+
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
