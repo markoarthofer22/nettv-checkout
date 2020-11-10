@@ -57,6 +57,9 @@ const MonthSubscriptionItem = (props) => {
                     additionalExpenses: expenses,
                     totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
                     totalDiscount: 0
+                },
+                available: {
+                    availableDevices: ['smart-tv','racunar','tablet','mobilni']
                 }
             };
             dispatch(resetToInitialValues(initialPricing));

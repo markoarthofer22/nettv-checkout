@@ -44,6 +44,9 @@ const ProductsChooseSubs = (props) => {
                 headerValues: {
                     name: title,
                     price: meta.base_price
+                },
+                available: {
+                    availableDevices: ['smart-tv','racunar','tablet','mobilni']
                 }
             };
             dispatch(resetToInitialValues(initialPricing));

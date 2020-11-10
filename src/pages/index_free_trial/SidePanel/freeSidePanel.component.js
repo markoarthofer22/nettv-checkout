@@ -20,13 +20,15 @@ const FreeSidePanel = (props) => {
     const selectedPricing = useSelector(selectedPaymentOptions);
 
     useEffect(() => {
-        currentPrices.available && currentPrices.available.availableDevices
-            ? currentPrices.available.availableDevices.forEach((item) => {
-                  document.querySelector(`.devices-icons--list-item[data-type="${item}"]`).classList.add("active");
-              })
-            : document.querySelectorAll(`.devices-icons--list-item`).forEach((item) => {
-                  item.classList.remove("active");
-              });
+        document.querySelectorAll(`.devices-icons--list-item`).forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        if (currentPrices.available && currentPrices.available.availableDevices) {
+            currentPrices.available.availableDevices.forEach((item) => {
+                document.querySelector(`.devices-icons--list-item[data-type="${item}"]`).classList.add("active");
+            })
+        }
     }, [currentPrices.available.availableDevices]);
 
     return (
