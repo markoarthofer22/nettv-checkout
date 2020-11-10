@@ -3,12 +3,14 @@ import React from "react";
 // redux
 import { useSelector } from "react-redux";
 import { existingTransactionResponse } from "../../../redux/pricingTab/pricingTab.selectors";
+import { globalUserHash } from "../../../redux/globals/globals.selectors";
 
 //styles
 import "./paymentSuccess.scss";
 
 const PaymentSuccess = (props) => {
     const existingTransaction = useSelector(existingTransactionResponse);
+    const userHash = useSelector(globalUserHash);
 
     return (
         <div class="order-wrap">
@@ -190,7 +192,7 @@ const PaymentSuccess = (props) => {
             </div>
 
             <div class="order-cta">
-                <a href="https://moj.nettvplus.com/signin" class="order-btn">
+                <a href={Object.keys(userHash).length ? 'https://moj.nettvplus.com/signin' : process.env.PRODUCTION_HOME} class="order-btn">
                     Povratak
                 </a>
             </div>

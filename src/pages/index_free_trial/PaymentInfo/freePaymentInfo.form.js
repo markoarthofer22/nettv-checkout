@@ -257,18 +257,11 @@ const FreePaymentInfo = (props) => {
                         return;
                     }
 
-                    if(response.data.existing_transaction !== undefined) {
-                        dispatch(setExistingTransactionResponse(response.data.response));
-                        // sendGAevent(payload);
-                        setIsButtonDisabled(false);
-                        dispatch(setCurrentNavigationStep(3));
-                        dispatch(setIsLoading(false));
-                        return;
-                    }
-
+                    dispatch(setExistingTransactionResponse(response.data.response));
+                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
+                    dispatch(setCurrentNavigationStep(3));
                     dispatch(setIsLoading(false));
-                    setBankCheckoutResponse(response.data);
                 })
                 .catch((error) => {
                     setIsButtonDisabled(false);
