@@ -27,6 +27,7 @@ import { useHistory } from "react-router-dom";
 const FreePaymentInfo = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const queryString = require("query-string");
     const currentPriceValues = useSelector(currentPricing);
     const selectedPricing = useSelector(selectedPaymentOptions);
     const userHash = useSelector(globalUserHash);
