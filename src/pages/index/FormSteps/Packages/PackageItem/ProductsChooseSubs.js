@@ -46,7 +46,8 @@ const ProductsChooseSubs = (props) => {
                     price: meta.base_price
                 },
                 available: {
-                    availableDevices: ['smart-tv','racunar','tablet','mobilni']
+                    availableDevices: meta.additional.devices,
+                    features: meta.additional.features
                 }
             };
             dispatch(resetToInitialValues(initialPricing));
