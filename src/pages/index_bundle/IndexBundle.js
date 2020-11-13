@@ -135,7 +135,8 @@ const IndexBundle = (props) => {
                     }
                 };
 
-                dispatch(setInitialValues(initialPricing));
+                dispatch(setInitialValues(data));
+                sendGAevent(data);
             })
             .catch((error) => {
                 if (error) {
@@ -147,6 +148,31 @@ const IndexBundle = (props) => {
                     });
                 }
             });
+    };
+
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            console.log('Bundle dataLayer - step 1: ', payload);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.meta.currency,
+                    'checkout': {
+                        'actionField': {'step': 1, 'option': ''},
+                        'products': [{
+                            'name': payload.title,
+                            'id': payload.meta.product_code,
+                            'price': payload.meta.base_price,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.meta.language_code,
+                            'variant': '',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
     };
 
     const selectActiveStep = (_step) => {

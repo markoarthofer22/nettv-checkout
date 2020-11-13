@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // redux
 import { useSelector } from "react-redux";
@@ -11,6 +11,40 @@ import "./paymentSuccess.scss";
 const PaymentSuccess = (props) => {
     const existingTransaction = useSelector(existingTransactionResponse);
     const userHash = useSelector(globalUserHash);
+
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            console.log('Payment Success dataLayer: ', payload);
+
+            window.dataLayer.push({
+                'ecommerce': {
+                    'currencyCode': payload.plan_data.currency,
+                    'actionField': {
+                        'id': payload.plan_data.transaction_id,
+                        'affiliation': 'Online Store',
+                        'revenue': payload.plan_data.total_price,
+                        'tax': '',
+                        'shipping': payload.plan_data.box_transport_price,
+                        'coupon': payload.plan_data.promotion
+                    },
+                    'purchase': {
+                        'products': [{
+                            'name': payload.plan_data.plan,
+                            'id': payload.plan_data.plan_id,
+                            'price': payload.plan_data.subscription_price,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.plan_data.countryCode,
+                            'variant': payload.plan_data.subscription_duration,
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
+    useEffect(() => {
+        sendGAevent(existingTransaction);
+    }, [existingTransaction]);
 
     return (
         <div class="order-wrap">

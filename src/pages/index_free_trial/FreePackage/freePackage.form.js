@@ -89,8 +89,34 @@ const FreePackage = (props) => {
             };
 
             dispatch(setInitialValues(currentPricing));
+            sendGAevent(item)
         });
     }, [localStorage.getItem("lang_code")]);
+
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            console.log('Free Trial dataLayer - step 1: ', payload);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.currency,
+                    'checkout': {
+                        'actionField': {'step': 1, 'option': ''},
+                        'products': [{
+                            'name': 'Standard',
+                            'id': payload.product_code,
+                            'price': 0,
+                            'brand': 'NetTV',
+                            'category': 'Tržište Other',
+                            'variant': 'Gratis',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
 
     const goToCheckout = (e) => {
         dispatch(setCurrentNavigationStep(2));
