@@ -249,11 +249,7 @@ const PaymentInfo = (props) => {
                                     message: value
                                 });
                             } else if (property === "system") {
-                                setBundleError({
-                                    isDialogOpen: true,
-                                    title: "Neuspešna pretplata!",
-                                    message: ''
-                                });
+                                history.push('/transaction-fail');
                             } else {
                                 setError(property, "empty", value);
                             }
