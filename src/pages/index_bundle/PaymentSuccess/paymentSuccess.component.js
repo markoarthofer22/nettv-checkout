@@ -26,7 +26,7 @@ const PaymentSuccess = (props) => {
             </div>
             )}
             <div class="order-row">
-                <h4>Sažetak narudžbe</h4>
+                <h4>Pregled porudžbine</h4>
 
                 <ul class="order-list">
                     {existingTransaction.plan_data && existingTransaction.plan_data.plan && (

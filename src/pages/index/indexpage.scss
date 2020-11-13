@@ -41,6 +41,10 @@
                     width: 100%;
                 }
             }
+
+            &.full-width {
+                flex-basis: 100%;
+            }
         }
 
         & > .side-panel-holder {

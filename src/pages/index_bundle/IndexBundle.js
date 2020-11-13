@@ -154,7 +154,6 @@ const IndexBundle = (props) => {
         switch (step) {
             case 1:
                 return <BundlePayout />;
-                // return <PaymentSuccess />;
                 break;
 
             case 2:
@@ -175,7 +174,7 @@ const IndexBundle = (props) => {
                     <title>NetTVPlus | Bundle</title>
                 </Helmet>
                 <ContainerFull>
-                    <div className={`form-holder full-width`}>
+                    <div className={`form-holder ${currentStep === 2 ? "full-width" : ""}`}>
                         {isViewVisible && (
                             <CSSTransition
                                 in={cssTransitionIsOpen}
@@ -193,9 +192,11 @@ const IndexBundle = (props) => {
                         )}
                     </div>
 
+                { currentStep < 2 && (
                     <div className="side-panel-holder">
                         <SidePanel />
                     </div>
+                )}
                 </ContainerFull>
             </section>
             <Dialog

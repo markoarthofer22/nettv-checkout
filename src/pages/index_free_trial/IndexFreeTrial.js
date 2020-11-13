@@ -84,7 +84,7 @@ const FreeTrialIndex = (props) => {
                     <title>NetTVPlus | Free Trial</title>
                 </Helmet>
                 <ContainerFull>
-                    <div className={`form-holder ${currentStep === 2 ? "full-width" : ""}`}>
+                    <div className={`form-holder ${currentStep === 3 ? "full-width" : ""}`}>
                         <CSSTransition
                             in={cssTransitionIsOpen}
                             timeout={500}
@@ -97,10 +97,11 @@ const FreeTrialIndex = (props) => {
                             <div className={`form-holder--steps  animate__animated`}>{selectActiveStep(currentStep)}</div>
                         </CSSTransition>
                     </div>
-
+                { currentStep < 3 && (
                     <div className="side-panel-holder">
                         <SidePanel />
                     </div>
+                )}
                 </ContainerFull>
             </section>
         </>
