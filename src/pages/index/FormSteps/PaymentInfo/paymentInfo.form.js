@@ -245,11 +245,15 @@ const PaymentInfo = (props) => {
                             if (property === "plan_id") {
                                 setBundleError({
                                     isDialogOpen: true,
-                                    title: "Greška prilikom registracije!",
+                                    title: "Greška prilikom porudžbine!",
                                     message: value
                                 });
                             } else if (property === "system") {
-                                history.push("/404");
+                                setBundleError({
+                                    isDialogOpen: true,
+                                    title: "Neuspešna pretplata!",
+                                    message: ''
+                                });
                             } else {
                                 setError(property, "empty", value);
                             }
