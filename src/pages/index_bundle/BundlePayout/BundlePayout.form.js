@@ -167,8 +167,6 @@ const BundlePayout = (props) => {
 
     const sendGAevent = (payload) => {
         if (window.dataLayer) {
-            console.log('Bundle dataLayer - step 2: ', payload);
-
             window.dataLayer.push({
                 'event': 'checkout',
                 'ecommerce': {

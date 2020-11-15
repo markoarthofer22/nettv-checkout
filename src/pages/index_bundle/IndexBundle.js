@@ -152,8 +152,6 @@ const IndexBundle = (props) => {
 
     const sendGAevent = (payload) => {
         if (window.dataLayer) {
-            console.log('Bundle dataLayer - step 1: ', payload);
-
             window.dataLayer.push({
                 'event': 'checkout',
                 'ecommerce': {
