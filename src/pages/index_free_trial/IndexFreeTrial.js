@@ -8,6 +8,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { setIsLoading, setHeaderType } from "../../redux/globals/globals.actions";
 import { selectCurrentStep } from "../../redux/navigation-steps/steps.selectors";
 import { setCurrentNavigationStep } from "../../redux/navigation-steps/steps.actions";
+import {homeUrl} from "../../redux/globals/globals.endpoints";
 
 //styles
 import "../index/indexpage.scss";
@@ -16,6 +17,7 @@ import "../index/indexpage.scss";
 import ContainerFull from "../../components/layout/container-full.component";
 import SidePanel from "./SidePanel/freeSidePanel.component";
 import FreePaymentInfo from "./PaymentInfo/freePaymentInfo.form";
+import FreePaymentSuccess from "./PaymentSuccess/freePaymentSuccess.component";
 import GlobalLoader from "../../components/loaders/global.loader.component";
 import FreePackage from "./FreePackage/freePackage.form";
 
@@ -48,7 +50,7 @@ const FreeTrialIndex = (props) => {
             dispatch(setHeaderType("gratis"));
             dispatch(setCurrentNavigationStep(1));
         } else {
-            window.location = "https://sbb-shop.ea93.work/paketi";
+            window.location = homeUrl + "paketi";
         }
     }, [history.location]);
 
@@ -62,6 +64,10 @@ const FreeTrialIndex = (props) => {
 
             case 2:
                 return <FreePaymentInfo />;
+                break;
+
+            case 3:
+                return <FreePaymentSuccess />;
                 break;
 
             default:
@@ -78,7 +84,7 @@ const FreeTrialIndex = (props) => {
                     <title>NetTVPlus | Free Trial</title>
                 </Helmet>
                 <ContainerFull>
-                    <div className={`form-holder ${currentStep === 2 ? "full-width" : ""}`}>
+                    <div className={`form-holder ${currentStep === 3 ? "full-width" : ""}`}>
                         <CSSTransition
                             in={cssTransitionIsOpen}
                             timeout={500}
@@ -91,10 +97,11 @@ const FreeTrialIndex = (props) => {
                             <div className={`form-holder--steps  animate__animated`}>{selectActiveStep(currentStep)}</div>
                         </CSSTransition>
                     </div>
-
+                { currentStep < 3 && (
                     <div className="side-panel-holder">
                         <SidePanel />
                     </div>
+                )}
                 </ContainerFull>
             </section>
         </>

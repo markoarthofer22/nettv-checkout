@@ -44,6 +44,10 @@ const ProductsChooseSubs = (props) => {
                 headerValues: {
                     name: title,
                     price: meta.base_price
+                },
+                available: {
+                    availableDevices: meta.additional.devices,
+                    features: meta.additional.features
                 }
             };
             dispatch(resetToInitialValues(initialPricing));

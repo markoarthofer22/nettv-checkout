@@ -9,6 +9,7 @@ import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.sele
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 import { useHistory } from "react-router-dom";
 import axios from "../../../../redux/apis/main-api";
+import {homeUrl} from "../../../../redux/globals/globals.endpoints";
 
 //styles
 import "./packages.scss";
@@ -243,7 +244,7 @@ const PackagesForm = (props) => {
                             Možeš da nas obavestiš da želiš da vratiš BOX bez navođenja bilo kakvog posebnog razloga. To možeš da učiniš u roku od 14 dana od njegovog prijema poštom, mejlom, telefonom
                             i sl. Ako nam izjavu upućuješ poštom ili mejlom možeš i da popuniš izjavu koju ćemo ti poslati uz mejl nakon obavljene kupovine. Više informacija o postupku vraćanja možeš
                             naći{" "}
-                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                            <a target="_blank" href={homeUrl + 'uslovi-koriscenja/'}>
                                 ovde
                             </a>{" "}
                             ili u mejlu koji ćemo ti poslati nakon kupovine.

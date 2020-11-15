@@ -5,11 +5,12 @@ import _ from "underscore";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
-import { resetToInitialValues, setPaymentOptions } from "../../../redux/pricingTab/pricingTab.actions";
+import { resetToInitialValues, setPaymentOptions, setExistingTransactionResponse } from "../../../redux/pricingTab/pricingTab.actions";
 import { setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
 import { currentPricing, selectedPaymentOptions } from "../../../redux/pricingTab/pricingTab.selectors";
 import { globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
+import {homeUrl} from "../../../redux/globals/globals.endpoints";
 
 // components
 import Popup from "../../../components/popup/popup.component";
@@ -26,6 +27,7 @@ import { useHistory } from "react-router-dom";
 const FreePaymentInfo = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const queryString = require("query-string");
     const currentPriceValues = useSelector(currentPricing);
     const selectedPricing = useSelector(selectedPaymentOptions);
     const userHash = useSelector(globalUserHash);
@@ -110,8 +112,10 @@ const FreePaymentInfo = (props) => {
                         setSelfCarePhone(`+${selfCareDial}${value}`);
                         setCountryPhoneNumber(value);
                     } else {
-                        document.querySelector(`input[name='${property}']`).disabled = true;
-                        document.querySelector(`input[name='${property}']`).value = value;
+                        if (value) {
+                            document.querySelector(`input[name='${property}']`).disabled = true;
+                            document.querySelector(`input[name='${property}']`).value = value;
+                        }
                     }
                 }
             }
@@ -135,6 +139,8 @@ const FreePaymentInfo = (props) => {
         setIsButtonDisabled(true);
         dispatch(setIsLoading(true));
 
+        const utmTags = getUtmTags();
+
         let payload = {
             ..._data,
             phone: returnPhoneWithoutDial(_data.phone, countryDial),
@@ -145,9 +151,9 @@ const FreePaymentInfo = (props) => {
             originCountry: userOriginCountry,
             account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
             subscription_type: "gratis",
-            utm_source: "email",
-            utm_medium: "abc",
-            utm_campaign: "fb",
+            utm_source: utmTags.utm_source,
+            utm_medium: utmTags.utm_medium,
+            utm_campaign: utmTags.utm_campaign,
             plan_id: currentPriceValues.mainProductId,
             duration_id: currentPriceValues.headerValues.selectedPaymentOptions.duration_id,
             total_price: 0.0,
@@ -187,6 +193,15 @@ const FreePaymentInfo = (props) => {
                         return;
                     }
 
+                    if(response.data.existing_transaction !== undefined) {
+                        dispatch(setExistingTransactionResponse(response.data.response));
+                        // sendGAevent(payload);
+                        setIsButtonDisabled(false);
+                        dispatch(setCurrentNavigationStep(3));
+                        dispatch(setIsLoading(false));
+                        return;
+                    }
+
                     const entries = Object.entries(response.data.fd);
                     let tempArray = [];
 
@@ -216,6 +231,12 @@ const FreePaymentInfo = (props) => {
             // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
             let paymentURL = "free-trial/phoneOrder";
 
+            if (!_.isEmpty(userHash)) {
+                paymentURL = "selfcare/free-trial/phoneOrder";
+                payload.credit_card_id = '';
+                payload.new_card_selected = 1;
+            }
+
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
@@ -241,9 +262,11 @@ const FreePaymentInfo = (props) => {
                         return;
                     }
 
+                    dispatch(setExistingTransactionResponse(response.data.response));
+                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
+                    dispatch(setCurrentNavigationStep(3));
                     dispatch(setIsLoading(false));
-                    setBankCheckoutResponse(response.data);
                 })
                 .catch((error) => {
                     setIsButtonDisabled(false);
@@ -256,6 +279,15 @@ const FreePaymentInfo = (props) => {
                 });
         }
     };
+
+    const getUtmTags = () => {
+        const queryParams = queryString.parse(location.search);
+        return {
+            utm_source: queryParams.utm_source || "",
+            utm_medium: queryParams.utm_medium || "",
+            utm_campaign: queryParams.utm_campaign || ""
+        }
+    }
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
@@ -321,6 +353,9 @@ const FreePaymentInfo = (props) => {
         }
 
         let url = `netapi/send_sms_for_verify?phone=${document.querySelector("input[name='phone_validation']").value}`;
+        if (!_.isEmpty(userHash)) {
+            url += '&selfcare=1';
+        }
 
         dispatch(setIsLoading(true));
         axios.get(url).then((response) => {
@@ -687,11 +722,11 @@ const FreePaymentInfo = (props) => {
                                         />
                                         <label htmlFor="terms2">
                                             Potvrđujem da sam pročitao{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                                            <a target="_blank" href={homeUrl + 'uslovi-koriscenja'}>
                                                 Uslove korišćenja
                                             </a>{" "}
                                             i{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/politika-privatnosti/">
+                                            <a target="_blank" href={homeUrl + 'politika-privatnosti'}>
                                                 Politiku privatnosti
                                             </a>{" "}
                                             i saglasan sam sa njihovim uslovima.

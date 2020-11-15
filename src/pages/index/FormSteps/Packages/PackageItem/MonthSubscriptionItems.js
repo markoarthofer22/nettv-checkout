@@ -57,6 +57,10 @@ const MonthSubscriptionItem = (props) => {
                     additionalExpenses: expenses,
                     totalPrice: total_sum_discount ? total_sum_discount : total_sum_no_discount,
                     totalDiscount: 0
+                },
+                available: {
+                    availableDevices: metaData.meta.additional.devices,
+                    features: metaData.meta.additional.features
                 }
             };
             dispatch(resetToInitialValues(initialPricing));
@@ -71,7 +75,10 @@ const MonthSubscriptionItem = (props) => {
 
             <div className="content">
                 <h3 className="title">{variation_name}</h3>
-                <p className="text">{parseInt(variation_name) > 5 ? "meseci" : "meseca"}</p>
+                <p className="text">{
+                    parseInt(variation_name) === 1 ? "mesec"
+                                                    : parseInt(variation_name) > 5 ? "meseci" : "meseca"
+                }</p>
             </div>
         </div>
     );

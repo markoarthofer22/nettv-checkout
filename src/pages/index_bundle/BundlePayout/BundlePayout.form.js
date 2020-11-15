@@ -4,12 +4,16 @@ import _ from "underscore";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
+import { setCurrentNavigationStep } from "../../../redux/navigation-steps/steps.actions";
 import { setIsLoading, setUserHashInformation, setUserIP, setUserTZ, setUserOriginCountry } from "../../../redux/globals/globals.actions";
+import { setExistingTransactionResponse } from "../../../redux/pricingTab/pricingTab.actions";
 import { currentPricing } from "../../../redux/pricingTab/pricingTab.selectors";
 import { selectAllCountryIDs, globalUserIP, globalUserHash, globalUserTZ, globalUserCountry } from "../../../redux/globals/globals.selectors";
 import axios from "../../../redux/apis/main-api";
+import {homeUrl} from "../../../redux/globals/globals.endpoints";
+
 //styles
-import "../../index/FormSteps/PaymentInfo/paymentinfo.scss";
+import "../../index/FormSteps/PaymentInfo/paymentInfo.scss";
 
 // components
 import Button from "../../../components/buttons/button.component";
@@ -125,8 +129,10 @@ const BundlePayout = (props) => {
                     if (property === "phone") {
                         setSelfCarePhone(`+${selfCareDial}${value}`);
                     } else {
-                        document.querySelector(`input[name='${property}']`).disabled = true;
-                        document.querySelector(`input[name='${property}']`).value = value;
+                        if (value) {
+                            document.querySelector(`input[name='${property}']`).disabled = true;
+                            document.querySelector(`input[name='${property}']`).value = value;
+                        }
                     }
                 }
             }
@@ -166,6 +172,8 @@ const BundlePayout = (props) => {
         setIsButtonDisabled(true);
         dispatch(setIsLoading(true));
 
+        const utmTags = getUtmTags();
+
         let payload = {};
 
         if (currentPriceValues.paymentType === "plan_box") {
@@ -180,9 +188,9 @@ const BundlePayout = (props) => {
                 originCountry: userOriginCountry,
                 account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
                 subscription_type: "paid",
-                utm_source: "email",
-                utm_medium: "abc",
-                utm_campaign: "fb",
+                utm_source: utmTags.utm_source,
+                utm_medium: utmTags.utm_medium,
+                utm_campaign: utmTags.utm_campaign,
                 plan_id: currentPriceValues.mainProductId,
                 duration_id: currentPriceValues.variantDurationID,
                 subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
@@ -211,9 +219,9 @@ const BundlePayout = (props) => {
                 originCountry: userOriginCountry,
                 account_status: !_.isEmpty(userHash) ? "self_care_account" : "checkout",
                 subscription_type: "paid",
-                utm_source: "email",
-                utm_medium: "abc",
-                utm_campaign: "fb",
+                utm_source: utmTags.utm_source,
+                utm_medium: utmTags.utm_medium,
+                utm_campaign: utmTags.utm_campaign,
                 plan_id: currentPriceValues.mainProductId,
                 duration_id: currentPriceValues.variantDurationID,
                 subscription_price: currentPriceValues.paymentValues.subscriptionDiscountPrice
@@ -274,6 +282,15 @@ const BundlePayout = (props) => {
                         return;
                     }
 
+                    if(response.data.existing_transaction !== undefined) {
+                        dispatch(setExistingTransactionResponse(response.data.response));
+                        // sendGAevent(payload);
+                        setIsButtonDisabled(false);
+                        dispatch(setCurrentNavigationStep(2));
+                        dispatch(setIsLoading(false));
+                        return;
+                    }
+
                     const entries = Object.entries(response.data.fd);
                     let tempArray = [];
 
@@ -325,8 +342,10 @@ const BundlePayout = (props) => {
             axios
                 .post(paymentURL, { ...payload })
                 .then((response) => {
-                    setBankCheckoutResponse(response.data);
+                    dispatch(setExistingTransactionResponse(response.data.response));
+                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
+                    dispatch(setCurrentNavigationStep(2));
                     dispatch(setIsLoading(false));
                 })
                 .catch((error) => {
@@ -340,6 +359,16 @@ const BundlePayout = (props) => {
                 });
         }
     };
+
+    const getUtmTags = () => {
+        const queryParams = queryString.parse(location.search);
+        return {
+            utm_source: queryParams.utm_source || "",
+            utm_medium: queryParams.utm_medium || "",
+            utm_campaign: queryParams.utm_campaign || ""
+        }
+    }
+
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
@@ -814,11 +843,11 @@ const BundlePayout = (props) => {
                                         />
                                         <label htmlFor="terms2">
                                             Potvrđujem da sam pročitao{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/uslovi-koriscenja/">
+                                            <a target="_blank" href={homeUrl + 'uslovi-koriscenja'}>
                                                 Uslove korišćenja
                                             </a>{" "}
                                             i{" "}
-                                            <a target="_blank" href="https://sbb-shop.ea93.work/politika-privatnosti/">
+                                            <a target="_blank" href={homeUrl + 'politika-privatnosti'}>
                                                 Politiku privatnosti
                                             </a>{" "}
                                             i saglasan sam sa njihovim uslovima.
@@ -866,7 +895,7 @@ const BundlePayout = (props) => {
                                     error: "",
                                     response: {}
                                 });
-                                window.location = "https://sbb-shop.ea93.work/paketi";
+                                window.location = homeUrl + "paketi";
                             }
                         }}
                     >
