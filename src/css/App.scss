@@ -379,7 +379,7 @@ main.bottom-wrap {
 }
 .subscription-plans .subscription-cards .subscription-card--footer .promotion-img {
     width: 100%;
-    max-width: 200px;
+    max-width: 200px !important;
 }
 @media screen and (max-width: 992px) {
     .subscription-plans .subscription-cards--mobile .subscription-card--footer div:first-of-type {
