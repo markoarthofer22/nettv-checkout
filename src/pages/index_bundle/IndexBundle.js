@@ -135,7 +135,7 @@ const IndexBundle = (props) => {
                     }
                 };
 
-                dispatch(setInitialValues(data));
+                dispatch(setInitialValues(initialPricing));
                 sendGAevent(data);
             })
             .catch((error) => {
