@@ -132,6 +132,31 @@ const FreePaymentInfo = (props) => {
         }
     }, [checkoutRedirectArray]);
 
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            console.log('Free Trial dataLayer - step 2: ', payload);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.currency,
+                    'checkout': {
+                        'actionField': {'step': 2, 'option': payload.promotion_type},
+                        'products': [{
+                            'name': 'Standard',
+                            'id': payload.plan_id,
+                            'price': 0,
+                            'brand': 'NetTV',
+                            'category': 'Tržište Other',
+                            'variant': 'Gratis',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
     //handle all data from inputs
     const handleData = (_data, e) => {
         e.preventDefault();
@@ -164,6 +189,7 @@ const FreePaymentInfo = (props) => {
             credit_card_id: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "") : "",
             new_card_selected: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0") : "1"
         };
+        sendGAevent(payload);
 
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "/selfcare/free-trial/cardpayment" : "free-trial/cardpayment";
@@ -180,11 +206,15 @@ const FreePaymentInfo = (props) => {
                             if (property === "plan_id") {
                                 setBundleError({
                                     isDialogOpen: true,
-                                    title: "Greška prilikom registracije!",
+                                    title: "Greška prilikom porudžbine!",
                                     message: value
                                 });
                             } else if (property === "system") {
-                                history.push("/404");
+                                setBundleError({
+                                    isDialogOpen: true,
+                                    title: "Neuspešna pretplata!",
+                                    message: ''
+                                });
                             } else {
                                 setError(property, "empty", value);
                             }
@@ -195,7 +225,6 @@ const FreePaymentInfo = (props) => {
 
                     if(response.data.existing_transaction !== undefined) {
                         dispatch(setExistingTransactionResponse(response.data.response));
-                        // sendGAevent(payload);
                         setIsButtonDisabled(false);
                         dispatch(setCurrentNavigationStep(3));
                         dispatch(setIsLoading(false));
@@ -249,11 +278,11 @@ const FreePaymentInfo = (props) => {
                             if (property === "plan_id") {
                                 setBundleError({
                                     isDialogOpen: true,
-                                    title: "Greška prilikom registracije!",
+                                    title: "Greška prilikom porudžbine!",
                                     message: value
                                 });
                             } else if (property === "system") {
-                                history.push("/404");
+                                history.push('/transaction-fail');
                             } else {
                                 setError(property, "empty", value);
                             }
@@ -263,7 +292,6 @@ const FreePaymentInfo = (props) => {
                     }
 
                     dispatch(setExistingTransactionResponse(response.data.response));
-                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
                     dispatch(setCurrentNavigationStep(3));
                     dispatch(setIsLoading(false));

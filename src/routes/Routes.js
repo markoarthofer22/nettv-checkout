@@ -4,6 +4,7 @@ import IndexPage from "../pages/index/IndexPage";
 import IndexFreeTrial from "../pages/index_free_trial/IndexFreeTrial";
 import IndexPageBundle from "../pages/index_bundle/IndexBundle";
 import NotFoundPage from "../pages/404/no-page.component";
+import TransactionFailed from "../pages/transactionFail/transaction-page.component";
 export default [
     {
         component: App,
@@ -16,7 +17,7 @@ export default [
             {
                 path: "/products/",
                 exact: true,
-                component: IndexPage
+                component: NotFoundPage //page not needed
             },
             {
                 path: "/products/code/",
@@ -32,6 +33,11 @@ export default [
                 path: "/bundle/",
                 exact: true,
                 component: IndexPageBundle
+            },
+            {
+                path: "/transaction-fail/",
+                exact: true,
+                component: TransactionFailed
             },
             {
                 path: "*",

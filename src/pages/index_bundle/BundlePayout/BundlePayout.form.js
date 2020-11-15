@@ -165,6 +165,29 @@ const BundlePayout = (props) => {
         }
     }, [checkoutRedirectArray]);
 
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.currency,
+                    'checkout': {
+                        'actionField': {'step': 2, 'option': payload.promotion_type},
+                        'products': [{
+                            'name': payload.title,
+                            'id': payload.plan_id,
+                            'price': currentPriceValues.paymentValues.subscriptionDiscountPrice,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.country_code,
+                            'variant': currentPriceValues.variationProductName,
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
     //handle all data from inputs
     const handleData = (_data, e) => {
         e.preventDefault();
@@ -240,6 +263,8 @@ const BundlePayout = (props) => {
             };
         }
 
+        sendGAevent(payload);
+
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";
 
@@ -269,11 +294,11 @@ const BundlePayout = (props) => {
                             if (property === "plan_id") {
                                 setBundleError({
                                     isDialogOpen: true,
-                                    title: "Greška prilikom registracije!",
+                                    title: "Greška prilikom porudžbine!",
                                     message: value
                                 });
                             } else if (property === "system") {
-                                history.push("/404");
+                                history.push('/transaction-fail');
                             } else {
                                 setError(property, "empty", value);
                             }
@@ -284,7 +309,6 @@ const BundlePayout = (props) => {
 
                     if(response.data.existing_transaction !== undefined) {
                         dispatch(setExistingTransactionResponse(response.data.response));
-                        // sendGAevent(payload);
                         setIsButtonDisabled(false);
                         dispatch(setCurrentNavigationStep(2));
                         dispatch(setIsLoading(false));
@@ -343,7 +367,6 @@ const BundlePayout = (props) => {
                 .post(paymentURL, { ...payload })
                 .then((response) => {
                     dispatch(setExistingTransactionResponse(response.data.response));
-                    // sendGAevent(payload);
                     setIsButtonDisabled(false);
                     dispatch(setCurrentNavigationStep(2));
                     dispatch(setIsLoading(false));

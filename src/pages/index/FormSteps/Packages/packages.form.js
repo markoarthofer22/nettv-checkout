@@ -95,6 +95,7 @@ const PackagesForm = (props) => {
                 });
 
                 dispatch(setInitialValues(initialPricing));
+                sendGAevent(response.data);
             })
             .catch((error) => {
                 if (error) {
@@ -136,8 +137,84 @@ const PackagesForm = (props) => {
         }
     };
 
+    const sendGAevent = (payload) => {
+        if (window.dataLayer) {
+            console.log('Products dataLayer - step 1: ', payload);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.meta.currency,
+                    'checkout': {
+                        'actionField': {'step': 1, 'option': ''},
+                        'products': [{
+                            'name': payload.title,
+                            'id': payload.meta.product_code,
+                            'price': payload.meta.base_price,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.meta.language_code,
+                            'variant': '',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
+    const sendGAevent2 = (payload, option) => {
+        if (window.dataLayer) {
+            console.log('Products dataLayer - step 2: ', payload, option);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.meta.currency,
+                    'checkout': {
+                        'actionField': {'step': 2, 'option': option},
+                        'products': [{
+                            'name': payload.title,
+                            'id': payload.meta.product_code,
+                            'price': payload.meta.base_price,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.meta.language_code,
+                            'variant': '',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
+    const sendGAevent3 = (payload) => {
+        if (window.dataLayer) {
+            console.log('Products dataLayer - step 3: ', payload, variation, currentPriceValues.variationProductName, currentPriceValues.paymentValues.subscriptionDiscountPrice);
+
+            window.dataLayer.push({
+                'event': 'checkout',
+                'ecommerce': {
+                    'currencyCode': payload.meta.currency,
+                    'checkout': {
+                        'actionField': {'step': 3, 'option': variation},
+                        'products': [{
+                            'name': payload.title,
+                            'id': payload.meta.product_code,
+                            'price': currentPriceValues.paymentValues.subscriptionDiscountPrice,
+                            'brand': 'NetTV',
+                            'category': 'Tržište ' + payload.meta.language_code,
+                            'variant': currentPriceValues.variationProductName,
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+        }
+    };
+
     const goToCheckout = (e) => {
         dispatch(setCurrentNavigationStep(4));
+        sendGAevent3(data);
     };
 
     const openProductsBoxList = (e) => {
@@ -145,6 +222,7 @@ const PackagesForm = (props) => {
 
         dispatch(setCurrentNavigationStep("add"));
         setVariation("box_variation");
+        sendGAevent2(data, "plan_box");
     };
 
     const openProductsNormalList = (e) => {
@@ -152,6 +230,7 @@ const PackagesForm = (props) => {
 
         dispatch(setCurrentNavigationStep("add"));
         setVariation("normal_variations");
+        sendGAevent2(data, "plan_variation");
     };
 
     return (
