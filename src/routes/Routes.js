@@ -17,7 +17,7 @@ export default [
             {
                 path: "/products/",
                 exact: true,
-                component: NotFoundPage //page not needed
+                component: IndexPage //page not needed
             },
             {
                 path: "/products/code/",

@@ -366,3 +366,44 @@ main.bottom-wrap {
         --size: lg;
     }
 }
+
+
+// Responsive fix
+.subscription-plans .subscription-cards .subscription-card--footer div:first-of-type {
+    width: 25%;
+}
+.subscription-plans .subscription-cards .subscription-card--footer div:last-of-type img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+}
+.subscription-plans .subscription-cards .subscription-card--footer .promotion-img {
+    width: 100%;
+    max-width: 200px;
+}
+@media screen and (max-width: 992px) {
+    .subscription-plans .subscription-cards--mobile .subscription-card--footer div:first-of-type {
+        width: 25%;
+    }
+    .subscription-plans .subscription-cards--mobile .subscription-card--footer div:last-of-type img {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+    }
+    .subscription-plans .subscription-cards--mobile .subscription-card--footer .promotion-img {
+        width: 100%;
+        max-width: 200px !important;
+    }
+    .subscription-plans .subscription-cards--mobile .subscription-card--content .option img {
+        width: 20px !important;
+        height: auto !important;
+        flex-basis: 8% !important;
+    }
+    .subscription-plans .subscription-cards--mobile .subscription-card--content .option .value,
+    .subscription-plans .subscription-cards--mobile .subscription-card--content .option .count-value {
+        font-size: 18px !important;
+    }
+    .subscription-plans .subscription-cards--mobile .subscription-card--content .option .value {
+        padding-right: 20px;
+    }
+}
