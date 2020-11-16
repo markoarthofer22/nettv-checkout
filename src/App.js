@@ -68,17 +68,6 @@ export default function App(props) {
                 <meta name="geo.placename" content="" />
                 <meta name="geo.position" content="45.60000;19.20000" />
                 <meta name="ICBM" content="45.60000;19.20000" />
-                {/*BASIC SEO PAGE NEEDS */}
-                <script type="application/ld+json">
-                    {`
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "Organization",
-                            "url": "",
-                            "name": "",
-                        }
-                    `}
-                </script>
             </Helmet>
 
             <div className="wrapper">

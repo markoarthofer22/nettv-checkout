@@ -203,23 +203,18 @@ const FreePaymentInfo = (props) => {
 
                         const entries = Object.entries(response.data.errors);
                         for (const [property, value] of entries) {
-                            if (property === "plan_id") {
-                                setBundleError({
-                                    isDialogOpen: true,
-                                    title: "Greška prilikom porudžbine!",
-                                    message: value
-                                });
-                            } else if (property === "system") {
+                            if (property === "system") {
+                                return history.push("/transaction-fail");
+                            }
+                            else {
                                 setBundleError({
                                     isDialogOpen: true,
                                     title: "Neuspešna pretplata!",
-                                    message: ''
+                                    message: value
                                 });
-                            } else {
-                                setError(property, "empty", value);
                             }
                         }
-                        document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        //document.querySelector(`input[name='${entries[0][0]}']`).focus();
                         return;
                     }
 
@@ -255,6 +250,11 @@ const FreePaymentInfo = (props) => {
                 .catch((error) => {
                     setIsButtonDisabled(false);
                     dispatch(setIsLoading(false));
+                    setBundleError({
+                        isDialogOpen: true,
+                        title: "Neuspešna pretplata!!",
+                        message: error.response ? error.response.data.message : "error"
+                    });
                 });
         } else if (paymentMethod === "mob") {
             // let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/bank" : "shoppayment/bank/bankpayment";
@@ -275,19 +275,18 @@ const FreePaymentInfo = (props) => {
 
                         const entries = Object.entries(response.data.errors);
                         for (const [property, value] of entries) {
-                            if (property === "plan_id") {
+                            if (property === "system") {
+                                return history.push("/transaction-fail");
+                            }
+                            else {
                                 setBundleError({
                                     isDialogOpen: true,
-                                    title: "Greška prilikom porudžbine!",
+                                    title: "Neuspešna pretplata!",
                                     message: value
                                 });
-                            } else if (property === "system") {
-                                history.push('/transaction-fail');
-                            } else {
-                                setError(property, "empty", value);
                             }
                         }
-                        document.querySelector(`input[name='${entries[0][0]}']`).focus();
+                        //document.querySelector(`input[name='${entries[0][0]}']`).focus();
                         return;
                     }
 
@@ -301,7 +300,7 @@ const FreePaymentInfo = (props) => {
                     dispatch(setIsLoading(false));
                     setBundleError({
                         isDialogOpen: true,
-                        title: "Greška prilikom registracije!",
+                        title: "Neuspešna pretplata!",
                         message: error.response ? error.response.data.message : "error"
                     });
                 });
