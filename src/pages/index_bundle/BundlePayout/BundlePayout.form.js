@@ -252,7 +252,7 @@ const BundlePayout = (props) => {
                     : currentPriceValues.paymentValues.subscriptionFullPrice,
                 total_price: currentPriceValues.paymentValues.totalPrice,
                 currency: currentPriceValues.currency,
-                box_price: currentPriceValues.paymentValues.boxPriceDiscount ? currentPriceValues.paymentValues.boxPriceDiscount : currentPriceValues.paymentValues.boxPrice,
+                box_price: "0",
                 activation_price: currentPriceValues.paymentValues.additionalExpenses.activation_price,
                 transport_price: currentPriceValues.paymentValues.additionalExpenses.delivery_price,
                 discount_value: "1.00",
@@ -477,7 +477,8 @@ const BundlePayout = (props) => {
             country_code: localStorage.getItem("lang_code"),
             ip_address: userIP,
             promotion_id: currentPriceValues.variationProductId,
-            plan_id: currentPriceValues.mainProductId
+            plan_id: currentPriceValues.mainProductId,
+            includeSC: true
         };
 
         axios
