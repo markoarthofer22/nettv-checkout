@@ -17,17 +17,18 @@ const PaymentSuccess = (props) => {
             console.log('Payment Success dataLayer: ', payload);
 
             window.dataLayer.push({
+                'event': 'purchase',
                 'ecommerce': {
                     'currencyCode': payload.plan_data.currency,
-                    'actionField': {
-                        'id': payload.plan_data.transaction_id,
-                        'affiliation': 'Online Store',
-                        'revenue': payload.plan_data.total_price,
-                        'tax': '',
-                        'shipping': payload.plan_data.box_transport_price,
-                        'coupon': payload.plan_data.promotion
-                    },
                     'purchase': {
+                        'actionField': {
+                            'id': payload.plan_data.transaction_id,
+                            'affiliation': 'Online Store',
+                            'revenue': payload.plan_data.total_price,
+                            'tax': '',
+                            'shipping': payload.plan_data.box_transport_price,
+                            'coupon': payload.plan_data.promotion
+                        },
                         'products': [{
                             'name': payload.plan_data.plan,
                             'id': payload.plan_data.plan_id,
