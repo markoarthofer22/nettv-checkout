@@ -206,6 +206,10 @@ const FreePaymentInfo = (props) => {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
                             }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
+                            }
                             else {
                                 setBundleError({
                                     isDialogOpen: true,
@@ -277,6 +281,10 @@ const FreePaymentInfo = (props) => {
                         for (const [property, value] of entries) {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
+                            }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
                             }
                             else {
                                 setBundleError({
