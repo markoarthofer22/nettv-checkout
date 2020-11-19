@@ -108,7 +108,7 @@ const FreePackage = (props) => {
                             'id': payload.product_code,
                             'price': 0,
                             'brand': 'NetTV',
-                            'category': 'Tržište Other',
+                            'category': 'Tržište '+ payload.language_code,
                             'variant': 'Gratis',
                             'quantity': 1
                         }]

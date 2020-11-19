@@ -147,7 +147,7 @@ const FreePaymentInfo = (props) => {
                             'id': payload.plan_id,
                             'price': 0,
                             'brand': 'NetTV',
-                            'category': 'Tržište Other',
+                            'category': 'Tržište '+payload.country_code.toLowerCase(),
                             'variant': 'Gratis',
                             'quantity': 1
                         }]

@@ -34,8 +34,9 @@ const PaymentSuccess = (props) => {
                             'id': payload.plan_data.plan_id,
                             'price': payload.plan_data.subscription_price,
                             'brand': 'NetTV',
-                            'category': 'Tržište ' + payload.plan_data.countryCode,
+                            'category': 'Tržište ' + payload.plan_data.country_code,
                             'variant': payload.plan_data.subscription_duration,
+                            'quantity': 1
                         }]
                     }
                 }
