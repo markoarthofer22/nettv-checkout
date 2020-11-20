@@ -136,7 +136,7 @@ const IndexBundle = (props) => {
                 };
 
                 dispatch(setInitialValues(initialPricing));
-                sendGAevent(data);
+                // sendGAevent(data);
             })
             .catch((error) => {
                 if (error) {
@@ -157,7 +157,7 @@ const IndexBundle = (props) => {
                 'ecommerce': {
                     'currencyCode': payload.meta.currency,
                     'checkout': {
-                        'actionField': {'step': 1, 'option': ''},
+                        'actionField': {'step': 3, 'option': ''},
                         'products': [{
                             'name': payload.title,
                             'id': payload.meta.product_code,

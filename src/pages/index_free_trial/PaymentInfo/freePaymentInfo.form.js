@@ -147,7 +147,7 @@ const FreePaymentInfo = (props) => {
                             'id': payload.plan_id,
                             'price': 0,
                             'brand': 'NetTV',
-                            'category': 'Tržište Other',
+                            'category': 'Tržište '+payload.country_code.toLowerCase(),
                             'variant': 'Gratis',
                             'quantity': 1
                         }]
@@ -205,6 +205,10 @@ const FreePaymentInfo = (props) => {
                         for (const [property, value] of entries) {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
+                            }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
                             }
                             else {
                                 setBundleError({
@@ -277,6 +281,10 @@ const FreePaymentInfo = (props) => {
                         for (const [property, value] of entries) {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
+                            }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
                             }
                             else {
                                 setBundleError({

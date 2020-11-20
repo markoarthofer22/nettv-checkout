@@ -172,7 +172,7 @@ const BundlePayout = (props) => {
                 'ecommerce': {
                     'currencyCode': payload.currency,
                     'checkout': {
-                        'actionField': {'step': 2, 'option': payload.promotion_type},
+                        'actionField': {'step': 3, 'option': payload.promotion_type},
                         'products': [{
                             'name': payload.title,
                             'id': payload.plan_id,
@@ -294,6 +294,10 @@ const BundlePayout = (props) => {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
                             }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
+                            }
                             else {
                                 setBundleError({
                                     isDialogOpen: true,
@@ -373,6 +377,10 @@ const BundlePayout = (props) => {
                         for (const [property, value] of entries) {
                             if (property === "system") {
                                 return history.push("/transaction-fail");
+                            }
+                            else if(property === 'phone') {
+                                setError(property, 'empty', value);
+                                document.querySelector(`input[name='phone']`).focus();
                             }
                             else {
                                 setBundleError({
