@@ -263,7 +263,9 @@ const BundlePayout = (props) => {
             };
         }
 
-        sendGAevent(payload);
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent(payload);
+        }
 
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "selfcare/shoppayment/card" : "shoppayment/card";

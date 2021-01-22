@@ -95,7 +95,9 @@ const PackagesForm = (props) => {
                 });
 
                 dispatch(setInitialValues(initialPricing));
-                sendGAevent(response.data);
+                if(process.env.MIX_CURRENT_ENV === 'production') {
+                    sendGAevent(response.data);
+                }
             })
             .catch((error) => {
                 if (error) {
@@ -214,7 +216,9 @@ const PackagesForm = (props) => {
 
     const goToCheckout = (e) => {
         dispatch(setCurrentNavigationStep(4));
-        sendGAevent3(data);
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent3(data);
+        }
     };
 
     const openProductsBoxList = (e) => {
@@ -222,7 +226,9 @@ const PackagesForm = (props) => {
 
         dispatch(setCurrentNavigationStep("add"));
         setVariation("box_variation");
-        sendGAevent2(data, "plan_box");
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent2(data, "plan_box");
+        }
     };
 
     const openProductsNormalList = (e) => {
@@ -230,7 +236,9 @@ const PackagesForm = (props) => {
 
         dispatch(setCurrentNavigationStep("add"));
         setVariation("normal_variations");
-        sendGAevent2(data, "plan_variation");
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent2(data, "plan_variation");
+        }
     };
 
     return (

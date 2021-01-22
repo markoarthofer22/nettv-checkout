@@ -45,7 +45,9 @@ const PaymentSuccess = (props) => {
     };
 
     useEffect(() => {
-        sendGAevent(existingTransaction);
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent(existingTransaction);
+        }
     }, [existingTransaction]);
 
     return (

@@ -189,7 +189,10 @@ const FreePaymentInfo = (props) => {
             credit_card_id: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id !== 1 ? selectedCreditCardInfo.credit_card_id : "") : "",
             new_card_selected: selectedCreditCardInfo ? (selectedCreditCardInfo.credit_card_id === 1 ? "1" : "0") : "1"
         };
-        sendGAevent(payload);
+
+        if(process.env.MIX_CURRENT_ENV === 'production') {
+            sendGAevent(payload);
+        }
 
         if (paymentMethod === "cards") {
             let paymentURL = !_.isEmpty(userHash) ? "/selfcare/free-trial/cardpayment" : "free-trial/cardpayment";

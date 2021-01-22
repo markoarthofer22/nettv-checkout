@@ -89,7 +89,9 @@ const FreePackage = (props) => {
             };
 
             dispatch(setInitialValues(currentPricing));
-            sendGAevent(item)
+            if(process.env.MIX_CURRENT_ENV === 'production') {
+                sendGAevent(item);
+            }
         });
     }, [localStorage.getItem("lang_code")]);
 

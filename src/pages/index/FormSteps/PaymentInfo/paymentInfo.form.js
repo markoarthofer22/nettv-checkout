@@ -370,8 +370,8 @@ const PaymentInfo = (props) => {
             utm_source: queryParams.utm_source || "",
             utm_medium: queryParams.utm_medium || "",
             utm_campaign: queryParams.utm_campaign || ""
-        }
-    }
+        };
+    };
 
     //return input from select (phone)
     const returnInputValue = (countryID, countryDial, countryName) => {
