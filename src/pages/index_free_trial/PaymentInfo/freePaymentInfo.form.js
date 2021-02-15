@@ -23,6 +23,7 @@ import Dialog from "../../../components/dialog/dialog.component";
 //hooks
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import {customUtmTags} from "../../../redux/apis/customUtm";
 
 const FreePaymentInfo = (props) => {
     const history = useHistory();
@@ -192,6 +193,7 @@ const FreePaymentInfo = (props) => {
 
         if(process.env.MIX_CURRENT_ENV === 'production') {
             sendGAevent(payload);
+            customUtmTags();
         }
 
         if (paymentMethod === "cards") {

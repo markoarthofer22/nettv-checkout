@@ -9,7 +9,8 @@ import { selectCurrentStep } from "../../../../redux/navigation-steps/steps.sele
 import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selectors";
 import { useHistory } from "react-router-dom";
 import axios from "../../../../redux/apis/main-api";
-import {homeUrl} from "../../../../redux/globals/globals.endpoints";
+import { homeUrl } from "../../../../redux/globals/globals.endpoints";
+import { customUtmTags } from "../../../../redux/apis/customUtm";
 
 //styles
 import "./packages.scss";
@@ -97,6 +98,7 @@ const PackagesForm = (props) => {
                 dispatch(setInitialValues(initialPricing));
                 if(process.env.MIX_CURRENT_ENV === 'production') {
                     sendGAevent(response.data);
+                    customUtmTags();
                 }
             })
             .catch((error) => {
@@ -228,6 +230,7 @@ const PackagesForm = (props) => {
         setVariation("box_variation");
         if(process.env.MIX_CURRENT_ENV === 'production') {
             sendGAevent2(data, "plan_box");
+            customUtmTags();
         }
     };
 
@@ -238,6 +241,7 @@ const PackagesForm = (props) => {
         setVariation("normal_variations");
         if(process.env.MIX_CURRENT_ENV === 'production') {
             sendGAevent2(data, "plan_variation");
+            customUtmTags();
         }
     };
 

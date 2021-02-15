@@ -16,6 +16,7 @@ import "./free-package.scss";
 
 // components
 import Button from "../../../components/buttons/button.component";
+import {customUtmTags} from "../../../redux/apis/customUtm";
 
 const FreePackage = (props) => {
     const queryString = require("query-string");
@@ -91,6 +92,7 @@ const FreePackage = (props) => {
             dispatch(setInitialValues(currentPricing));
             if(process.env.MIX_CURRENT_ENV === 'production') {
                 sendGAevent(item);
+                customUtmTags();
             }
         });
     }, [localStorage.getItem("lang_code")]);

@@ -11,6 +11,7 @@ import { currentPricing } from "../../../../redux/pricingTab/pricingTab.selector
 import { selectAllCountryIDs, globalUserIP, globalUserTZ, globalUserCountry, globalUserHash } from "../../../../redux/globals/globals.selectors";
 import axios from "../../../../redux/apis/main-api";
 import {homeUrl} from "../../../../redux/globals/globals.endpoints";
+import { customUtmTags } from "../../../../redux/apis/customUtm";
 //styles
 import "./paymentInfo.scss";
 
@@ -130,6 +131,8 @@ const PaymentInfo = (props) => {
             });
             setBuyersCountry(state.countryName);
         }
+
+        customUtmTags();
     }, []);
 
     //if success check for submit form and submit

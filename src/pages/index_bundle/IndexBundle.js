@@ -22,6 +22,7 @@ import GlobalLoader from "../../components/loaders/global.loader.component";
 import BundlePayout from "./BundlePayout/BundlePayout.form";
 import PaymentSuccess from "./PaymentSuccess/paymentSuccess.component";
 import Dialog from "../../components/dialog/dialog.component";
+import {customUtmTags} from "../../redux/apis/customUtm";
 
 const IndexBundle = (props) => {
     const history = useHistory();
@@ -136,7 +137,10 @@ const IndexBundle = (props) => {
                 };
 
                 dispatch(setInitialValues(initialPricing));
-                // sendGAevent(data);
+                if(process.env.MIX_CURRENT_ENV === 'production') {
+                    // sendGAevent(data);
+                    customUtmTags();
+                }
             })
             .catch((error) => {
                 if (error) {
