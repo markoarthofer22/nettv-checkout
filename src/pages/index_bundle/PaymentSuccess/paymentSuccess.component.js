@@ -7,6 +7,7 @@ import { globalUserHash } from "../../../redux/globals/globals.selectors";
 
 //styles
 import "./paymentSuccess.scss";
+import {customUtmTags} from "../../../redux/apis/customUtm";
 
 const PaymentSuccess = (props) => {
     const existingTransaction = useSelector(existingTransactionResponse);
@@ -47,6 +48,7 @@ const PaymentSuccess = (props) => {
     useEffect(() => {
         if(process.env.MIX_CURRENT_ENV === 'production') {
             sendGAevent(existingTransaction);
+            customUtmTags();
         }
     }, [existingTransaction]);
 

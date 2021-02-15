@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentNavigationStep } from "../../../../redux/navigation-steps/steps.actions";
 import { getDataForURL, setIsLoading, setUserIP, setUserTZ, setUserOriginCountry } from "../../../../redux/globals/globals.actions";
+import { customUtmTags } from "../../../../redux/apis/customUtm";
 
 //styles
 import "./subscriptionPlans.scss";
@@ -35,6 +36,7 @@ const SubscriptionPlans = (props) => {
             dispatch(setUserIP(response.data.origin));
             dispatch(setUserTZ(response.data.originTZ));
             dispatch(setUserOriginCountry(response.data.originCountry.toLowerCase()));
+            customUtmTags(); //action for custom utm
         });
     }, [history.location, localStorage.getItem("lang_code")]);
 
